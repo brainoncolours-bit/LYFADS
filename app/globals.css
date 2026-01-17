@@ -1,0 +1,49 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+body {
+  /* background: linear-gradient(45deg, #000000, #010101); */
+  color: #000; 
+  min-height: 100vh;
+  
+}
+
+html {
+  scroll-behavior: smooth;
+}
+/* tabs */
+.no-visible-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.no-visible-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.dark-autocomplete-css .ant-select-selector{
+   background-color: #1f1f1f !important;
+  color: white;
+  border:none!important;
+}
+
+.dark-autocomplete-css input:-webkit-autofill {
+  box-shadow: 0 0 0px 1000px #1f1f1f inset !important;
+  -webkit-text-fill-color: white !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.dark-autocomplete-css input:-moz-autofill {
+  box-shadow: 0 0 0px 1000px #1f1f1f inset !important;
+  -moz-text-fill-color: white !important;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0px 1000px #18181b inset !important; /* Your background color */
+  -webkit-text-fill-color: white !important; /* Your text color */
+  transition: background-color 9999s ease-in-out 0s;
+}
