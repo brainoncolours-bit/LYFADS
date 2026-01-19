@@ -37,14 +37,14 @@ export default function Home() {
       <BrandCollabs/>
       <AnimatedTestimonials/>
       <FeaturesSection />
-      <BentoGrid/>
+      {/* <BentoGrid/> */}
       
       
       {isDelayedComponentsVisible && (
         <>
           <SellOrExchange/>
           <TimelineSection/>
-          <TestimonialCarousal />
+          {/* <TestimonialCarousal /> */}
           <ContactUs/>
         </>
       )}

@@ -123,13 +123,13 @@ export default function TimelineSection() {
       </div>
 
       {/* Button */}
-      <motion.button 
+      {/* <motion.button 
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         className="mt-16 px-8 py-3 border-2 border-brand-color text-white font-semibold rounded-full hover:bg-brand-color transition-colors duration-300"
       >
         Explore Our Portfolio →
-      </motion.button>
+      </motion.button> */}
     </section>
   );
 }

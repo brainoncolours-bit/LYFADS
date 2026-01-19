@@ -199,10 +199,10 @@ const html = `
           className="text-center mb-16"
         >
           <div className="inline-block relative">
-              <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-brand-color via-orange-400 to-orange-400">
+              <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-red-500 to-red-700">
               Connect With Us
             </h1>
-            <div className="absolute -bottom-2 left-0 h-1 w-full bg-gradient-to-r from-brand-color via-gray-100 to-orange-400 rounded-full"></div>
+            <div className="absolute -bottom-2 left-0 h-1 w-full bg-gradient-to-r from-red-500 to-red-700 rounded-full"></div>
           </div>
           <p className="text-gray-400 max-w-2xl mx-auto text-lg mt-6">
             Your dream car might be just one message away — talk to our team and let&apos;s make it real.
@@ -237,6 +237,7 @@ const html = `
                       {/* Glowing background */}
                       <div className={`absolute inset-0 bg-gradient-to-br ${platform.color} opacity-10`}></div>
                       <div className="absolute inset-0 bg-zinc-900/70 backdrop-blur-sm border border-zinc-800/50"></div>
+                      <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-red-700/5"></div>
                       
                       <div className="relative p-4">
                         <div className={`h-1.5 w-full bg-gradient-to-r ${platform.color} rounded-full mb-4`}></div>
@@ -263,16 +264,22 @@ const html = `
               </div>
             </div>
             {/* Contact form */}
-         <div className="relative p-6 md:p-8 rounded-2xl overflow-hidden">
+         <motion.div 
+           initial={{ opacity: 0, y: 30 }}
+           animate={{ opacity: 1, y: 0 }}
+           transition={{ duration: 0.6, delay: 0.3 }}
+           whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
+           className="relative p-6 md:p-8 rounded-2xl overflow-hidden">
   {/* Glowing background */}
                         <div className="absolute inset-0 bg-zinc-900/70 backdrop-blur-sm border border-zinc-800/50"></div>
+                        <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-red-700/10"></div>
 
   <div className="relative z-10">
     <div className="flex items-center mb-8 space-x-4">
-      <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#fb910e] to-[#d56c00] flex items-center justify-center">
+      <div className="h-10 w-10 rounded-full bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center">
         <Mail className="h-5 w-5 text-white" />
       </div>
-      <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#fb910e] to-[#d56c00]">
+      <h2 className="text-2xl font-bold text-red-500">
         Send Us A Message
       </h2>
     </div>
@@ -290,7 +297,7 @@ const html = `
             onChange={handleChange}
             required
             placeholder="Name"
-            className="mt-1 bg-zinc-800/70 border-zinc-700/50 text-white focus:ring-[#fb910e] focus:border-[#fb910e]"
+            className="mt-1 bg-zinc-800/70 border-zinc-700/50 text-white focus:ring-red-500 focus:border-red-500"
           />
         </div>
         
@@ -306,7 +313,7 @@ const html = `
             onChange={handleChange}
             required
             placeholder="Enter valid email address."
-            className="mt-1 bg-zinc-800/70 border-zinc-700/50 text-white focus:ring-[#fb910e] focus:border-[#fb910e]"
+            className="mt-1 bg-zinc-800/70 border-zinc-700/50 text-white focus:ring-red-500 focus:border-red-500"
           />
         </div>
         
@@ -367,7 +374,7 @@ const html = `
     onChange={handleChange}
     required
     placeholder="Tell us what you're looking for..."
-    className="mt-1 bg-zinc-800/70 border-zinc-700/50 text-white min-h-[120px] focus:ring-[#fb910e] focus:border-[#fb910e]"
+    className="mt-1 bg-zinc-800/70 border-zinc-700/50 text-white min-h-[120px] focus:ring-red-500 focus:border-red-500"
   />
 </div>
       </div>
@@ -377,7 +384,7 @@ const html = `
           type="submit"
           className="w-full relative overflow-hidden group"
         >
-          <span className="absolute inset-0 bg-gradient-to-r from-[#fb910e] to-[#d56c00] group-hover:from-[#ff9f1a] group-hover:to-[#bf5e00]"></span>
+          <span className="absolute inset-0 bg-gradient-to-r from-red-500 to-red-700 group-hover:from-red-600 group-hover:to-red-800"></span>
           <span className="relative flex items-center justify-center py-2 text-white font-medium">
             Send Message
           </span>
@@ -385,7 +392,7 @@ const html = `
       </motion.div>
     </form>
   </div>
-</div>
+</motion.div>
 
             
           
@@ -399,31 +406,38 @@ const html = `
             className="lg:col-span-5 space-y-10"
           >
             {/* Map */}
-            <div className="relative overflow-hidden rounded-2xl h-[350px] md:h-[400px] border border-zinc-800/50 shadow-lg">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
+              className="relative overflow-hidden rounded-2xl h-[350px] md:h-[400px] border border-zinc-800/50 shadow-lg">
               <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10 pointer-events-none"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-red-700/10 z-10 pointer-events-none"></div>
               <iframe title="sHAMEER'S CARS"
                 className="w-full h-full border-0" 
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3913.496538392285!2d75.7989077747975!3d11.224837650763154!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba659f487f3964b%3A0xc2fedfdedb1c1202!2sShameer&#39;s%20Cars!5e0!3m2!1sen!2sin!4v1747904242061!5m2!1sen!2sin"  allowFullScreen loading="lazy"></iframe>
 
-            </div>
+            </motion.div>
             
        
 
 {/* Working Hours */}
 <motion.div
-  initial={{ opacity: 0, y: 20 }}
+  initial={{ opacity: 0, y: 30 }}
   animate={{ opacity: 1, y: 0 }}
-  transition={{ duration: 0.5, delay: 0.3 }}
+  transition={{ duration: 0.6, delay: 0.5 }}
+  whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
   className="relative overflow-hidden rounded-2xl p-6"
 >
   {/* Background Layers */}
   <div className="absolute inset-0 bg-zinc-900/70 backdrop-blur-sm border border-zinc-800/50 rounded-2xl" />
-  <div className="absolute inset-0 bg-gradient-to-b from-[#fb910e]/10 to-transparent rounded-2xl" />
+  <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-red-700/5 rounded-2xl" />
 
   <div className="relative space-y-10">
     {/* Showroom Hours */}
     <div>
-      <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#fb910e] to-[#d56c00] mb-6">
+      <h2 className="text-2xl font-bold text-red-500 mb-6">
         Showroom Hours
       </h2>
       <div className="space-y-4">
@@ -434,7 +448,7 @@ const html = `
         ].map(({ day, hours }) => (
           <div
             key={day}
-            className="flex justify-between items-center p-3 rounded-lg hover:bg-[#fb910e]/10 transition-colors"
+            className="flex justify-between items-center p-3 rounded-lg hover:bg-red-500/10 transition-colors"
           >
             <span className="text-gray-400">{day}</span>
             <span className="text-white font-medium">{hours}</span>
@@ -447,8 +461,8 @@ const html = `
     <div className="space-y-4">
       <div className="space-y-3">
         {/* Phone */}
-        <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-[#fb910e]/10 transition-colors">
-          <div className="bg-gradient-to-br from-[#fb910e]/20 to-[#d56c00]/20 p-2 rounded-md text-[#fb910e]">
+        <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-red-500/10 transition-colors">
+          <div className="bg-gradient-to-br from-red-500/20 to-red-700/20 p-2 rounded-md text-red-500">
             <Phone size={18} />
           </div>
           <div>
@@ -460,8 +474,8 @@ const html = `
         </div>
 
         {/* WhatsApp */}
-        <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-[#fb910e]/10 transition-colors">
-          <div className="bg-gradient-to-br from-[#fb910e]/20 to-[#d56c00]/20 p-2 rounded-md text-[#fb910e]">
+        <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-yellow-400/10 transition-colors">
+          <div className="bg-gradient-to-br from-red-500/20 to-red-700/20 p-2 rounded-md text-red-500">
             <MessageCircle size={18} />
           </div>
           <div>
@@ -478,8 +492,8 @@ const html = `
         </div>
 
         {/* Email */}
-        <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-[#fb910e]/10 transition-colors">
-          <div className="bg-gradient-to-br from-[#fb910e]/20 to-[#d56c00]/20 p-2 rounded-md text-[#fb910e]">
+        <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-yellow-400/10 transition-colors">
+          <div className="bg-gradient-to-br from-red-500/20 to-red-700/20 p-2 rounded-md text-red-500">
             <Mail size={18} />
           </div>
           <div>

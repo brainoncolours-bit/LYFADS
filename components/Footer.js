@@ -1,80 +1,88 @@
 "use client";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 
-import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
+export default function LyfAdsFooter() {
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end end"]
+  });
 
-const Footer = () => {
+  // 3D Tilt Effect on scroll
+  const rotateX = useTransform(scrollYProgress, [0, 1], [-45, 0]);
+  const opacity = useTransform(scrollYProgress, [0, 0.8], [0, 1]);
+
   return (
-    <footer className="bg-new-black text-white py-10 px-6 md:px-12">
-      <div className="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-        {/* Brand & Description */}
-        <div>
-          <p className="text-gray-400 mt-2 text-sm">
-          We are the best when it comes to Exotic Cars.
-          </p>
-        </div>
-
-        {/* Quick Links */}
-       <div className="grid grid-cols-2 gap-4 md:justify-self-center">
-  {/* Quick Links Section */}
-  <div>
-    <h3 className="text-lg font-semibold text-white">Quick Links</h3>
-    <ul className="text-gray-400 mt-2 space-y-1">
-      <li>
-        <Link href="/" className="hover:text-white">Home</Link>
-      </li>
-      <li>
-        <Link href="/car-details" className="hover:text-white">Cars</Link>
-      </li>
-      <li>
-        <Link href="/#sellExchange" className="hover:text-white">Sell/Exchange</Link>
-      </li>
-      <li>
-        <Link href="/#contact" className="hover:text-white">Contact</Link>
-      </li>
-    </ul>
-  </div>
-
-  {/* Support Section */}
-  <div>
-    <h3 className="text-lg font-semibold text-white">Support</h3>
-    <ul className="text-gray-400 mt-2 space-y-1">
-      <li>
-        <Link href="/FAQ" className="hover:text-white">FAQs</Link>
-      </li>
-    </ul>
-  </div>
-</div>
-
-        {/* Social Media */}
-        <div className="flex flex-col md:justify-self-end">
-          <h3 className="text-lg font-semibold">Follow Us</h3>
-          <div className="flex space-x-4 mt-3">
-            {[
-              { icon: Facebook, href: "#" },
-              { icon: Twitter, href: "#" },
-              { icon: Instagram, href: "#" },
-              { icon: Linkedin, href: "#" },
-            ].map((social, index) => (
-              <a
-                key={index}
-                href={social.href}
-                className="p-2 bg-gray-700 rounded-full hover:bg-white hover:text-gray-900 transition"
-              >
-                {<social.icon className="w-5 h-5" />}
-              </a>
-            ))}
+    <footer ref={containerRef} className="relative bg-white pt-20 overflow-hidden">
+      {/* 3D Stage Container */}
+      <motion.div 
+        style={{ rotateX, opacity, perspective: "1000px" }}
+        className="bg-[#0a0a0a] rounded-t-[50px] md:rounded-t-[100px] p-10 md:p-20 text-white min-h-[600px] flex flex-col justify-between"
+      >
+        
+        {/* Top Section: The "Production Lights" */}
+        <div className="flex justify-between items-start">
+          <div className="space-y-6">
+            <div className="inline-block px-4 py-1 border border-red-600 text-red-600 text-xs font-black tracking-[0.2em] uppercase">
+              Now In Production
+            </div>
+            <h2 className="text-5xl md:text-8xl font-black leading-none">
+              LYF<br/><span className="text-red-600 italic">ADS</span>
+            </h2>
+          </div>
+          
+          <div className="hidden md:block text-right space-y-2">
+            <p className="text-gray-500 uppercase tracking-widest text-sm font-bold">Services</p>
+            <ul className="text-2xl font-light">
+              <li className="hover:text-red-600 cursor-pointer transition-colors">Post-Production</li>
+              <li className="hover:text-red-600 cursor-pointer transition-colors">VFX & 3D</li>
+              <li className="hover:text-red-600 cursor-pointer transition-colors">Ad Campaigns</li>
+            </ul>
           </div>
         </div>
-      </div>
 
-      {/* Copyright */}
-      <div className="border-t border-gray-700 mt-8 pt-4 text-center text-gray-400 text-sm">
-        © {new Date().getFullYear()} Shameer Cars. All rights reserved.
-      </div>
+        {/* Middle Section: The "Film Reel" Crawler */}
+        <div className="relative py-20">
+          <div className="absolute inset-0 flex items-center justify-center opacity-10">
+            <span className="text-[15vw] font-black whitespace-nowrap animate-marquee">
+              CREATING REALITY • PRODUCING DREAMS • LYF ADS • 
+            </span>
+          </div>
+          
+          {/* Out of the box 3D Element: Interactive Button */}
+          {/* <motion.button 
+            whileHover={{ scale: 1.1, rotateY: 20, rotateX: -1  }}
+            className="relative z-10 mx-auto block bg-red-600 text-white text-xl font-black px-12 py-6 rounded-full shadow-[0_20px_50px_rgba(255,0,0,0.3)] border-b-8 border-red-800 active:border-b-0 active:translate-y-2 transition-all"
+          >
+            START YOUR SCENE
+          </motion.button> */}
+        </div>
+
+        {/* Bottom Section: The Slate */}
+        <div className="border-t border-white/10 pt-10 flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex gap-8 text-sm font-bold tracking-tighter uppercase">
+            <a href="#" className="hover:text-red-600">Instagram</a>
+            <a href="#" className="hover:text-red-600">Vimeo</a>
+            <a href="#" className="hover:text-red-600">LinkedIn</a>
+          </div>
+          
+          <div className="text-xs text-gray-500 font-mono uppercase tracking-[0.3em]">
+            [ 2026 © LYF ADS PRODUCTION HOUSE ]
+          </div>
+        </div>
+      </motion.div>
+
+      <style jsx>{`
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+          display: inline-block;
+          animation: marquee 20s linear infinite;
+        }
+      `}</style>
     </footer>
   );
-};
-
-export default Footer;
+}
