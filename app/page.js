@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect } from 'react';
-import About from '@/components/About';
 import FeaturesSection  from '@/components/FeaturesSection';
 import HeroSection from '@/components/HeroSection';
 import Layout from '@/components/Layout';
@@ -46,7 +45,6 @@ export default function Home() {
           <SellOrExchange/>
           <TimelineSection/>
           <TestimonialCarousal />
-          <About />
           <ContactUs/>
         </>
       )}
