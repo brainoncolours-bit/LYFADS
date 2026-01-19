@@ -234,8 +234,8 @@ export const AnimatedTestimonials = ({ autoplay = true }) => {
         onClick={() => router.push("/car-details")}
         className="mt-20 md:mt-40 cursor-pointer mx-auto inline-flex items-center gap-2 px-6 py-3 border border-brand-color rounded-full text-xl font-bold hover:bg-gray-600 hover:text-white transition duration-300"
       >
-        <span className="text-new-white">More</span>
-        <span className="text-brand-color">Cars</span>
+        <span className="text-new-white">Service</span>
+        <span className="text-brand-color"></span>
         <ArrowRightCircle size={20} className="mt-0.5 text-brand-color" />
       </motion.h2>
     </div>
