@@ -10,7 +10,7 @@ const poppins = Poppins({
 });
 
 export const metadata = {
-  title: "Shameer Cars",
+  title: "Lyf Ads ",
   description: " We are the best when it comes to Exotic Cars.",
   icons: {
     icon: "/brandLogo.png", 
