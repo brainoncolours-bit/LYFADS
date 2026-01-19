@@ -4,17 +4,14 @@ import Image from 'next/image';
 const OverlayComponent = () => {
   return (
     <motion.div
-      initial={{ bottom: "0%", height: "100vh", opacity: 1 }}
+      initial={{ opacity: 0 }}
       animate={{
-        bottom: "100%",
         opacity: 0,
       }}
       transition={{
-        duration: 2,
-        ease: "easeInOut",
-        delay: 2,
+        duration: 0,
       }}
-      className="fixed w-full flex justify-center items-center z-[9999] bg-black pointer-events-none"
+      className="fixed w-full flex justify-center items-center z-[9999] bg-transparent pointer-events-none"
     >
     </motion.div>
   );
