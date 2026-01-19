@@ -58,6 +58,9 @@ function CameraController({ scrollProgress, exploreMode }) {
       { pos: [0, 0, 4], lookAt: [0, 0, 0] },             // Front view - performance section
       { pos: [4, 0, 0], lookAt: [0, 0, 0] },             // Side view - power section
       { pos: [0, 2.5, 3], lookAt: [0, 0, 0] },           // Top diagonal view - autofocus section
+      { pos: [-3, 1, 2], lookAt: [0, 0, 0] },            // Left diagonal view - detail section
+      { pos: [2, -1, -4], lookAt: [0, 0, 0] },           // Right back angle - lens section
+      { pos: [0, 4, 0], lookAt: [0, 0, 0] },             // Top view - overhead shot
       { pos: [-2, 1, -4], lookAt: [0, 0, 0] },           // Dynamic angle - explore section
     ];
 
@@ -158,19 +161,8 @@ export default function CameraLanding() {
       { opacity: 1, x: '0%', duration: 1.8, ease: 'power4.inOut' }
     );
 
-    // Calculate total scroll distance for all sections
-    const totalScrollDistance = sections.length * window.innerHeight;
-
-    // Create a master timeline for scroll progress without pinning
-    const masterTimeline = gsap.timeline({
-      scrollTrigger: {
-        trigger: ".camera-landing-wrapper",
-        start: "top top",
-        end: "+=" + totalScrollDistance,
-        scrub: 1,
-        invalidateOnRefresh: true
-      }
-    });
+    // Calculate total scroll distance for all sections (now with more sections)
+    const totalScrollDistance = 8 * window.innerHeight; // Increased to accommodate more sections
 
     // Calculate normalized scroll progress (0 to 1) based on total scroll
     ScrollTrigger.create({
@@ -180,7 +172,8 @@ export default function CameraLanding() {
       onUpdate: (self) => {
         const normalizedProgress = Math.min(1, self.progress);
         setScrollProgress(normalizedProgress);
-      }
+      },
+      invalidateOnRefresh: true
     });
 
     // Scroll-triggered animations
@@ -238,6 +231,32 @@ export default function CameraLanding() {
       onEnter: () => {
         gsap.fromTo('.explore--content',
           { opacity: 0, x: '130%' },
+          { opacity: 1, x: '0%', duration: 0.5 }
+        );
+      }
+    });
+
+    ScrollTrigger.create({
+      trigger: '.cam-view-6',
+      start: 'top bottom',
+      end: 'top top',
+      scrub: 1,
+      onEnter: () => {
+        gsap.fromTo('.detail--content',
+          { opacity: 0, x: '110%' },
+          { opacity: 1, x: '0%', duration: 0.5 }
+        );
+      }
+    });
+
+    ScrollTrigger.create({
+      trigger: '.cam-view-7',
+      start: 'top bottom',
+      end: 'top top',
+      scrub: 1,
+      onEnter: () => {
+        gsap.fromTo('.lens--content',
+          { opacity: 0, x: '-110%' },
           { opacity: 1, x: '0%', duration: 0.5 }
         );
       }
@@ -377,6 +396,26 @@ export default function CameraLanding() {
           <div className="autofocus--content">
             <h1>Smart, speedy <strong>autofocus</strong></h1>
             <p>Advanced autofocus technology with subject detection lets you keep your eye on the action while keeping subjects in crystal clear focus.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Additional Section 1 - Detail View */}
+      <section className="section cam-view-6">
+        <div className="detail--container">
+          <div className="detail--content">
+            <h1>Premium <strong>Build Quality</strong></h1>
+            <p>Crafted with precision using premium materials for durability and comfort during extended shooting sessions.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Additional Section 2 - Lens View */}
+      <section className="section cam-view-7">
+        <div className="lens--container">
+          <div className="lens--content">
+            <h1>Advanced <strong>Lens System</strong></h1>
+            <p>Professional-grade optics with exceptional clarity and sharpness across the entire frame.</p>
           </div>
         </div>
       </section>
