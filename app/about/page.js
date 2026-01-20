@@ -1,6 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import Layout from '@/components/Layout';
 
 // Dynamically import the Camera Landing component with no SSR
 const CameraLanding = dynamic(() => import('@/components/CameraLanding'), {
@@ -17,8 +18,10 @@ const CameraLanding = dynamic(() => import('@/components/CameraLanding'), {
 
 export default function AboutPage() {
   return (
-    <div>
-      <CameraLanding />
-    </div>
+    <Layout>
+      <div className="min-h-screen" style={{ backgroundColor: '#aa302a' }}>
+        <CameraLanding />
+      </div>
+    </Layout>
   );
 }

@@ -242,8 +242,8 @@
   font-weight: 700;
   font-size: 85px;
   line-height: 55px;
-  letter-spacing: -0.01em;
-  color: #be1921;
+  letter-spacing: -0.01em;  
+  color: #edc001;
   margin-bottom: 60px;
 }
 
@@ -277,7 +277,7 @@
   font-size: 125px;
   line-height: 55px;
   letter-spacing: -0.01em;
-  color: #be1921;
+  color: #edc001;
   margin-top: 32px;
   margin-bottom: 24px;
 }
@@ -335,7 +335,7 @@
 
 .autofocus--content h1 strong {
   font-weight: 700;
-  color: #be1921;
+  color: #edc001;
 }
 
 /* Explore Section */
@@ -369,7 +369,7 @@
 
 .explore--content h1 strong {
   font-weight: 700;
-  color: #be1921;
+  color: #edc001;
 }
 
 /* Detail Section */
@@ -395,13 +395,13 @@
   font-size: 85px;
   line-height: 55px;
   letter-spacing: -0.01em;
-  color: #be1921;
+  color: #edc001;
   margin-bottom: 60px;
 }
 
 .detail--content h1 strong {
   font-weight: 700;
-  color: #be1921;
+  color: #edc001;
 }
 
 .detail--content p {
@@ -437,7 +437,7 @@
 
 .lens--content h1 strong {
   font-weight: 700;
-  color: #be1921;
+  color: #edc001;
 }
 
 .lens--content p {
