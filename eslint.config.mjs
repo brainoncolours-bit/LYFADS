@@ -4,6 +4,10 @@ import { FlatCompat } from "@eslint/eslintrc";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+module.exports = {
+  parser: '@typescript-eslint/parser',
+}
+
 
 const compat = new FlatCompat({
   baseDirectory: __dirname,
