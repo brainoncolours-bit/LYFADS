@@ -20,7 +20,7 @@ const LyfAds3DHero = () => {
 
   return (
     <div className="bg-[#020202] text-white overflow-x-hidden selection:bg-red-600">
-      <section ref={containerRef} className="relative h-[300vh] w-full">
+      <section id="hero" ref={containerRef} className="relative h-[300vh] w-full">
         {/* VIEWPORT WRAPPER */}
         <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden perspective-[1000px]">
           

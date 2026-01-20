@@ -13,10 +13,10 @@ export default function Navbar() {
   const toggleMenu = () => setMenuOpen((v) => !v);
 
   const navLinks = [
+    { label: "Home", path: "/#hero" },
     { label: "About Us", path: "/about" },
     { label: "Services ", path: "/car-details" },
     { label: "Works", path: "/works" },
-    { label: "Sell/Exchange", path: "/#sellExchange" },
     { label: "Contact", path: "/#contact" },
   ];
 
