@@ -6,7 +6,7 @@ import Layout from '@/components/Layout';
 import { TestimonialCarousal } from '@/components/TestimonialCarousal';
 import BrandCollabs from '@/components/BrandCollabs';
 import TimelineSection from '@/components/MileStone';
-import SellOrExchange from '@/components/SellOrExchange';
+// import SellOrExchange from '@/components/SellOrExchange';
 import { ScrollTrigger } from 'gsap/all';
 import {AnimatedTestimonials} from '@/components/animated-testimonials';
 import ContactUs from '@/components/ContactUs';
@@ -42,7 +42,7 @@ export default function Home() {
       
       {isDelayedComponentsVisible && (
         <>
-          <SellOrExchange/>
+          {/* <SellOrExchange/> */}
           <TimelineSection/>
           {/* <TestimonialCarousal /> */}
           <ContactUs/>

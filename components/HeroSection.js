@@ -160,7 +160,7 @@ const Floating3D = ({ children, scroll, depth, top, left, right, bottom, speed }
         top, left, right, bottom,
         translateZ: zMove,
         y: yMove,
-        position: 'absolute',
+        position: 'absolute',   
         transformStyle: 'preserve-3d'
       }}
       className="pointer-events-none"
