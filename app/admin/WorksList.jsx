@@ -1,14 +1,16 @@
 'use client';
 
 import { supabase } from '@/lib/supabaseClient';
-import { Pencil, Trash2, Play, ExternalLink, Calendar } from 'lucide-react';
+import { Pencil, Trash2, Play, ExternalLink, Calendar, Eye } from 'lucide-react';
 import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
+import VideoPlayer from '@/components/VideoPlayer';
 
 const WorksList = ({ setEditData, editData, fetchWorks, loading, videos }) => {
   const [localVideos, setLocalVideos] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedVideo, setSelectedVideo] = useState(null);
   const itemsPerPage = 20;
 
   // Use videos prop if provided, otherwise fetch
@@ -95,10 +97,8 @@ const WorksList = ({ setEditData, editData, fetchWorks, loading, videos }) => {
               className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200 hover:shadow-xl transition-shadow duration-300 group"
             >
               {/* Video Thumbnail */}
-              <a
-                href={item.video_url}
-                target="_blank"
-                rel="noopener noreferrer"
+              <div
+                onClick={() => setSelectedVideo(item)}
                 className="relative block w-full h-48 bg-gray-200 overflow-hidden cursor-pointer"
               >
                 <Image
@@ -120,7 +120,7 @@ const WorksList = ({ setEditData, editData, fetchWorks, loading, videos }) => {
                   <Play size={12} fill="white" />
                   Video
                 </div>
-              </a>
+              </div>
 
               {/* Content */}
               <div className="p-4">
@@ -136,16 +136,14 @@ const WorksList = ({ setEditData, editData, fetchWorks, loading, videos }) => {
                   </div>
                 )}
 
-                {/* View Link Button */}
-                <a
-                  href={item.video_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                {/* View Video Button */}
+                <button
+                  onClick={() => setSelectedVideo(item)}
                   className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 text-sm font-medium mb-4 group/link"
                 >
-                  <ExternalLink size={16} className="group-hover/link:translate-x-0.5 transition-transform" />
+                  <Eye size={16} className="group-hover/link:translate-x-0.5 transition-transform" />
                   View Video
-                </a>
+                </button>
 
                 {/* Action Buttons */}
                 <div className="flex gap-2 pt-3 border-t border-gray-100">
@@ -215,6 +213,14 @@ const WorksList = ({ setEditData, editData, fetchWorks, loading, videos }) => {
             Next
           </button>
         </div>
+      )}
+
+      {/* Video Player Modal */}
+      {selectedVideo && (
+        <VideoPlayer
+          video={selectedVideo}
+          onClose={() => setSelectedVideo(null)}
+        />
       )}
     </div>
   );
