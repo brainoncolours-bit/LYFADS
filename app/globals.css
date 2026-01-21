@@ -11,20 +11,13 @@ body {
 
 .gradient {
   background-image: linear-gradient(
-    130deg,
+    125deg,
     hsl(0deg 0% 100%) 0%,
-    hsl(8deg 84% 96%) 3%,
-    hsl(8deg 81% 92%) 5%,
-    hsl(8deg 77% 87%) 8%,
-    hsl(8deg 74% 83%) 12%,
-    hsl(8deg 71% 78%) 16%,
-    hsl(8deg 68% 74%) 20%,
-    hsl(7deg 65% 69%) 27%,
-    hsl(7deg 63% 64%) 35%,
-    hsl(6deg 60% 60%) 48%,
-    hsl(5deg 58% 55%) 65%,
-    hsl(3deg 55% 50%) 83%,
-    hsl(0deg 64% 45%) 100%
+    hsl(8deg 72% 79%) 10%,
+    hsl(5deg 59% 57%) 29%,
+    hsl(352deg 96% 33%) 60%,
+    hsl(0deg 100% 22%) 83%,
+    hsl(0deg 0% 0%) 100%
   );
 }
 

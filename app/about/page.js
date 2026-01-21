@@ -19,7 +19,7 @@ const CameraLanding = dynamic(() => import('@/components/CameraLanding'), {
 export default function AboutPage() {
   return (
     <Layout>
-      <div className="min-h-screen" style={{ backgroundColor: '#aa302a' }}>
+      <div className="min-h-screen gradient">
         <CameraLanding />
       </div>
     </Layout>
