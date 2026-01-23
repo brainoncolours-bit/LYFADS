@@ -20,7 +20,7 @@ const LyfAds3DHero = () => {
 
   return (
     <div className="bg-[#020202] text-white overflow-x-hidden selection:bg-red-600">
-      <section id="hero" ref={containerRef} className="relative h-[300vh] w-full">
+      <section id="hero" ref={containerRef} className="relative h-auto w-full">
         {/* VIEWPORT WRAPPER */}
         <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden perspective-[1000px]">
           
@@ -84,17 +84,17 @@ const LyfAds3DHero = () => {
             </motion.div>
 
             {/* LAYER 4: Extreme Foreground (Fly-by elements) */}
-            <Floating3D scroll={smoothScroll} range={[0, 0.4]} depth={400} bottom="10%" left="20%" speed={8}>
+            {/* <Floating3D scroll={smoothScroll} range={[0, 0.4]} depth={400} bottom="10%" left="20%" speed={8}>
                <Focus className="text-red-600 w-24 h-24 opacity-40" />
             </Floating3D>
             <Floating3D scroll={smoothScroll} range={[0, 0.3]} depth={600} top="30%" right="5%" speed={12}>
                <Aperture className="text-white w-32 h-32 opacity-20" />
-            </Floating3D>
+            </Floating3D> */}
 
           </motion.div>
 
           {/* HUD OVERLAY (Static) */}
-          <div className="absolute inset-0 z-50 pointer-events-none p-8 flex flex-col justify-between border-[1px] border-white/5">
+          {/* <div className="absolute inset-0 z-50 pointer-events-none p-8 flex flex-col justify-between border-[1px] border-white/5">
              <div className="flex justify-between items-start opacity-30 font-mono text-xs">
                 <div className="flex gap-4">
                   <span>[ ISO 800 ]</span>
@@ -116,12 +116,12 @@ const LyfAds3DHero = () => {
                    <p>BAT: 88%</p>
                 </div>
              </div>
-          </div>
+          </div> */}
         </div>
       </section>
 
       {/* CONTENT REVEAL SECTION */}
-      <div className="relative z-[100] bg-white text-black py-32 px-10">
+      {/* <div className="relative z-[100] bg-white text-black py-32 px-10">
          <div className="max-w-7xl mx-auto grid lg:grid-cols-3 gap-12">
             <h2 className="text-7xl font-black italic lg:col-span-2 leading-[0.9]">
                WHERE IMAGINATION <span className="text-red-600">MEETS</span> TECHNICAL MASTERY.
@@ -137,14 +137,14 @@ const LyfAds3DHero = () => {
                </div>
             </div>
          </div>
-      </div>
+      </div> */}
 
-      <style jsx>{`
+      {/* <style jsx>{`
         .preserve-3d { transform-style: preserve-3d; }
         .perspective-1000 { perspective: 1000px; }
         .animate-spin-slow { animation: spin 12s linear infinite; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-      `}</style>
+      `}</style> */}
     </div>
   );
 };
