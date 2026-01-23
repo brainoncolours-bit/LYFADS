@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
@@ -8,6 +8,7 @@ import {
   Clapperboard, Briefcase, Music2, Film, Ticket, 
   Presentation, Sparkles, Smartphone, Award, Box
 } from 'lucide-react';
+import { supabase } from '@/lib/supabaseClient';
 
 const categories = [
   { id: 'commercial', name: 'Commercials', sub: 'High Impact', icon: Clapperboard },
@@ -23,7 +24,11 @@ const CARD_DIMENSIONS = {
   height: 60,
 };
 
+
+
 const WorksCategories = () => {
+  const [categoriesData, setCategoriesData] = useState([]);
+
   const targetRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: targetRef });
 
@@ -31,6 +36,27 @@ const WorksCategories = () => {
   const x = useTransform(scrollYProgress, [0, 1], ["10%", "-70%"]);
   const physicsX = useSpring(x, { stiffness: 100, damping: 20 });
 
+  // fetchh categories from supabase
+useEffect(() => {
+  // Fetch categories if needed
+  const fetchCategories = async () => {
+    // Fetch logic here if categories were dynamic
+    const { data, error } = await supabase
+      .from('video_categories')
+      .select('*')
+      .order('name', { ascending: true });
+
+    if (error) {
+      console.error('Error fetching categories:', error);
+    } else {
+      // Handle the fetched categories if needed
+      console.log('Fetched categories:', data[0]);
+      setCategoriesData(data || []);
+    }
+  };
+  fetchCategories();
+  
+}, []);
   return (
     <div className="bg-[#050505] text-white">
       <Navbar />
@@ -65,7 +91,7 @@ const WorksCategories = () => {
             </div>
 
             {/* Category Cards */}
-            {categories.map((cat, i) => (
+            {categoriesData.map((cat, i) => (
               <motion.div
                 key={cat.id}
                 whileHover={{ y: -20 }}
@@ -73,9 +99,9 @@ const WorksCategories = () => {
                 style={{ width: `${CARD_DIMENSIONS.width}px`, height: `${CARD_DIMENSIONS.height}vh` }}
               >
                 {/* Parallax Icon Background */}
-                <div className="absolute -top-10 -right-10 text-white/[0.03] group-hover:text-red-500/10 transition-colors duration-700">
+                {/* <div className="absolute -top-10 -right-10 text-white/[0.03] group-hover:text-red-500/10 transition-colors duration-700">
                   <cat.icon size={300} strokeWidth={1} />
-                </div>
+                </div> */}
 
                 <div className="relative z-10">
                   <span className="text-xs font-mono text-red-400 mb-2 block tracking-widest uppercase">
@@ -85,7 +111,7 @@ const WorksCategories = () => {
                     {cat.name}
                   </h3>
                   
-                  <Link href={`/works/${cat.id}`}>
+                  <Link href={`/works/${cat?.id}`}>
                     <motion.div 
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}

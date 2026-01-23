@@ -37,6 +37,17 @@ export default function AdminLogin() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      {/* home button */}
+      <div className="absolute top-4 left-4">
+        <div className="mb-6 text-center">
+          </div>
+        <button
+          onClick={() => router.push("/")}
+          className="mb-4 text-blue-600 hover:underline"
+        >
+          &larr; Back to Home
+        </button>
+        </div>
       <form onSubmit={handleLogin} className="bg-white p-6 rounded-lg shadow-md w-96">
         <h2 className="text-2xl font-bold mb-6">Admin Login</h2>
         {error && <p className="text-red-500 mb-4">{error}</p>}

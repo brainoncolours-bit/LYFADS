@@ -10,7 +10,7 @@ const initialState = {
   title: "",
   video_url: "",
   thumbnail_url: "",
-  category: "",
+  category_id: "",
 };
 
 const WorksModal = ({ editData, setEditData, fetchWorks, isModalOpen, setIsModalOpen }) => {
@@ -152,7 +152,7 @@ const WorksModal = ({ editData, setEditData, fetchWorks, isModalOpen, setIsModal
     setLoading(true);
 
     try {
-      const { title, video_url, category } = formData;
+      const { title, video_url, category_id } = formData;
       
       // Convert Google Drive link to preview link
       const convertedVideoUrl = convertDriveLinkToPreview(video_url);
@@ -161,7 +161,7 @@ const WorksModal = ({ editData, setEditData, fetchWorks, isModalOpen, setIsModal
         throw new Error("Please fill in title and video URL.");
       }
 
-      if (!category) {
+      if (!category_id) {
         throw new Error("Please select a category.");
       }
 
@@ -179,7 +179,7 @@ const WorksModal = ({ editData, setEditData, fetchWorks, isModalOpen, setIsModal
         if (!thumbnailUrl) throw new Error("Thumbnail upload failed.");
       }
 
-      const videoData = { title, video_url: convertedVideoUrl, thumbnail_url: thumbnailUrl, category };
+      const videoData = { title, video_url: convertedVideoUrl, thumbnail_url: thumbnailUrl, category_id };
 
       const { error } = editData
         ? await supabase.from("videos").update(videoData).eq("id", editData.id)
@@ -206,7 +206,7 @@ const WorksModal = ({ editData, setEditData, fetchWorks, isModalOpen, setIsModal
         title: editData.title || "",
         video_url: editData.video_url || "",
         thumbnail_url: editData.thumbnail_url || "",
-        category: editData.category || "",
+        category_id: editData.category_id || "",
       });
       setPreviewUrl(editData.thumbnail_url || "");
     }
@@ -266,13 +266,13 @@ const WorksModal = ({ editData, setEditData, fetchWorks, isModalOpen, setIsModal
           <div>
             <label className="block text-sm font-medium mb-1">Category</label>
             <select
-              value={formData.category}
-              onChange={(e) => handleChange(e.target.value, "category")}
+              value={formData.category_id}
+              onChange={(e) => handleChange(e.target.value, "category_id")}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
             >
               <option value="">Select a category</option>
               {categories.map((cat) => (
-                <option key={cat.id} value={cat.name}>
+                <option key={cat.id} value={cat.id}>
                   {cat.name}
                 </option>
               ))}
