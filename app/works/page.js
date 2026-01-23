@@ -1,286 +1,130 @@
 "use client";
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
-import styled from 'styled-components';
+import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import {
+  Clapperboard, Briefcase, Music2, Film, Ticket, 
+  Presentation, Sparkles, Smartphone, Award, Box
+} from 'lucide-react';
 
-const works = [
-  { id: 1, title: "VELOCITY X", tag: "REDEFINING SPEED", color: "#ff0000" },
-  { id: 2, title: "RED LINE", tag: "BEYOND THE LIMIT", color: "#ffffff" },
-  { id: 3, title: "APEX FLOW", tag: "FLUID MOTION", color: "#ff0000" },
-  { id: 4, title: "CORE POWER", tag: "RAW ENERGY", color: "#ffffff" },
-  { id: 5, title: "NEON DRIFT", tag: "NIGHT VISIONS", color: "#ff0000" },
-  { id: 6, title: "PURE HEAT", tag: "THERMAL FLOW", color: "#ffffff" },
+const categories = [
+  { id: 'commercial', name: 'Commercials', sub: 'High Impact', icon: Clapperboard },
+  { id: 'music-video', name: 'Music Videos', sub: 'Rhythmic Art', icon: Music2 },
+  { id: 'corporate', name: 'Corporate', sub: 'Business Soul', icon: Briefcase },
+  { id: 'documentary', name: 'Documentary', sub: 'Real Stories', icon: Film },
+  { id: 'animation', name: 'Animation', sub: 'Digital Worlds', icon: Sparkles },
+  { id: 'brand-film', name: 'Brand Films', sub: 'Legacy Building', icon: Award },
 ];
 
-const KineticTunnel = () => {
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
+const CARD_DIMENSIONS = {
+  width: 520,
+  height: 60,
+};
 
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
+const WorksCategories = () => {
+  const targetRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: targetRef });
+
+  // Transform vertical scroll into horizontal movement
+  const x = useTransform(scrollYProgress, [0, 1], ["10%", "-70%"]);
+  const physicsX = useSpring(x, { stiffness: 100, damping: 20 });
 
   return (
-    <>
+    <div className="bg-[#050505] text-white">
       <Navbar />
-      <StyledPage ref={containerRef}>
-        {/* FIXED UI ELEMENTS */}
-        <nav className="fixed-nav">
-          <div className="logo">LYF<span>.</span>ADS</div>
-          <div className="status">// PRODUCTION_HOUSE_2026</div>
-        </nav>
-
-      <div className="scroll-indicator">
-        <motion.div 
-          className="bar" 
-          style={{ scaleY: smoothProgress }} 
-        />
-        <span>SCROLL TO EXPLORE</span>
+      
+      {/* Fixed Hero Title - Stays while scrolling */}
+      <div className="fixed top-32 left-12 z-0 pointer-events-none">
+        <motion.h1 
+          initial={{ opacity: 0, x: -100 }}
+          animate={{ opacity: 0.1, x: 0 }}
+          className="text-[20vw] font-black leading-none select-none"
+        >
+          WORKS
+        </motion.h1>
       </div>
 
-      {/* 3D SCENE */}
-      <div className="scene-container">
-        <div className="sticky-wrapper">
-          {works.map((work, index) => (
-            <SceneCard 
-              key={work.id} 
-              work={work} 
-              index={index} 
-              progress={smoothProgress} 
-              total={works.length}
-            />
-          ))}
+      {/* Main Scroll Container */}
+      <section ref={targetRef} className="relative h-[400vh] bg-transparent">
+        <div className="sticky top-0 flex h-screen items-center overflow-hidden">
           
-          {/* BACKGROUND DEBRIS/3D ELEMENTS */}
-          <BackgroundElements progress={smoothProgress} />
-        </div>
-      </div>
+          <motion.div style={{ x: physicsX }} className="flex gap-12 px-12">
+            
+            {/* Introductory Slide */}
+            <div className="flex flex-col justify-center min-w-[500px] pr-20">
+              <h2 className="text-6xl font-light leading-tight">
+                Crafting <br /> 
+                <span className="font-black italic text-red-500">Visual</span> <br /> 
+                Excellence.
+              </h2>
+              <p className="text-zinc-500 mt-6 max-w-sm font-mono uppercase tracking-widest text-xs">
+                Scroll to explore our diverse production capabilities and creative portfolio.
+              </p>
+            </div>
 
-      {/* FOOTER AREA */}
-      <section className="footer-trigger">
-        <h2 className="massive-text">FIN.</h2>
+            {/* Category Cards */}
+            {categories.map((cat, i) => (
+              <motion.div
+                key={cat.id}
+                whileHover={{ y: -20 }}
+                className="relative group shrink-0 flex flex-col justify-end p-10 overflow-hidden rounded-[3rem] border border-white/10 bg-zinc-900/30 backdrop-blur-3xl transition-colors hover:border-red-500/50"
+                style={{ width: `${CARD_DIMENSIONS.width}px`, height: `${CARD_DIMENSIONS.height}vh` }}
+              >
+                {/* Parallax Icon Background */}
+                <div className="absolute -top-10 -right-10 text-white/[0.03] group-hover:text-red-500/10 transition-colors duration-700">
+                  <cat.icon size={300} strokeWidth={1} />
+                </div>
+
+                <div className="relative z-10">
+                  <span className="text-xs font-mono text-red-400 mb-2 block tracking-widest uppercase">
+                    {cat.sub}
+                  </span>
+                  <h3 className="text-5xl font-black mb-6 group-hover:italic transition-all uppercase">
+                    {cat.name}
+                  </h3>
+                  
+                  <Link href={`/works/${cat.id}`}>
+                    <motion.div 
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="inline-flex items-center justify-center w-16 h-16 rounded-full border border-white/20 group-hover:bg-white group-hover:text-black transition-all duration-500"
+                    >
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                      </svg>
+                    </motion.div>
+                  </Link>
+                </div>
+
+                {/* Animated Gradient Edge */}
+                <div className="absolute bottom-0 left-0 h-1 w-0 bg-gradient-to-r from-red-500 to-orange-500 group-hover:w-full transition-all duration-700" />
+              </motion.div>
+            ))}
+
+            {/* Closing Slide */}
+            <div className="flex flex-col justify-center min-w-[600px] pl-20">
+              <h2 className="text-8xl font-black tracking-tighter">READY TO <br />START?</h2>
+              <Link href="/contact" className="text-3xl mt-8 flex items-center gap-4 hover:gap-8 transition-all text-zinc-400 hover:text-white">
+                LET'S BUILD SOMETHING <span className="text-red-500">→</span>
+              </Link>
+            </div>
+
+          </motion.div>
+        </div>
       </section>
-    </StyledPage>
-    <Footer />
-    </>
-  );
-};
 
-const SceneCard = ({ work, index, progress, total }) => {
-  // Each card starts far away and moves past the camera
-  const start = index / total;
-  const end = (index + 1) / total;
-  
-  // Z-axis movement (Coming at the camera)
-  const z = useTransform(progress, [start, end], [1000, -1500]);
-  const opacity = useTransform(progress, [start, start + 0.1, end - 0.1, end], [0, 1, 1, 0]);
-  const scale = useTransform(progress, [start, end], [0.5, 3]);
-  const rotateX = useTransform(progress, [start, end], [20, -20]);
-
-  return (
-    <motion.div 
-      className="card-3d"
-      style={{ 
-        z, 
-        opacity, 
-        scale,
-        rotateX,
-        perspective: "1000px"
-      }}
-    >
-      <div className="card-content">
-        <div className="card-image-wrapper">
-          <div className="overlay" style={{ backgroundColor: work.color }} />
-          <h3 className="card-title">{work.title}</h3>
-        </div>
-        <div className="card-meta">
-          <span className="index">0{index + 1}</span>
-          <p className="tag">{work.tag}</p>
-        </div>
+      {/* Background Decorative "Scanlines" */}
+      <div className="fixed inset-0 pointer-events-none opacity-[0.03] overflow-hidden">
+        {[...Array(20)].map((_, i) => (
+          <div key={i} className="h-[1px] w-full bg-white my-12" />
+        ))}
       </div>
-    </motion.div>
+
+      <Footer />
+    </div>
   );
 };
 
-const BackgroundElements = ({ progress }) => {
-  const rotate = useTransform(progress, [0, 1], [0, 360]);
-  return (
-    <motion.div className="debris-field" style={{ rotateZ: rotate }}>
-      {[...Array(20)].map((_, i) => (
-        <div 
-          key={i} 
-          className="shrapnel" 
-          style={{ 
-            top: `${Math.random() * 100}%`, 
-            left: `${Math.random() * 100}%`,
-            width: Math.random() * 50 + 'px'
-          }} 
-        />
-      ))}
-    </motion.div>
-  );
-};
-
-const StyledPage = styled.div`
-  background: #000;
-  color: #fff;
-  height: 600vh; /* Adjust length of scroll */
-  font-family: 'Inter', sans-serif;
-
-  .fixed-nav {
-    position: fixed;
-    top: 40px;
-    left: 40px;
-    right: 40px;
-    display: flex;
-    justify-content: space-between;
-    z-index: 100;
-    mix-blend-mode: difference;
-    
-    .logo {
-      font-size: 2rem;
-      font-weight: 900;
-      font-style: italic;
-      span { color: #ff0000; }
-    }
-    .status {
-      font-family: monospace;
-      letter-spacing: 2px;
-    }
-  }
-
-  .scroll-indicator {
-    position: fixed;
-    right: 40px;
-    top: 50%;
-    transform: translateY(-50%);
-    height: 200px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    z-index: 100;
-
-    span {
-      writing-mode: vertical-rl;
-      font-size: 10px;
-      letter-spacing: 4px;
-      color: #666;
-    }
-
-    .bar {
-      width: 2px;
-      flex-grow: 1;
-      background: #ff0000;
-      transform-origin: top;
-    }
-  }
-
-  .scene-container {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    overflow: hidden;
-    perspective: 1200px;
-  }
-
-  .sticky-wrapper {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transform-style: preserve-3d;
-  }
-
-  .card-3d {
-    position: absolute;
-    width: 600px;
-    aspect-ratio: 16/9;
-    transform-style: preserve-3d;
-
-    @media (max-width: 768px) {
-      width: 90vw;
-    }
-  }
-
-  .card-content {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    background: #111;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    box-shadow: 0 50px 100px rgba(0,0,0,0.5);
-  }
-
-  .card-image-wrapper {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    .overlay {
-      position: absolute;
-      inset: 0;
-      opacity: 0.2;
-      transition: 0.5s;
-    }
-  }
-
-  .card-title {
-    position: relative;
-    font-size: 5rem;
-    font-weight: 900;
-    margin: 0;
-    line-height: 0.9;
-    font-style: italic;
-    transform: translateZ(50px); /* 3D Pop */
-  }
-
-  .card-meta {
-    position: relative;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-top: 20px;
-    transform: translateZ(30px);
-
-    .index { font-weight: 900; color: #ff0000; font-size: 1.5rem; }
-    .tag { font-family: monospace; margin: 0; }
-  }
-
-  .debris-field {
-    position: absolute;
-    width: 150%;
-    height: 150%;
-    pointer-events: none;
-    
-    .shrapnel {
-      position: absolute;
-      height: 2px;
-      background: #ff0000;
-      filter: blur(1px);
-    }
-  }
-
-  .footer-trigger {
-    height: 100vh;
-    display: grid;
-    place-items: center;
-    .massive-text {
-      font-size: 20vw;
-      font-weight: 900;
-      font-style: italic;
-      color: #111;
-      border-bottom: 20px solid #ff0000;
-    }
-  }
-`;
-
-export default KineticTunnel;
+export default WorksCategories;

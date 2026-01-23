@@ -1,117 +1,153 @@
 "use client";
 import React, { useRef } from "react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useSpring
+} from "framer-motion";
 
-const brands = [
-  { name: "ARRI", category: "Optics" },
-  { name: "RED", category: "Digital" },
-  { name: "ADOBE", category: "Post" },
-  { name: "SONY", category: "Sensors" },
-  { name: "ZEISS", category: "Glass" },
-  { name: "DOLBY", category: "Audio" },
-  { name: "RODE", category: "Sound" },
-  { name: "DJI", category: "Aerial" },
-  { name: "APPLE", category: "Edit" },
+const planets = [
+  { name: "Films", size: 60, radius: 180, speed: 1 },
+  { name: "Ads", size: 45, radius: 260, speed: 1.4 },
+  { name: "Photography", size: 35, radius: 340, speed: 1.8 },
+  { name: "Branding", size: 50, radius: 420, speed: 1.2 }
 ];
 
-const BrandMoodboard = () => {
-  const targetRef = useRef(null);
+export default function LyfAdsCosmicSignature() {
+  const ref = useRef(null);
+
   const { scrollYProgress } = useScroll({
-    target: targetRef,
-    offset: ["start end", "end start"],
+    target: ref,
+    offset: ["start start", "end end"]
   });
 
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
-
-  // 3D Rotation and Depth values based on scroll
-  const rotateX = useTransform(smoothProgress, [0, 1], [20, -20]);
-  const skewX = useTransform(smoothProgress, [0, 1], [5, -5]);
+  // Global cinematic motion
+  const rotateUniverse = useTransform(scrollYProgress, [0, 1], [0, 360]);
+  const zoomUniverse = useSpring(
+    useTransform(scrollYProgress, [0, 1], [1, 1.25]),
+    { stiffness: 40, damping: 20 }
+  );
 
   return (
-    <div ref={targetRef} className="bg-black py-24 overflow-hidden relative">
-      {/* Background Decorative Elements */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-red-900/10 blur-[120px] rounded-full pointer-events-none" />
-      
-      <div className="max-w-[1200px] mx-auto px-6 relative z-10">
-        <div className="mb-16 text-center md:text-left">
-          <motion.p 
-            initial={{ opacity: 0 }} 
-            whileInView={{ opacity: 1 }}
-            className="text-red-600 font-mono text-xs tracking-[0.3em] mb-2"
-          >
-            // STRATEGIC PARTNERSHIPS
-          </motion.p>
-          <h2 className="text-white text-4xl md:text-6xl font-black italic tracking-tighter">
-            BRANDS THAT <span className="text-transparent" style={{ WebkitTextStroke: '1px white' }}>POWER</span> US
-          </h2>
-        </div>
-
-        {/* 3D PERSPECTIVE CONTAINER */}
-        <motion.div 
-          style={{ 
-            perspective: "1200px",
-            rotateX: rotateX,
-            skewX: skewX
+    <div
+      ref={ref}
+      style={{
+        height: "300vh",
+        background: "black",
+        color: "white"
+      }}
+    >
+      <motion.div
+        style={{
+          position: "sticky",
+          top: 0,
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          perspective: 1200,
+          scale: zoomUniverse
+        }}
+      >
+        {/* Universe */}
+        <motion.div
+          style={{
+            position: "relative",
+            width: 800,
+            height: 800,
+            transformStyle: "preserve-3d",
+            rotateZ: rotateUniverse
           }}
-          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4"
         >
-          {brands.map((brand, i) => (
-            <ProductionCard key={brand.name} brand={brand} index={i} scrollY={smoothProgress} />
-          ))}
-          
-          {/* THE "+ MORE" CARD */}
-          <motion.div className="h-40 border border-white/5 bg-white/5 backdrop-blur-sm flex items-center justify-center group cursor-pointer hover:border-red-600/50 transition-colors">
-            <span className="text-gray-500 font-bold group-hover:text-white transition-colors tracking-widest">+ MORE</span>
+          {/* Sun / Core */}
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              width: 140,
+              height: 140,
+              borderRadius: "50%",
+              background:
+                "radial-gradient(circle at 30% 30%, #ff4444, #700000)",
+              transform: "translate(-50%, -50%)",
+              boxShadow: "0 0 80px rgba(255,0,0,0.8)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontWeight: 700,
+              letterSpacing: 2
+            }}
+          >
+            LYF ADS
           </motion.div>
+
+          {/* Planets */}
+          {planets.map((planet, i) => {
+            const angle = useTransform(
+              scrollYProgress,
+              [0, 1],
+              [0, 360 * planet.speed]
+            );
+
+            return (
+              <motion.div
+                key={i}
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  width: planet.radius * 2,
+                  height: planet.radius * 2,
+                  marginLeft: -planet.radius,
+                  marginTop: -planet.radius,
+                  borderRadius: "50%",
+                  border: "1px dashed rgba(255,255,255,0.15)",
+                  rotateZ: angle
+                }}
+              >
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    right: -planet.size / 2,
+                    width: planet.size,
+                    height: planet.size,
+                    borderRadius: "50%",
+                    background: "white",
+                    color: "black",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: 10,
+                    fontWeight: 600,
+                    boxShadow: "0 0 20px rgba(255,255,255,0.6)"
+                  }}
+                >
+                    {planet.name}
+                </div>
+              </motion.div>
+            );
+          })}
         </motion.div>
-      </div>
+
+        {/* Caption */}
+        <motion.div
+          style={{
+            position: "absolute",
+            bottom: 60,
+            textAlign: "center",
+            opacity: useTransform(scrollYProgress, [0, 0.3], [1, 0])
+          }}
+        >
+          <div style={{ fontSize: 14, letterSpacing: 3 }}>
+            EVERYTHING REVOLVES AROUND STORIES
+          </div>
+        </motion.div>
+      </motion.div>
     </div>
   );
-};
-
-const ProductionCard = ({ brand, index, scrollY }) => {
-  // Each card has a slightly different movement speed for an organic feel
-  const yOffset = useTransform(scrollY, [0, 1], [index * 20, index * -20]);
-  const glowOpacity = useTransform(scrollY, [0, 0.5, 1], [0.1, 0.4, 0.1]);
-
-  return (
-    <motion.div
-      style={{ y: yOffset }}
-      whileHover={{ scale: 1.05, translateZ: 50 }}
-      className="relative h-40 group preserve-3d"
-    >
-      {/* Glow Behind Card */}
-      <motion.div 
-        style={{ opacity: glowOpacity }}
-        className="absolute inset-0 bg-red-600 blur-2xl rounded-xl pointer-events-none group-hover:opacity-60 transition-opacity" 
-      />
-      
-      {/* Main Body */}
-      <div className="absolute inset-0 bg-[#0a0a0a] border border-white/10 p-6 flex flex-col justify-between transition-all group-hover:border-red-600/50">
-        {/* Card Metadata */}
-        <div className="flex justify-between items-start opacity-30 group-hover:opacity-100 transition-opacity">
-          <span className="text-[10px] font-mono">ID: 00{index + 1}</span>
-          <div className="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse" />
-        </div>
-
-        {/* Brand Name (Placeholder for Logo) */}
-        <div className="text-center">
-          <h3 className="text-xl font-black tracking-widest text-white/50 group-hover:text-white transition-colors">
-            {brand.name}
-          </h3>
-        </div>
-
-        {/* Bottom Label */}
-        <div className="flex items-center gap-2">
-          <div className="h-[1px] flex-1 bg-white/10" />
-          <span className="text-[8px] font-mono uppercase text-gray-500">{brand.category}</span>
-        </div>
-      </div>
-
-      {/* 3D Depth Shadow */}
-      <div className="absolute inset-0 translate-y-2 translate-x-1 bg-black/40 blur-sm -z-10" />
-    </motion.div>
-  );
-};
-
-export default BrandMoodboard;
+}
