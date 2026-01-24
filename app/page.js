@@ -34,7 +34,7 @@ export default function Home() {
 
       <HeroSection />
 
-      <BrandCollabs/>
+      {/* <BrandCollabs/> */}
       <AnimatedTestimonials/>
       <FeaturesSection />
       {/* <BentoGrid/> */}

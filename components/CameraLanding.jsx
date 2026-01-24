@@ -270,7 +270,7 @@ export default function CameraLanding() {
   const handleExplore = () => {
     setExploreMode(true);
     document.body.style.overflow = 'hidden';
-    
+
     const container = canvasContainerRef.current;
     if (container) {
       container.style.zIndex = '10';
@@ -293,7 +293,7 @@ export default function CameraLanding() {
   const handleExit = () => {
     setExploreMode(false);
     document.body.style.overflow = 'auto';
-    
+
     const container = canvasContainerRef.current;
     if (container) {
       container.style.zIndex = '0';
@@ -322,21 +322,53 @@ export default function CameraLanding() {
     <div className="camera-landing-wrapper">
       {/* Loader */}
       {loading && (
-        <div className="loader">
-          <div className="text-4xl font-bold text-gray-800">LYFADS</div>
-          <p>Loading... Please wait</p>
-          <div className="progress" style={{ transform: `scaleX(${loadProgress / 100})` }}></div>
+        <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-[#0a0a0a] backdrop-blur-sm">
+          <div className="relative flex flex-col items-center">
+            {/* Animated Logo */}
+            <div className="relative mb-8">
+              <div className="absolute -inset-4 rounded-full bg-gradient-to-r from-red-600 to-red-800 opacity-75 blur-lg animate-pulse"></div>
+              <div className="relative flex items-center justify-center w-24 h-24 rounded-full bg-[#1c1c1c] border border-gray-800">
+                <span className="text-2xl font-bold bg-gradient-to-r from-red-500 to-red-700 bg-clip-text text-transparent">LYFADS</span>
+              </div>
+            </div>
+
+            {/* Title */}
+            <h2 className="text-3xl font-bold text-white mb-2 tracking-wider">
+              <span className="bg-gradient-to-r from-red-500 to-red-700 bg-clip-text text-transparent">LYFADS</span>
+            </h2>
+
+            {/* Subtitle */}
+            <p className="text-gray-300 mb-8 text-lg tracking-wide">Loading Experience...</p>
+
+            {/* Progress bar container */}
+            <div className="w-64 h-1.5 bg-gray-800 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-red-600 to-red-800 transition-all duration-300 ease-out"
+                style={{ width: `${loadProgress}%` }}
+              ></div>
+            </div>
+
+            {/* Progress percentage */}
+            <div className="mt-4 text-gray-400 text-sm">{Math.round(loadProgress)}%</div>
+
+            {/* Animated dots */}
+            <div className="flex space-x-1 mt-8">
+              <div className="w-2 h-2 bg-red-600 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+              <div className="w-2 h-2 bg-red-600 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+              <div className="w-2 h-2 bg-red-600 rounded-full animate-bounce" style={{ animationDelay: '600ms' }}></div>
+            </div>
+          </div>
         </div>
       )}
 
       {/* Header */}
       <section className="header">
         <div className="header--container">
-          <div className="header--brand">LYFADS</div>
-          <ul className="header--menu">
-            <li>Features</li>
-            <li>Experience it</li>
-            <li>Buy now</li>
+          <div className="header--brand text-white">LYFADS PRODUCTIONS</div>
+          <ul className="header--menu text-white">
+            <li className="text-white">Our Films</li>
+            <li className="text-white">Services</li>
+            <li className="text-white">Contact</li>
           </ul>
         </div>
       </section>
@@ -345,21 +377,21 @@ export default function CameraLanding() {
       <section className="section cam-view-1">
         <div className="hero--container">
           <div className="hero--content">
-            <h2>Always shoot like a</h2>
-            <h1>Pro</h1>
-            <p>Discover our most advanced camera and lens series yet: blazing fast AF, incredible low light performance, superb image stabilization, sharp image quality, and so much more.</p>
-            <button className="button button-know-more" onClick={handleKnowMore}>
-              Know more
+            <h2 className="text-white">Bringing Stories to</h2>
+            <h1 className="text-white">Life</h1>
+            <p className="text-white">At LYFADS Productions, we craft cinematic experiences that captivate audiences. Our award-winning team combines cutting-edge technology with artistic vision to create unforgettable visual narratives.</p>
+            <button className="button button-know-more text-white" onClick={handleKnowMore}>
+              Discover Our Vision
             </button>
           </div>
         </div>
 
         <div className="hero--scroller--container">
           <div className="hero--scroller">
-            <p className="hero--scroller--text">Start scrolling to explore</p>
+            <p className="hero--scroller--text text-white">Scroll to explore our work</p>
             <svg className="bounce" width="36" height="36" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M18 33a15 15 0 1 0 0-30 15 15 0 0 0 0 30Z" stroke="#929292" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="m12 18 6 6 6-6M18 12v12" stroke="#929292" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M18 33a15 15 0 1 0 0-30 15 15 0 0 0 0 30Z" stroke="#FFFFFF" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="m12 18 6 6 6-6M18 12v12" stroke="#FFFFFF" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
         </div>
@@ -369,9 +401,9 @@ export default function CameraLanding() {
       <section className="section cam-view-2">
         <div className="performance--container">
           <div className="performance--content">
-            <h2>Outstanding</h2>
-            <h1>Performance</h1>
-            <p>The camera brings some of the best features to a sleek, lightweight design with high-speed shooting, megapixel sensor, and lightning fast autofocus.</p>
+            <h2 className="text-white">Exceptional</h2>
+            <h1 className="text-white">Production Value</h1>
+            <p className="text-white">Our productions feature state-of-the-art equipment, professional lighting, and expert cinematography. Every frame is crafted with precision to deliver the highest quality visuals.</p>
           </div>
         </div>
       </section>
@@ -380,9 +412,9 @@ export default function CameraLanding() {
       <section className="section cam-view-3">
         <div className="power--container">
           <div className="power--content">
-            <h2>Features that bring you</h2>
-            <h1>Power</h1>
-            <p>The easy-to-carry camera packs advanced features into a lightweight, compact design. Perfect for high-performance photography.</p>
+            <h2 className="text-white">Storytelling that</h2>
+            <h1 className="text-white">Impacts</h1>
+            <p className="text-white">We specialize in creating compelling narratives that resonate with audiences. From concept to final cut, our team ensures your story is told with authenticity and emotional depth.</p>
           </div>
           <div className="power--features--img">
             {/* Add feature images here */}
@@ -390,43 +422,43 @@ export default function CameraLanding() {
         </div>
       </section>
 
-      {/* Autofocus Section */}
+      {/* Creative Direction Section */}
       <section className="section cam-view-4">
         <div className="autofocus--container">
           <div className="autofocus--content">
-            <h1>Smart, speedy <strong>autofocus</strong></h1>
-            <p>Advanced autofocus technology with subject detection lets you keep your eye on the action while keeping subjects in crystal clear focus.</p>
+            <h1 className="text-white">Sharp Creative <strong className="text-white">Direction</strong></h1>
+            <p className="text-white">Our directors and creative team work closely with clients to bring their vision to life. We focus on innovative approaches that set your project apart from the competition.</p>
           </div>
         </div>
       </section>
 
-      {/* Additional Section 1 - Detail View */}
+      {/* Craftsmanship Section */}
       <section className="section cam-view-6">
         <div className="detail--container">
           <div className="detail--content">
-            <h1>Premium <strong>Build Quality</strong></h1>
-            <p>Crafted with precision using premium materials for durability and comfort during extended shooting sessions.</p>
+            <h1 className="text-white">Masterful <strong className="text-white">Craftsmanship</strong></h1>
+            <p className="text-white">Every project receives meticulous attention to detail. Our experienced crew ensures flawless execution from pre-production through post-production.</p>
           </div>
         </div>
       </section>
 
-      {/* Additional Section 2 - Lens View */}
+      {/* Equipment Section */}
       <section className="section cam-view-7">
         <div className="lens--container">
           <div className="lens--content">
-            <h1>Advanced <strong>Lens System</strong></h1>
-            <p>Professional-grade optics with exceptional clarity and sharpness across the entire frame.</p>
+            <h1 className="text-white">Professional <strong className="text-white">Equipment</strong></h1>
+            <p className="text-white">We utilize industry-leading cameras, lenses, and audio equipment to capture stunning visuals and crystal-clear sound for every production.</p>
           </div>
         </div>
       </section>
 
-      {/* Explore Section */}
+      {/* Portfolio Section */}
       <section className="section cam-view-5">
         <div className="explore--container">
           <div className="explore--content">
-            <h1>Interactive<strong><br/>3D gallery</strong></h1>
-            <button className="button button-explore" onClick={handleExplore}>
-              Explore
+            <h1 className="text-white">Immerse Yourself<br/>in Our <strong className="text-white">Portfolio</strong></h1>
+            <button className="button button-explore text-white" onClick={handleExplore}>
+              Experience Our Work
             </button>
           </div>
         </div>
@@ -434,7 +466,7 @@ export default function CameraLanding() {
 
       {/* Exit Container */}
       <div className="exit--container" style={{ display: 'none' }}>
-        <button className="button--secondary button--exit" onClick={handleExit}>
+        <button className="button--secondary button--exit text-white" onClick={handleExit}>
           Exit
         </button>
       </div>
