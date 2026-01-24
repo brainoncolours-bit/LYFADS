@@ -1,138 +1,99 @@
-"use client";
-import React from "react";
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { MousePointer2, ExternalLink } from 'lucide-react';
 
-import { motion } from "framer-motion";
-import { 
-  IconVideo, IconCircleCheck, IconClock, IconCrown, 
-  IconFocus2, IconBolt, IconLayersIntersect, IconUsers 
-} from "@tabler/icons-react";
-import { clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
+const FilmstripHero = () => {
+  const targetRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: targetRef,
+  });
 
-/** * FIXED: This function replaces the need for @/lib/utils.
- * It merges Tailwind classes safely.
- */
-function cn(...inputs) {
-  return twMerge(clsx(inputs));
-}
+  // Transform vertical scroll into horizontal movement
+  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-70%"]);
+  const springX = useSpring(x, { stiffness: 50, damping: 20 });
 
-const productionFeatures = [
-  {
-    title: "Cinematic 4K Standards",
-    description: "Every frame is captured in RAW 4K, ensuring the highest dynamic range for your brand story.",
-    icon: <IconVideo size={24} />,
-    size: "md:col-span-2",
-  },
-  {
-    title: "Fixed Pricing",
-    description: "No hidden production fees. Transparent billing from pre to post.",
-    icon: <IconBolt size={24} />,
-    size: "md:col-span-1",
-  },
-  {
-    title: "Rapid Turnaround",
-    description: "Our agile editing workflow delivers your first cut within 72 hours.",
-    icon: <IconClock size={24} />,
-    size: "md:col-span-1",
-  },
-  {
-    title: "High-End Equipment",
-    description: "Access to ARRI, RED, and Zeiss glass for that distinctive film look.",
-    icon: <IconFocus2 size={24} />,
-    size: "md:col-span-2",
-  },
-  {
-    title: "Multi-Platform Edits",
-    description: "One shoot, multiple formats. Tailored for YouTube, Reels, and TVC.",
-    icon: <IconLayersIntersect size={24} />,
-    size: "md:col-span-1",
-  },
-  {
-    title: "Vetted Crew",
-    description: "Work with award-winning directors and industry-standard technicians.",
-    icon: <IconUsers size={24} />,
-    size: "md:col-span-1",
-  },
-];
-
-export default function ProductionFeatures() {
   return (
-    <div className="bg-[#050505] py-24 px-6 min-h-screen selection:bg-red-600">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-16">
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            className="flex items-center gap-3 text-red-600 font-mono text-[10px] tracking-[0.3em] mb-4"
-          >
-            <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse" />
-            SYSTEM SPECIFICATIONS / ADVANTAGES
-          </motion.div>
-          <h2 className="text-5xl md:text-7xl font-black text-white italic tracking-tighter uppercase leading-[0.9]">
-            WHY <span className="text-transparent" style={{ WebkitTextStroke: '1px white' }}>LYF ADS</span>?
-          </h2>
-        </div>
+    <section ref={targetRef} className="relative h-[400vh] bg-[#080808]">
+      <div className="sticky top-0 h-screen flex items-center overflow-hidden">
+        
+        {/* HORIZONTAL TRACK */}
+        <motion.div style={{ x: springX }} className="flex gap-20 items-center px-[10vw]">
+          
+          {/* BLOCK 1: BIG TITLE */}
+          <div className="flex-shrink-0">
+            <h1 className="text-[20vw] font-black italic tracking-tighter text-white leading-none">
+              LYF<span className="text-red-600">ADS</span>
+            </h1>
+            <div className="flex gap-4 items-center mt-4">
+              <div className="h-px w-20 bg-red-600" />
+              <p className="text-sm font-mono tracking-[0.5em] text-gray-500 uppercase">Scroll to Explore</p>
+            </div>
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[240px]">
-          {productionFeatures.map((feature, index) => (
-            <FeatureCard key={index} {...feature} index={index} />
+          {/* BLOCK 2: PROJECT CARDS */}
+          {[
+            { title: "URBAN", category: "COMMERCIAL", img: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=1000&auto=format&fit=crop" },
+            { title: "VELOCITY", category: "AUTOMOTIVE", img: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1000&auto=format&fit=crop" },
+            { title: "NEON", category: "MUSIC VIDEO", img: "https://images.unsplash.com/photo-1493225255756-d9584f8606e9?q=80&w=1000&auto=format&fit=crop" },
+          ].map((project, i) => (
+            <div key={i} className="flex-shrink-0 group relative">
+              <div className="relative w-[600px] h-[400px] overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700">
+                <img 
+                  src={project.img} 
+                  alt={project.title}
+                  className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
+              </div>
+              <div className="mt-6 flex justify-between items-end">
+                <div>
+                  <p className="text-red-600 font-mono text-xs mb-1">[{project.category}]</p>
+                  <h3 className="text-4xl font-black italic tracking-tighter text-white">{project.title}</h3>
+                </div>
+                <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-red-600 group-hover:border-red-600 transition-all">
+                  <ExternalLink size={20} className="text-white" />
+                </div>
+              </div>
+            </div>
           ))}
+
+          {/* BLOCK 3: FINAL CALL TO ACTION */}
+          <div className="flex-shrink-0 pr-[20vw]">
+             <h2 className="text-[12vw] font-black leading-[0.8] text-transparent outline-text">
+               READY <br /> TO FILM?
+             </h2>
+             <button className="mt-10 px-12 py-6 bg-white text-black font-black hover:bg-red-600 hover:text-white transition-colors">
+               GET IN TOUCH
+             </button>
+          </div>
+
+        </motion.div>
+
+        {/* HUD OVERLAY: MOUSE POINTER INFO */}
+        <div className="absolute bottom-10 left-10 flex items-center gap-4 text-white/30 font-mono text-[10px]">
+           <MousePointer2 size={14} />
+           <span className="uppercase tracking-widest">Navigation: Scroll Vertical / View Horizontal</span>
+        </div>
+
+        {/* PAGE NUMBER */}
+        <div className="absolute top-10 right-10 flex flex-col items-end">
+           <span className="text-6xl font-black text-red-600/20 leading-none">01</span>
+           <div className="h-1 w-20 bg-red-600/20 mt-2">
+              <motion.div 
+                style={{ scaleX: scrollYProgress }} 
+                className="h-full bg-red-600 origin-left"
+              />
+           </div>
         </div>
       </div>
-    </div>
-  );
-}
 
-const FeatureCard = ({ title, description, icon, size, index }) => {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1 }}
-      // 3D Tilt Effect on Hover
-      whileHover={{ 
-        rotateY: 5, 
-        rotateX: -5,
-        z: 50,
-        transition: { duration: 0.3 } 
-      }}
-      className={cn(
-        "relative overflow-hidden group border border-white/10 bg-[#0a0a0a] p-8 flex flex-col justify-between transition-all duration-500",
-        "hover:border-red-600/50 hover:shadow-[0_0_30px_rgba(220,38,38,0.1)]",
-        size
-      )}
-      style={{ transformStyle: "preserve-3d" }}
-    >
-      {/* Viewfinder Corners */}
-      <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-white/20 group-hover:border-red-600 transition-colors" />
-      <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-white/20 group-hover:border-red-600 transition-colors" />
-
-      {/* Scanning Line Effect */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-red-600/10 to-transparent h-24 w-full -translate-y-full group-hover:translate-y-[400%] transition-transform duration-[2500ms] ease-linear pointer-events-none" />
-
-      <div className="relative z-10" style={{ transform: "translateZ(30px)" }}>
-        <div className="text-red-600 mb-6 bg-red-600/10 w-fit p-3 rounded-lg border border-red-600/20 group-hover:bg-red-600 group-hover:text-white transition-all duration-300">
-          {icon}
-        </div>
-        <h3 className="text-xl font-bold text-white mb-3 uppercase tracking-tight group-hover:text-red-500 transition-colors">
-          {title}
-        </h3>
-        <p className="text-sm text-gray-500 leading-relaxed max-w-[280px] group-hover:text-gray-300 transition-colors">
-          {description}
-        </p>
-      </div>
-
-      {/* Bottom Data Label */}
-      <div className="flex items-center justify-between mt-4 relative z-10">
-        <span className="text-[10px] font-mono text-white/20 uppercase tracking-widest">
-          UNIT_REF: 00{index+1}
-        </span>
-        <div className="h-[1px] flex-1 mx-4 bg-white/5" />
-        <IconCircleCheck size={14} className="text-white/10 group-hover:text-red-600 transition-colors" />
-      </div>
-
-      {/* Hover Background Glow */}
-      <div className="absolute inset-0 bg-red-600/0 group-hover:bg-red-600/[0.02] transition-colors pointer-events-none" />
-    </motion.div>
+      <style jsx>{`
+        .outline-text {
+          -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+        }
+      `}</style>
+    </section>
   );
 };
+
+export default FilmstripHero;

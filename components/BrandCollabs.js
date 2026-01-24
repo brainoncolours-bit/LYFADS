@@ -1,43 +1,29 @@
 "use client";
 import React, { useRef } from "react";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useSpring
-} from "framer-motion";
+import { motion, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
 
-const planets = [
-  { name: "Films", size: 60, radius: 180, speed: 1 },
-  { name: "Ads", size: 45, radius: 260, speed: 1.4 },
-  { name: "Photography", size: 35, radius: 340, speed: 1.8 },
-  { name: "Branding", size: 50, radius: 420, speed: 1.2 }
+const items = [
+  { name: "Films", desc: "Cinematic Narratives", color: "#FF3E00" },
+  { name: "Ads", desc: "Impactful Growth", color: "#00E5FF" },
+  { name: "Photography", desc: "Visual Essence", color: "#FFFFFF" },
+  { name: "Branding", desc: "Identity Design", color: "#70FF00" }
 ];
 
-export default function LyfAdsCosmicSignature() {
-  const ref = useRef(null);
-
+export default function LyfAdsNexusRibbon() {
+  const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
-    target: ref,
+    target: containerRef,
     offset: ["start start", "end end"]
   });
 
-  // Global cinematic motion
-  const rotateUniverse = useTransform(scrollYProgress, [0, 1], [0, 360]);
-  const zoomUniverse = useSpring(
-    useTransform(scrollYProgress, [0, 1], [1, 1.25]),
-    { stiffness: 40, damping: 20 }
-  );
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 40, damping: 25 });
+
+  // Perspective and background movement
+  const bgSkew = useTransform(smoothProgress, [0, 1], [0, 20]);
+  const tunnelZ = useTransform(smoothProgress, [0, 1], [0, -1000]);
 
   return (
-    <div
-      ref={ref}
-      style={{
-        height: "300vh",
-        background: "black",
-        color: "white"
-      }}
-    >
+    <div ref={containerRef} style={{ height: "500vh", background: "#000", color: "#fff", overflow: "hidden" }}>
       <motion.div
         style={{
           position: "sticky",
@@ -46,107 +32,99 @@ export default function LyfAdsCosmicSignature() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          perspective: 1200,
-          scale: zoomUniverse
+          perspective: "1200px",
         }}
       >
-        {/* Universe */}
-        <motion.div
+        {/* Background Grid - creates depth movement */}
+        <motion.div 
           style={{
-            position: "relative",
-            width: 800,
-            height: 800,
-            transformStyle: "preserve-3d",
-            rotateZ: rotateUniverse
+            position: "absolute",
+            width: "200%",
+            height: "200%",
+            backgroundImage: `linear-gradient(to right, #111 1px, transparent 1px), linear-gradient(to bottom, #111 1px, transparent 1px)`,
+            backgroundSize: "60px 60px",
+            rotateX: 60,
+            y: useTransform(smoothProgress, [0, 1], [0, -200]),
+            skew: bgSkew,
+            opacity: 0.5,
+            zIndex: 0
           }}
-        >
-          {/* Sun / Core */}
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              width: 140,
-              height: 140,
-              borderRadius: "50%",
-              background:
-                "radial-gradient(circle at 30% 30%, #ff4444, #700000)",
-              transform: "translate(-50%, -50%)",
-              boxShadow: "0 0 80px rgba(255,0,0,0.8)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontWeight: 700,
-              letterSpacing: 2
-            }}
-          >
-            LYF ADS
-          </motion.div>
+        />
 
-          {/* Planets */}
-          {planets.map((planet, i) => {
-            const angle = useTransform(
-              scrollYProgress,
-              [0, 1],
-              [0, 360 * planet.speed]
-            );
+        {/* The Moving Ribbon of Content */}
+        <motion.div style={{ transformStyle: "preserve-3d", z: tunnelZ, width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+          {items.map((item, i) => {
+            // Each item appears at a different scroll point
+            const start = i * 0.2;
+            const end = start + 0.3;
+            
+            const opacity = useTransform(smoothProgress, [start, start + 0.1, end - 0.1, end], [0, 1, 1, 0]);
+            const scale = useTransform(smoothProgress, [start, end], [0.8, 1.5]);
+            const xOffset = useTransform(smoothProgress, [start, end], [i % 2 === 0 ? -100 : 100, 0]);
+            const rotation = useTransform(smoothProgress, [start, end], [i % 2 === 0 ? -15 : 15, 0]);
 
             return (
               <motion.div
                 key={i}
                 style={{
                   position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  width: planet.radius * 2,
-                  height: planet.radius * 2,
-                  marginLeft: -planet.radius,
-                  marginTop: -planet.radius,
-                  borderRadius: "50%",
-                  border: "1px dashed rgba(255,255,255,0.15)",
-                  rotateZ: angle
+                  opacity,
+                  scale,
+                  x: xOffset,
+                  rotateY: rotation,
+                  transformStyle: "preserve-3d",
+                  textAlign: "center"
                 }}
               >
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "50%",
-                    right: -planet.size / 2,
-                    width: planet.size,
-                    height: planet.size,
-                    borderRadius: "50%",
-                    background: "white",
-                    color: "black",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: 10,
-                    fontWeight: 600,
-                    boxShadow: "0 0 20px rgba(255,255,255,0.6)"
-                  }}
-                >
-                    {planet.name}
+                {/* Floating Label */}
+                <div style={{ fontSize: "12px", letterSpacing: "8px", color: item.color, marginBottom: "20px", fontWeight: "300" }}>
+                   {item.desc}
                 </div>
+                
+                {/* Massive Kinetic Text */}
+                <h2 style={{ 
+                  fontSize: "clamp(5rem, 15vw, 12rem)", 
+                  fontWeight: 900, 
+                  margin: 0, 
+                  lineHeight: 0.8,
+                  textTransform: "uppercase",
+                  WebkitTextStroke: i % 2 === 0 ? "none" : "1px white",
+                  color: i % 2 === 0 ? "white" : "transparent"
+                }}>
+                  {item.name}
+                </h2>
+
+                {/* Vertical Line Deco */}
+                <motion.div 
+                   style={{ 
+                     height: "150px", 
+                     width: "1px", 
+                     background: `linear-gradient(to bottom, ${item.color}, transparent)`, 
+                     margin: "20px auto" 
+                   }} 
+                />
               </motion.div>
             );
           })}
         </motion.div>
 
-        {/* Caption */}
+        {/* Static Center Piece: The "Eye" */}
         <motion.div
           style={{
             position: "absolute",
-            bottom: 60,
-            textAlign: "center",
-            opacity: useTransform(scrollYProgress, [0, 0.3], [1, 0])
+            zIndex: 10,
+            width: "100px",
+            height: "1px",
+            background: "#fff",
+            boxShadow: "0 0 50px #fff",
+            opacity: useTransform(smoothProgress, [0, 0.1, 0.9, 1], [1, 0.2, 0.2, 1])
           }}
-        >
-          <div style={{ fontSize: 14, letterSpacing: 3 }}>
-            EVERYTHING REVOLVES AROUND STORIES
-          </div>
-        </motion.div>
+        />
+
+        {/* LYF ADS Watermark */}
+        <div style={{ position: "absolute", bottom: "40px", left: "40px", mixBlendMode: "difference" }}>
+          <p style={{ fontWeight: 900, fontSize: "20px", letterSpacing: "-1px" }}>LYF ADS <span style={{ fontWeight: 100, fontSize: "12px", letterSpacing: "2px", marginLeft: "10px" }}>©2026</span></p>
+        </div>
       </motion.div>
     </div>
   );
