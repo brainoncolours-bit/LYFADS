@@ -22,10 +22,10 @@ function CameraModel({ scrollProgress, exploreMode }) {
   useFrame(() => {
     if (!modelRef.current || exploreMode) return;
 
-    // Subtle rotation
-    if (scrollProgress < 0.1 || (scrollProgress > 0.3 && scrollProgress < 0.4)) {
-      modelRef.current.rotation.y += 0.002;
-    }
+    // Continuous rotation based on scroll progress for full rotation in each section
+    const rotationSpeed = 0.02;
+    modelRef.current.rotation.y = scrollProgress * Math.PI * 8; // Multiple full rotations as scroll progresses
+    modelRef.current.rotation.x = Math.sin(scrollProgress * 3) * 0.2; // Gentle oscillation on X-axis
   });
 
   useEffect(() => {
@@ -40,30 +40,22 @@ function CameraModel({ scrollProgress, exploreMode }) {
   return <primitive ref={modelRef} object={gltf.scene.clone()} />;
 }
 
-// Camera Controller Component with Landing Zones
+// Camera Controller Component with Custom Path
 function CameraController({ scrollProgress, exploreMode }) {
-  const [camerPosition, setCameraPosition] = useState([0, 0, 5]);
   const { camera } = useThree();
-  useFrame(({ camera }) => {
-    if(camera.position !== camerPosition){
-      setCameraPosition(camera.position);
-    }
-
-  console.log(camerPosition);
-},[]);
 
   useFrame(() => {
     if (exploreMode) return;
 
-    // Define camera positions - pushed further to sides
+    // Define custom positions for each section
     const positions = [
-      { pos: [0, 0, 5], lookAt: [0, 0, 0] },           // Hero - center
-      { pos: [4.5, 0.3, 3.5], lookAt: [2, 0, 0] },     // Origin (text left) - camera far right
-      { pos: [-4.5, 0.3, 3.5], lookAt: [-2, 0, 0] },    // Team (text right) - camera far left
-      { pos: [4.2, -0.4, 3], lookAt: [2, 0, 0] },      // Vision (text left) - camera right low
-      { pos: [-4.2, 0.8, 3], lookAt: [0, 0, -2] },      // Process (text right) - camera left high
-      { pos: [4.5, 0.2, 2.8], lookAt: [2, 0, 0] },     // Equipment (text left) - camera far right
-      { pos: [-4.5, 0.4, 3.2], lookAt: [0, 0, -2] },    // Awards (text right) - camera far left
+      { pos: [5, 0, 1], lookAt: [0, 0, 0] },           // Hero - center
+      { pos: [-4, 1, 3], lookAt: [2, 0, 0] },          // Origin (text right) - camera left
+      { pos: [4.5, 0.3, 3.5], lookAt: [-2, 0, 0] },    // Team (text left) - camera right
+      { pos: [-4.2, -0.4, 3], lookAt: [2, 0, 0] },     // Vision (text right) - camera left lower
+      { pos: [4.2, 0.8, 3], lookAt: [-2, 0, 0] },      // Process (text left) - camera right upper
+      { pos: [-4.5, 0.2, 2.8], lookAt: [2, 0, 0] },    // Equipment (text right) - camera left
+      { pos: [4.5, 0.4, 3.2], lookAt: [-2, 0, 0] },    // Awards (text left) - camera right
     ];
 
     const segmentCount = positions.length - 1;
@@ -79,11 +71,12 @@ function CameraController({ scrollProgress, exploreMode }) {
     const currentLookAt = positions[currentIndex].lookAt;
     const nextLookAt = positions[nextIndex].lookAt;
 
-    // Smooth easing for landing
+    // Smooth easing for transitions
     const eased = segmentLocalProgress < 0.5
       ? 4 * segmentLocalProgress * segmentLocalProgress * segmentLocalProgress
       : 1 - Math.pow(-2 * segmentLocalProgress + 2, 3) / 2;
 
+    // Interpolate between positions
     camera.position.x = currentPos[0] + (nextPos[0] - currentPos[0]) * eased;
     camera.position.y = currentPos[1] + (nextPos[1] - currentPos[1]) * eased;
     camera.position.z = currentPos[2] + (nextPos[2] - currentPos[2]) * eased;
@@ -156,8 +149,8 @@ export default function CameraLanding() {
       { opacity: 1, duration: 1, delay: 1.5 }
     );
 
-    // Scroll progress tracking
-    const totalScrollDistance = 6 * window.innerHeight;
+    // Scroll progress tracking - increased spacing between sections
+    const totalScrollDistance = 12 * window.innerHeight; // Doubled the scroll distance for more spacing
     ScrollTrigger.create({
       trigger: ".camera-landing-wrapper",
       start: "top top",
@@ -314,7 +307,7 @@ export default function CameraLanding() {
       </section>
 
       {/* Team Section */}
-      <section className="section team--section text-left">
+      <section className="section team--section text-right">
         <div className="section-number">02</div>
         <div className="text-content about--section">
           <div className="section-subtitle">OUR TEAM</div>
