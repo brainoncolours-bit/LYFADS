@@ -113,7 +113,7 @@
   color: var(--accent-red);
 }
 
-/* Section Layout with Camera Landing Zones */
+/* Full Width Sections - Dynamic Text Positioning */
 .section {
   position: relative;
   z-index: 1;
@@ -123,109 +123,98 @@
   align-items: center;
   justify-content: center;
   margin: 0;
-  padding: 0;
+  padding: 80px 5vw;
   user-select: none;
 }
 
-/* Content Blocks - Brutalist Style */
-.content-block {
-  max-width: 1400px;
-  width: 90%;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  align-items: center;
-}
-
-.content-block.reverse {
-  grid-template-columns: 1fr 1fr;
-}
-
-/* Text Content Area */
+/* Text Content Area - Dynamic Positioning */
 .text-content {
-  padding: 40px 0;
-}
-
-/* Camera Landing Zone */
-.camera-zone {
   position: relative;
-  min-height: 500px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  max-width: 500px;
+  z-index: 2;
+  padding: 40px 45px;
+  background: rgba(8, 8, 8, 0.9);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(220, 38, 38, 0.2);
 }
 
-.camera-zone::before {
-  content: 'CAMERA VIEW';
-  position: absolute;
-  top: 0;
-  left: 0;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  color: var(--text-tertiary);
-  opacity: 0.3;
+/* Left Aligned Text (Camera on Right) */
+.text-left .text-content {
+  margin-right: auto;
+  margin-left: 8vw;
+}
+
+/* Right Aligned Text (Camera on Left) */
+.text-right .text-content {
+  margin-left: auto;
+  margin-right: 8vw;
 }
 
 /* Section Number */
 .section-number {
   position: absolute;
-  top: 40px;
+  top: 5%;
   right: 5%;
-  font-size: 120px;
+  font-size: clamp(80px, 15vw, 180px);
   font-weight: 900;
-  color: rgba(220, 38, 38, 0.1);
+  color: rgba(220, 38, 38, 0.08);
   line-height: 1;
   font-style: italic;
-  z-index: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.text-right .section-number {
+  right: auto;
+  left: 5%;
 }
 
 /* Typography - Brutalist About Us */
 .section-title {
-  font-size: clamp(40px, 6vw, 80px);
+  font-size: clamp(32px, 5vw, 64px);
   font-weight: 900;
-  line-height: 0.9;
+  line-height: 0.95;
   letter-spacing: -0.03em;
   color: var(--text-primary);
-  margin-bottom: 20px;
+  margin-bottom: 18px;
   font-style: italic;
   text-transform: uppercase;
 }
 
 .section-subtitle {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--accent-red);
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   font-family: 'JetBrains Mono', monospace;
 }
 
 .section-description {
-  font-size: 16px;
-  line-height: 1.8;
+  font-size: 14px;
+  line-height: 1.7;
   color: var(--text-secondary);
   font-weight: 300;
-  max-width: 600px;
+  max-width: 100%;
 }
 
 /* Stats/Numbers */
 .stat-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 30px;
-  margin-top: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 24px;
+  margin-top: 32px;
 }
 
 .stat-item {
   border-left: 2px solid var(--accent-red);
-  padding-left: 20px;
+  padding-left: 16px;
 }
 
 .stat-number {
-  font-size: 48px;
+  font-size: 40px;
   font-weight: 900;
   font-style: italic;
   color: var(--text-primary);
@@ -233,21 +222,21 @@
 }
 
 .stat-label {
-  font-size: 11px;
+  font-size: 10px;
   font-family: 'JetBrains Mono', monospace;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--text-tertiary);
-  margin-top: 8px;
+  margin-top: 6px;
 }
 
 /* Buttons - Brutalist Style */
 .button {
-  padding: 16px 40px;
+  padding: 14px 32px;
   border: 2px solid var(--text-primary);
   background: transparent;
   font-weight: 800;
-  font-size: 12px;
+  font-size: 11px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -399,45 +388,64 @@
 
 /* Mobile Responsive */
 @media (max-width: 1024px) {
-  .content-block {
-    grid-template-columns: 1fr;
-    gap: 40px;
+  .text-content {
+    padding: 35px;
+    max-width: 450px;
+    margin: 0 auto !important;
   }
 
-  .content-block.reverse {
-    grid-template-columns: 1fr;
+  .text-left .text-content,
+  .text-right .text-content {
+    margin-left: auto !important;
+    margin-right: auto !important;
   }
 
-  .camera-zone {
-    min-height: 300px;
-    order: -1;
-  }
-
-  #webgi-canvas-container {
-    width: 100vw;
-    height: 60vh;
+  .section {
+    padding: 60px 5vw;
   }
 
   .section-number {
     font-size: 80px;
+    opacity: 0.5;
   }
 
-  .stat-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .section-title {
+    font-size: clamp(28px, 5vw, 48px);
+  }
+
+  #webgi-canvas-container {
+    opacity: 0.5;
   }
 }
 
 @media (max-width: 768px) {
-  .hero--content h1 {
-    font-size: 50px;
+  .text-content {
+    padding: 28px;
+    max-width: 90%;
+    background: rgba(8, 8, 8, 0.95);
+  }
+
+  .section {
+    padding: 40px 5vw;
+    min-height: 80vh;
   }
 
   .section-title {
-    font-size: 40px;
+    font-size: 32px;
+  }
+
+  .section-description {
+    font-size: 13px;
   }
 
   .stat-number {
-    font-size: 36px;
+    font-size: 32px;
+  }
+
+  .stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    margin-top: 24px;
   }
 
   .header--menu {
@@ -449,10 +457,50 @@
   }
 
   #webgi-canvas-container {
-    height: 50vh;
+    opacity: 0.35;
   }
 
-  .camera-zone {
-    min-height: 250px;
+  .section-number {
+    font-size: 50px;
+  }
+
+  .hero--content h1 {
+    font-size: 42px;
+  }
+}
+
+@media (max-width: 480px) {
+  .text-content {
+    padding: 22px;
+  }
+
+  .section-title {
+    font-size: 28px;
+  }
+
+  .section-subtitle {
+    font-size: 10px;
+  }
+
+  .section-description {
+    font-size: 12px;
+  }
+
+  .stat-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .stat-number {
+    font-size: 28px;
+  }
+
+  .hero--content h1 {
+    font-size: 36px;
+  }
+
+  .button {
+    padding: 12px 28px;
+    font-size: 10px;
   }
 }

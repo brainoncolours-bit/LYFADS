@@ -30,7 +30,8 @@ function CameraModel({ scrollProgress, exploreMode }) {
 
   useEffect(() => {
     if (!modelRef.current || !gltf.scene) return;
-    modelRef.current.scale.set(2, 2, 2);
+    // Smaller model size for better layout
+    modelRef.current.scale.set(1.5, 1.5, 1.5);
     modelRef.current.position.set(0, 0, 0);
   }, [gltf]);
 
@@ -41,21 +42,28 @@ function CameraModel({ scrollProgress, exploreMode }) {
 
 // Camera Controller Component with Landing Zones
 function CameraController({ scrollProgress, exploreMode }) {
+  const [camerPosition, setCameraPosition] = useState([0, 0, 5]);
   const { camera } = useThree();
+  useFrame(({ camera }) => {
+    if(camera.position !== camerPosition){
+      setCameraPosition(camera.position);
+    }
+
+  console.log(camerPosition);
+},[]);
 
   useFrame(() => {
     if (exploreMode) return;
 
-    // Define camera positions for each section
+    // Define camera positions - pushed further to sides
     const positions = [
       { pos: [0, 0, 5], lookAt: [0, 0, 0] },           // Hero - center
-      { pos: [3, 0.5, 3], lookAt: [0, 0, 0] },         // Origin story - right side landing
-      { pos: [-3, 0.5, 3], lookAt: [0, 0, 0] },        // Team - left side landing
-      { pos: [2.5, -0.5, 2], lookAt: [0, 0, 0] },      // Vision - right low landing
-      { pos: [-2.5, 1, 2.5], lookAt: [0, 0, 0] },      // Process - left high landing
-      { pos: [0, 2, 3], lookAt: [0, 0, 0] },           // Equipment - top landing
-      { pos: [3.5, 0, 2], lookAt: [0, 0, 0] },         // Awards - right side
-      { pos: [0, -1, 4], lookAt: [0, 0, 0] },          // Contact - front low
+      { pos: [4.5, 0.3, 3.5], lookAt: [2, 0, 0] },     // Origin (text left) - camera far right
+      { pos: [-4.5, 0.3, 3.5], lookAt: [-2, 0, 0] },    // Team (text right) - camera far left
+      { pos: [4.2, -0.4, 3], lookAt: [2, 0, 0] },      // Vision (text left) - camera right low
+      { pos: [-4.2, 0.8, 3], lookAt: [0, 0, -2] },      // Process (text right) - camera left high
+      { pos: [4.5, 0.2, 2.8], lookAt: [2, 0, 0] },     // Equipment (text left) - camera far right
+      { pos: [-4.5, 0.4, 3.2], lookAt: [0, 0, -2] },    // Awards (text right) - camera far left
     ];
 
     const segmentCount = positions.length - 1;
@@ -149,7 +157,7 @@ export default function CameraLanding() {
     );
 
     // Scroll progress tracking
-    const totalScrollDistance = 7 * window.innerHeight;
+    const totalScrollDistance = 6 * window.innerHeight;
     ScrollTrigger.create({
       trigger: ".camera-landing-wrapper",
       start: "top top",
@@ -280,141 +288,123 @@ export default function CameraLanding() {
       </section>
 
       {/* Origin Story Section */}
-      <section className="section origin--section">
-        <div className="content-block">
-          <div className="text-content about--section">
-            <div className="section-number">01</div>
-            <div className="section-subtitle">OUR ORIGIN</div>
-            <h2 className="section-title">BORN FROM PASSION</h2>
-            <p className="section-description">
-              Founded in 2018, LYF ADS emerged from a simple belief: that every brand has a story worth telling. What started as a two-person operation in a garage has evolved into a full-scale production powerhouse, serving clients across the globe.
-            </p>
-            <div className="stat-grid">
-              <div className="stat-item">
-                <div className="stat-number">6+</div>
-                <div className="stat-label">Years</div>
-              </div>
-              <div className="stat-item">
-                <div className="stat-number">500+</div>
-                <div className="stat-label">Projects</div>
-              </div>
-              <div className="stat-item">
-                <div className="stat-number">100+</div>
-                <div className="stat-label">Clients</div>
-              </div>
+      <section className="section origin--section text-right">
+        <div className="section-number">01</div>
+        <div className="text-content about--section">
+          <div className="section-subtitle">OUR ORIGIN</div>
+          <h2 className="section-title">BORN FROM PASSION</h2>
+          <p className="section-description">
+            Founded in 2018, LYF ADS emerged from a simple belief: that every brand has a story worth telling. What started as a two-person operation in a garage has evolved into a full-scale production powerhouse, serving clients across the globe.
+          </p>
+          <div className="stat-grid">
+            <div className="stat-item">
+              <div className="stat-number">6+</div>
+              <div className="stat-label">Years</div>
+            </div>
+            <div className="stat-item">
+              <div className="stat-number">500+</div>
+              <div className="stat-label">Projects</div>
+            </div>
+            <div className="stat-item">
+              <div className="stat-number">100+</div>
+              <div className="stat-label">Clients</div>
             </div>
           </div>
-          <div className="camera-zone"></div>
         </div>
       </section>
 
       {/* Team Section */}
-      <section className="section team--section">
-        <div className="content-block reverse">
-          <div className="camera-zone"></div>
-          <div className="text-content about--section">
-            <div className="section-number">02</div>
-            <div className="section-subtitle">OUR TEAM</div>
-            <h2 className="section-title">CREATIVE MAVERICKS</h2>
-            <p className="section-description">
-              Our crew is a collective of directors, cinematographers, editors, and storytellers who live and breathe visual content. From concept to final cut, we bring decades of combined experience across commercials, music videos, documentaries, and branded content.
-            </p>
-            <p className="section-description mt-6">
-              We don't just create content—we craft experiences that resonate, inspire, and drive results.
-            </p>
-          </div>
+      <section className="section team--section text-left">
+        <div className="section-number">02</div>
+        <div className="text-content about--section">
+          <div className="section-subtitle">OUR TEAM</div>
+          <h2 className="section-title">CREATIVE MAVERICKS</h2>
+          <p className="section-description">
+            Our crew is a collective of directors, cinematographers, editors, and storytellers who live and breathe visual content. From concept to final cut, we bring decades of combined experience across commercials, music videos, documentaries, and branded content.
+          </p>
+          <p className="section-description mt-6">
+            We don't just create content—we craft experiences that resonate, inspire, and drive results.
+          </p>
         </div>
       </section>
 
       {/* Vision Section */}
-      <section className="section vision--section">
-        <div className="content-block">
-          <div className="text-content about--section">
-            <div className="section-number">03</div>
-            <div className="section-subtitle">OUR VISION</div>
-            <h2 className="section-title">REDEFINING STANDARDS</h2>
-            <p className="section-description">
-              We believe in pushing boundaries. In an industry saturated with mediocrity, we strive to set new benchmarks for quality, creativity, and storytelling. Our vision is to become the go-to production house for brands that refuse to settle for ordinary.
-            </p>
-            <button className="button mt-8" onClick={handleExplore}>
-              EXPLORE OUR WORK
-            </button>
-          </div>
-          <div className="camera-zone"></div>
+      <section className="section vision--section text-right">
+        <div className="section-number">03</div>
+        <div className="text-content about--section">
+          <div className="section-subtitle">OUR VISION</div>
+          <h2 className="section-title">REDEFINING STANDARDS</h2>
+          <p className="section-description">
+            We believe in pushing boundaries. In an industry saturated with mediocrity, we strive to set new benchmarks for quality, creativity, and storytelling. Our vision is to become the go-to production house for brands that refuse to settle for ordinary.
+          </p>
+          <button className="button mt-8" onClick={handleExplore}>
+            EXPLORE OUR WORK
+          </button>
         </div>
       </section>
 
       {/* Process Section */}
-      <section className="section process--section">
-        <div className="content-block reverse">
-          <div className="camera-zone"></div>
-          <div className="text-content about--section">
-            <div className="section-number">04</div>
-            <div className="section-subtitle">OUR APPROACH</div>
-            <h2 className="section-title">METHODICAL MADNESS</h2>
-            <p className="section-description">
-              Every project begins with deep collaboration. We immerse ourselves in your brand, understand your audience, and craft a narrative that cuts through the noise. From pre-production planning to post-production polish, every detail is meticulously executed.
-            </p>
-            <div className="stat-grid mt-8">
-              <div className="stat-item">
-                <div className="stat-number">01</div>
-                <div className="stat-label">Concept</div>
-              </div>
-              <div className="stat-item">
-                <div className="stat-number">02</div>
-                <div className="stat-label">Production</div>
-              </div>
-              <div className="stat-item">
-                <div className="stat-number">03</div>
-                <div className="stat-label">Post</div>
-              </div>
-              <div className="stat-item">
-                <div className="stat-number">04</div>
-                <div className="stat-label">Delivery</div>
-              </div>
+      <section className="section process--section text-left">
+        <div className="section-number">04</div>
+        <div className="text-content about--section">
+          <div className="section-subtitle">OUR APPROACH</div>
+          <h2 className="section-title">METHODICAL MADNESS</h2>
+          <p className="section-description">
+            Every project begins with deep collaboration. We immerse ourselves in your brand, understand your audience, and craft a narrative that cuts through the noise. From pre-production planning to post-production polish, every detail is meticulously executed.
+          </p>
+          <div className="stat-grid mt-8">
+            <div className="stat-item">
+              <div className="stat-number">01</div>
+              <div className="stat-label">Concept</div>
+            </div>
+            <div className="stat-item">
+              <div className="stat-number">02</div>
+              <div className="stat-label">Production</div>
+            </div>
+            <div className="stat-item">
+              <div className="stat-number">03</div>
+              <div className="stat-label">Post</div>
+            </div>
+            <div className="stat-item">
+              <div className="stat-number">04</div>
+              <div className="stat-label">Delivery</div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Equipment Section */}
-      <section className="section equipment--section">
-        <div className="content-block">
-          <div className="text-content about--section">
-            <div className="section-number">05</div>
-            <div className="section-subtitle">OUR ARSENAL</div>
-            <h2 className="section-title">CINEMA-GRADE GEAR</h2>
-            <p className="section-description">
-              We shoot on the industry's best: ARRI Alexa, RED Komodo, Sony Venice. Our lens collection includes Zeiss, Cooke, and Canon cinema primes. For audio, we deploy Sennheiser and Rode systems. Color grading happens on calibrated Eizo monitors with DaVinci Resolve Studio.
-            </p>
-            <p className="section-description mt-6">
-              But gear is just a tool. What matters is how we use it to tell your story.
-            </p>
-          </div>
-          <div className="camera-zone"></div>
+      <section className="section equipment--section text-right">
+        <div className="section-number">05</div>
+        <div className="text-content about--section">
+          <div className="section-subtitle">OUR ARSENAL</div>
+          <h2 className="section-title">CINEMA-GRADE GEAR</h2>
+          <p className="section-description">
+            We shoot on the industry's best: ARRI Alexa, RED Komodo, Sony Venice. Our lens collection includes Zeiss, Cooke, and Canon cinema primes. For audio, we deploy Sennheiser and Rode systems. Color grading happens on calibrated Eizo monitors with DaVinci Resolve Studio.
+          </p>
+          <p className="section-description mt-6">
+            But gear is just a tool. What matters is how we use it to tell your story.
+          </p>
         </div>
       </section>
 
       {/* Awards Section */}
-      <section className="section awards--section">
-        <div className="content-block reverse">
-          <div className="camera-zone"></div>
-          <div className="text-content about--section">
-            <div className="section-number">06</div>
-            <div className="section-subtitle">RECOGNITION</div>
-            <h2 className="section-title">AWARD-WINNING</h2>
-            <p className="section-description">
-              Our work has been recognized at international film festivals, advertising awards, and industry showcases. But the real validation comes from our clients—brands that keep coming back because they know we deliver.
-            </p>
-            <div className="stat-grid mt-8">
-              <div className="stat-item">
-                <div className="stat-number">15+</div>
-                <div className="stat-label">Awards</div>
-              </div>
-              <div className="stat-item">
-                <div className="stat-number">25+</div>
-                <div className="stat-label">Features</div>
-              </div>
+      <section className="section awards--section text-left">
+        <div className="section-number">06</div>
+        <div className="text-content about--section">
+          <div className="section-subtitle">RECOGNITION</div>
+          <h2 className="section-title">AWARD-WINNING</h2>
+          <p className="section-description">
+            Our work has been recognized at international film festivals, advertising awards, and industry showcases. But the real validation comes from our clients—brands that keep coming back because they know we deliver.
+          </p>
+          <div className="stat-grid mt-8">
+            <div className="stat-item">
+              <div className="stat-number">15+</div>
+              <div className="stat-label">Awards</div>
+            </div>
+            <div className="stat-item">
+              <div className="stat-number">25+</div>
+              <div className="stat-label">Features</div>
             </div>
           </div>
         </div>
