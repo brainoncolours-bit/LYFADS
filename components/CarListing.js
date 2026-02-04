@@ -35,7 +35,7 @@ export default function CarListing() {
 
       if (error) {
         setError(true);
-        toast.error("Please refresh the page.");
+        // toast.error("Please refresh the page.");
       } else if (!data || data.length === 0) {
         setCars([]);
       } else {

@@ -12,11 +12,11 @@ if (typeof window !== 'undefined') {
 }
 
 // Preload the model
-useGLTF.preload('/assets/camera.glb');
+useGLTF.preload('/assets/camerass.glb');
 
 // Camera Model Component
 function CameraModel({ scrollProgress, exploreMode }) {
-  const gltf = useGLTF('/assets/camera.glb');
+  const gltf = useGLTF('/assets/camerass.glb');
   const modelRef = useRef();
 
   useFrame(() => {
@@ -30,8 +30,8 @@ function CameraModel({ scrollProgress, exploreMode }) {
 
   useEffect(() => {
     if (!modelRef.current || !gltf.scene) return;
-    // Smaller model size for better layout
-    modelRef.current.scale.set(1.5, 1.5, 1.5);
+    // Further increased model size to make it more prominent
+    modelRef.current.scale.set(40, 40, 40); // Increased from 30 to 40
     modelRef.current.position.set(0, 0, 0);
   }, [gltf]);
 
@@ -47,15 +47,15 @@ function CameraController({ scrollProgress, exploreMode }) {
   useFrame(() => {
     if (exploreMode) return;
 
-    // Define custom positions for each section
+    // Define custom positions for each section - adjusted for the larger model
     const positions = [
-      { pos: [5, 0, 1], lookAt: [0, 0, 0] },           // Hero - center
-      { pos: [-4, 1, 3], lookAt: [2, 0, 0] },          // Origin (text right) - camera left
-      { pos: [4.5, 0.3, 3.5], lookAt: [-2, 0, 0] },    // Team (text left) - camera right
-      { pos: [-4.2, -0.4, 3], lookAt: [2, 0, 0] },     // Vision (text right) - camera left lower
-      { pos: [4.2, 0.8, 3], lookAt: [-2, 0, 0] },      // Process (text left) - camera right upper
-      { pos: [-4.5, 0.2, 2.8], lookAt: [2, 0, 0] },    // Equipment (text right) - camera left
-      { pos: [4.5, 0.4, 3.2], lookAt: [-2, 0, 0] },    // Awards (text left) - camera right
+      { pos: [2.0, 0, 0.3], lookAt: [0, 0, 0] },           // Hero - center, adjusted for larger model
+      { pos: [-1.5, 0.2, 0.8], lookAt: [0.5, 0, 0] },     // Origin (text right) - camera left, adjusted
+      { pos: [1.5, 0.1, 0.9], lookAt: [-0.5, 0, 0] },     // Team (text left) - camera right, adjusted
+      { pos: [-1.3, -0.1, 0.8], lookAt: [0.5, 0, 0] },    // Vision (text right) - camera left lower, adjusted
+      { pos: [1.3, 0.2, 0.8], lookAt: [-0.5, 0, 0] },     // Process (text left) - camera right upper, adjusted
+      { pos: [-1.5, 0.05, 0.7], lookAt: [0.5, 0, 0] },     // Equipment (text right) - camera left, adjusted
+      { pos: [1.5, 0.1, 0.8], lookAt: [-0.5, 0, 0] },     // Awards (text left) - camera right, adjusted
     ];
 
     const segmentCount = positions.length - 1;
@@ -412,7 +412,7 @@ export default function CameraLanding() {
 
       {/* WebGL Canvas */}
       <div id="webgi-canvas-container" ref={canvasContainerRef}>
-        <Canvas camera={{ position: [0, 0, 5], fov: 50 }} gl={{ antialias: true, alpha: true }}>
+        <Canvas camera={{ position: [0, 0, 1.5], fov: 30 }} gl={{ antialias: true, alpha: true }}>
           <Suspense fallback={null}>
             <Scene scrollProgress={scrollProgress} exploreMode={exploreMode} />
           </Suspense>
