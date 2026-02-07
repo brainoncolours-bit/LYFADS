@@ -3,21 +3,93 @@ import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-
 const SERVICES = [
-  { id: "01", title: "Ad Films", tag: "8K_RED", desc: "High-fidelity commercial production for global brands.", img: "https://images.unsplash.com/photo-1536240478700-b869070f9279?q=80&w=1200" },
-  { id: "02", title: "Music Videos", tag: "SONY_V", desc: "Narrative-driven visualizers for the music industry.", img: "https://images.unsplash.com/photo-1493225255756-d9584f8606e9?q=80&w=1200" },
-  { id: "03", title: "VFX / CGI", tag: "UNREAL", desc: "Photorealistic environments and digital asset integration.", img: "https://images.unsplash.com/photo-1633167606207-d840b5070fc2?q=80&w=1200" },
-  { id: "04", title: "Drone FPV", tag: "DJI_AV", desc: "High-speed aerial tracking and cinematic fly-throughs.", img: "https://images.unsplash.com/photo-1473960104372-7a0e5b228c23?q=80&w=1200" },
-  { id: "05", title: "Fashion", tag: "35MM", desc: "High-contrast editorial films focusing on texture.", img: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=1200" },
-  { id: "06", title: "Product", tag: "MACRO", desc: "Extreme detail capture for luxury goods.", img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1200" },
-  { id: "07", title: "Documentary", tag: "RAW", desc: "Human-centric storytelling with a cinematic lens.", img: "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=1200" },
-  { id: "08", title: "Color Grade", tag: "LOG_C", desc: "Precision color science and visual mood setting.", img: "https://images.unsplash.com/photo-1535016120720-40c646be44da?q=80&w=1200" },
-  { id: "09", title: "Corporate", tag: "4K_INT", desc: "Elevated brand communications and executive interviews.", img: "https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=1200" },
-  { id: "10", title: "Social", tag: "9:16", desc: "High-impact vertical content for digital platforms.", img: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=1200" },
-  { id: "11", title: "Motion", tag: "2D_3D", desc: "Dynamic typography and graphics-driven visuals.", img: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1200" },
-  { id: "12", title: "Live", tag: "BROAD", desc: "Multi-cam production and real-time streaming.", img: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1200" },
+  {
+    id: "01",
+    title: "Marketing Video",
+    tag: "YT_MOBILE",
+    desc: "Strategic video content built for digital attention. From YouTube’s early ad formats to mobile-first storytelling shaped by post-pandemic viewing behavior.",
+    img: "https://images.unsplash.com/photo-1536240478700-b869070f9279?q=80&w=1200",
+  },
+  {
+    id: "02",
+    title: "Corporate Advertising",
+    tag: "PR_BRAND",
+    desc: "Reputation-driven advertising that builds trust, credibility, and long-term goodwill beyond products—strengthening the company’s public identity.",
+    img: "https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=1200",
+  },
+  {
+    id: "03",
+    title: "Resort Video",
+    tag: "DEST_FILM",
+    desc: "Immersive destination storytelling that captures ambiance, experience, and emotion—turning locations into irresistible invitations.",
+    img: "https://images.unsplash.com/photo-1501117716987-c8e1ecb210c7?q=80&w=1200",
+  },
+  {
+    id: "04",
+    title: "Model Photography",
+    tag: "EDITORIAL",
+    desc: "Fashion imagery that brings apparel to life on real people—helping customers visualize, connect, and confidently choose.",
+    img: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=1200",
+  },
+  {
+    id: "05",
+    title: "3D Engineering Animation",
+    tag: "3D_TECH",
+    desc: "Precision animations that simplify complex engineering processes, revealing structure, motion, and interaction beyond static visuals.",
+    img: "https://images.unsplash.com/photo-1633167606207-d840b5070fc2?q=80&w=1200",
+  },
+  {
+    id: "06",
+    title: "Graphic Design",
+    tag: "POP_ART",
+    desc: "Distinct visual identities crafted through a personalized design process—transforming ideas into brands that stand apart.",
+    img: "https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=1200",
+  },
+  {
+    id: "07",
+    title: "Motion Design",
+    tag: "2D_3D",
+    desc: "Graphic design in motion—where typography, illustration, and imagery animate into clear, engaging visual narratives.",
+    img: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1200",
+  },
+  {
+    id: "08",
+    title: "Corporate Video",
+    tag: "BRAND_FILM",
+    desc: "Clear, memorable storytelling that explains who you are, what you do, and why it matters—built for internal and external audiences.",
+    img: "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=1200",
+  },
+  {
+    id: "09",
+    title: "Event Aftermovie",
+    tag: "HIGHLIGHTS",
+    desc: "High-energy highlight films capturing conferences, exhibitions, launches, and awards—preserving moments and amplifying reach.",
+    img: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1200",
+  },
+  {
+    id: "10",
+    title: "VFX / CGI",
+    tag: "UNREAL",
+    desc: "Photorealistic visual effects and CGI environments seamlessly blended with live-action footage.",
+    img: "https://images.unsplash.com/photo-1535016120720-40c646be44da?q=80&w=1200",
+  },
+  {
+    id: "11",
+    title: "Drone FPV",
+    tag: "AERIAL",
+    desc: "Dynamic aerial cinematography and FPV fly-throughs delivering scale, speed, and cinematic movement.",
+    img: "https://images.unsplash.com/photo-1473960104372-7a0e5b228c23?q=80&w=1200",
+  },
+  {
+    id: "12",
+    title: "Live Production",
+    tag: "BROADCAST",
+    desc: "Multi-camera live shoots and real-time streaming engineered for reliability, clarity, and audience engagement.",
+    img: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1200",
+  },
 ];
+
 
 const SprocketStrip = () => (
   <div className="flex justify-between px-2 py-4">
@@ -31,8 +103,8 @@ export default function FilmStripServices() {
   const scrollRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: scrollRef });
 
-  // Maps vertical scroll to a horizontal slide
-  const xTranslate = useTransform(scrollYProgress, [0, 1], ["0%", "-85%"]);
+  // Increased range from -85% to -92% to accommodate the full list
+  const xTranslate = useTransform(scrollYProgress, [0, 1], ["0%", "-92%"]);
 
   return (
     <div className="bg-[#050505] text-white selection:bg-red-600">
@@ -61,7 +133,7 @@ export default function FilmStripServices() {
       </section>
 
       {/* HORIZONTAL SCROLL AREA */}
-      <section ref={scrollRef} className="relative h-[600vh]">
+      <section ref={scrollRef} className="relative h-[800vh]">
         <div className="sticky top-0 h-screen flex items-center overflow-hidden">
           <motion.div style={{ x: xTranslate }} className="flex gap-12 px-20">
             {SERVICES.map((s, idx) => (

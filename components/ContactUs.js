@@ -13,6 +13,27 @@ const fadeUp = {
   visible: { opacity: 1, y: 0 }
 };
 
+const SOCIALS = [
+  {
+    name: "Instagram",
+    icon: <Instagram />,
+    link: "https://instagram.com/your-handle",
+    color: "hover:text-pink-500"
+  },
+  {
+    name: "Facebook",
+    icon: <Facebook />,
+    link: "https://facebook.com/your-page",
+    color: "hover:text-blue-600"
+  },
+  {
+    name: "Youtube",
+    icon: <Youtube />,
+    link: "https://youtube.com/your-channel",
+    color: "hover:text-red-600"
+  }
+];
+
 export default function ContactCinematicPremium() {
   const [focus, setFocus] = useState(null);
 
@@ -78,7 +99,7 @@ export default function ContactCinematicPremium() {
             {[
               { icon: <MapPin />, title: "Visit Us", info: "Main Road, Ernakulam, Kerala" },
               { icon: <Phone />, title: "Call", info: "+91 98765 43210" },
-              { icon: <Mail />, title: "Email", info: "support@shameercars.in" },
+              { icon: <Mail />, title: "Email", info: "lyfads@gmail.com" },
             ].map((item, i) => (
               <motion.div
                 key={i}
