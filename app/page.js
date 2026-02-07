@@ -8,7 +8,7 @@ import BrandCollabs from '@/components/BrandCollabs';
 import TimelineSection from '@/components/MileStone';
 // import SellOrExchange from '@/components/SellOrExchange';
 import { ScrollTrigger } from 'gsap/all';
-import {AnimatedTestimonials} from '@/components/animated-testimonials';
+// import {AnimatedTestimonials} from '@/components/animated-testimonials';
 import ContactUs from '@/components/ContactUs';
 import BentoGrid from '@/components/BentoGrid';
 
@@ -35,7 +35,7 @@ export default function Home() {
       <HeroSection />
 
       {/* <BrandCollabs/> */}
-      <AnimatedTestimonials/>
+      {/* <AnimatedTestimonials/> */}
       <FeaturesSection />
       {/* <BentoGrid/> */}
       
