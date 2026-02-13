@@ -55,7 +55,7 @@ const VideoPlayer = ({ video, onClose }) => {
             onClick={onClose}
             className="p-2 rounded-full hover:bg-gray-100 transition-colors"
           >
-            <X size={20} />
+           <X size={20} className='bg-black'/>
           </button>
         </div>
         
