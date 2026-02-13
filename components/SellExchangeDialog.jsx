@@ -244,7 +244,7 @@ export default function SellExchangeDialog({ open, setOpen }) {
             </p>
             <div style="margin-top:10px;">
               <a href="https://facebook.com/shameercars" style="margin:0 8px;"><img src="https://img.icons8.com/ios-filled/24/000000/facebook--v1.png" alt="Facebook" /></a>
-              <a href="https://instagram.com/shameercars" style="margin:0 8px;"><img src="https://img.icons8.com/ios-filled/24/000000/instagram-new.png" alt="Instagram" /></a>
+              <a href="https://instagram.com/shameercars" style="margin:0 8px;"><img src="https://img.icons8.com/ios-filled/24/000000/instagram-new.png" alt="" /></a>
               <a href="https://wa.me/919876543210" style="margin:0 8px;"><img src="https://img.icons8.com/ios-filled/24/000000/whatsapp.png" alt="WhatsApp" /></a>
             </div>
           </td>

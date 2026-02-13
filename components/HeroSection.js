@@ -1,15 +1,32 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring, animate, useMotionValue } from 'framer-motion';
-
 const IMAGES = [
-  "https://images.unsplash.com/photo-1550745165-9bc0b252726f",
-  "https://images.unsplash.com/photo-1533107862482-0e6974b06ec4",
-  "https://images.unsplash.com/photo-1509248961158-e54f6934749c",
-  "https://images.unsplash.com/photo-1517649763962-0c623066013b",
-  "https://images.unsplash.com/photo-1493225255756-d9584f8606e9",
-  "https://images.unsplash.com/photo-1485846234645-a62644f84728",
-  "https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d",
-  "https://images.unsplash.com/photo-1536440136628-849c177e76a1",
+  "/assets/imagec.png",
+  // Image,
+  // "https://images.unsplash.com/photo-1550745165-9bc0b252726f",
+"/assets/imagec.png",
+// "/assets/img2.jpeg",
+"/assets/imagec.png",
+
+
+// "/assets/image.png",
+// "/assets/img2.jpeg",
+// "/assets/img3.jpeg",
+
+
+"/assets/imagec.png",
+// "/assets/img3.jpeg",
+
+
+
+"/assets/imagec.png",
+"/assets/imagec.png",
+
+// "/assets/image.png",
+"/assets/imagec.png",
+
+
+
 ];
 
 const NucleusHero = () => {
@@ -121,7 +138,7 @@ const OrbitalFrame = ({ src, index, progress, introRadius }) => {
       <div className="relative w-32 h-44 md:w-52 md:h-72 bg-zinc-900 border border-white/10 p-1 shadow-2xl transition-all duration-500 group-hover:scale-110 group-hover:border-red-600 group-hover:z-[100]">
         <img 
           src={src} 
-          className="w-full h-full object-cover grayscale brightness-50 group-hover:grayscale-0 group-hover:brightness-110 transition-all duration-700" 
+          className="w-full h-full object-cover  group-hover:grayscale-0 group-hover:brightness-110 transition-all duration-700" 
           alt=""
         />
       </div>
