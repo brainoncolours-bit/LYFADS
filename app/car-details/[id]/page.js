@@ -7,7 +7,7 @@ import DescriptionSection from "./DescriptionSection";
 import EnquiryForm from "./EnquiryForm";
 import Layout from "@/components/Layout";
 import { useRouter } from "next/navigation";
-import { ConnectUs } from "../ConnectUs";
+// import { ConnectUs } from "../ConnectUs";
 import { poppins } from "@/lib/font";
 
 
@@ -92,7 +92,7 @@ const CarDetailsPage = () => {
 
         {/* Enquiry Form */}
         <EnquiryForm carModel={carData} />
-        <ConnectUs/>
+        // <ConnectUs/>
       </div>
     </div>
 
