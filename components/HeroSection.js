@@ -1,110 +1,109 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring, animate, useMotionValue } from 'framer-motion';
+
 const IMAGES = [
   "/assets/imagec.png",
-  // Image,
-  // "https://images.unsplash.com/photo-1550745165-9bc0b252726f",
-"/assets/imagec.png",
-// "/assets/img2.jpeg",
-"/assets/imagec.png",
-
-
-// "/assets/image.png",
-// "/assets/img2.jpeg",
-// "/assets/img3.jpeg",
-
-
-"/assets/imagec.png",
-// "/assets/img3.jpeg",
-
-
-
-"/assets/imagec.png",
-"/assets/imagec.png",
-
-// "/assets/image.png",
-"/assets/imagec.png",
-
-
-
+  "/assets/imagec.png",
+  "/assets/imagec.png",
+  "/assets/imagec.png",
+  "/assets/imagec.png",
+  "/assets/imagec.png",
 ];
 
 const NucleusHero = () => {
   const containerRef = useRef(null);
-  const [introFinished, setIntroFinished] = useState(false);
+  
+  // We initialize with desktop-friendly defaults
+  const [dimensions, setDimensions] = useState({ 
+    baseRadius: 200, 
+    scrollSpread: 300, 
+    logoSize: "w-48" 
+  });
 
-  // Create a motion value for the "Intro" radius
   const introRadius = useMotionValue(0);
+
+  useEffect(() => {
+    const updateDimensions = () => {
+      const width = window.innerWidth;
+      if (width < 640) { 
+        // Mobile: Kept your "perfect" settings
+        setDimensions({ baseRadius: 100, scrollSpread: 120, logoSize: "w-28" });
+      } else if (width < 1024) { 
+        // Tablet: Mid-range
+        setDimensions({ baseRadius: 150, scrollSpread: 200, logoSize: "w-40" });
+      } else { 
+        // Laptop/Desktop: Reduced from 240 to 200 for a tighter fit
+        // Reduced scrollSpread to 300 so they don't fly away too fast
+        setDimensions({ baseRadius: 200, scrollSpread: 300, logoSize: "w-60" });
+      }
+    };
+
+    updateDimensions();
+    window.addEventListener('resize', updateDimensions);
+    
+    const controls = animate(introRadius, dimensions.baseRadius, {
+      duration: 1.8,
+      ease: [0.16, 1, 0.3, 1],
+    });
+
+    return () => {
+      window.removeEventListener('resize', updateDimensions);
+      controls.stop();
+    };
+  }, [dimensions.baseRadius]);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"]
   });
 
-  const smoothScroll = useSpring(scrollYProgress, { stiffness: 60, damping: 25 });
-
-  // RUN INTRO ON LOAD
-  useEffect(() => {
-    // Animate from 0 to 200px immediately on load
-    const controls = animate(introRadius, 200, {
-      duration: 1.5,
-      ease: [0.16, 1, 0.3, 1], // Custom out-expo ease
-      onComplete: () => setIntroFinished(true)
-    });
-    return controls.stop;
-  }, []);
-
-  const logoScale = useTransform(smoothScroll, [0, 0.2, 0.5], [1, 0.9, 0.8]);
+  const smoothScroll = useSpring(scrollYProgress, { stiffness: 50, damping: 20 });
+  const logoScale = useTransform(smoothScroll, [0, 0.5], [1, 0.8]);
 
   return (
-    <div ref={containerRef} className="relative h-[300vh] sm:h-[400vh] md:h-[500vh] bg-[#030303] overflow-clip">
+    <div ref={containerRef} className="relative h-[300vh] bg-[#030303] overflow-clip">
       <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
-
-        {/* LOGO */}
+        
         <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
+          initial={{ scale: 0.5, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 1 }}
           style={{ scale: logoScale }}
           className="relative z-50 pointer-events-none"
         >
           <img
             src="./bg.png"
             alt="Logo"
-            className="w-32 sm:w-40 md:w-48 lg:w-64 h-auto drop-shadow-[0_0_40px_rgba(255,255,255,0.15)]"
+            className={`${dimensions.logoSize} h-auto drop-shadow-[0_0_50px_rgba(255,255,255,0.1)]`}
           />
         </motion.div>
 
-        {/* ORBIT ENGINE */}
-        <div className="absolute inset-0" style={{ perspective: "1500px" }}>
+        <div className="absolute inset-0" style={{ perspective: "1200px" }}>
           {IMAGES.map((src, i) => (
             <OrbitalFrame
               key={i}
               src={src}
               index={i}
+              total={IMAGES.length}
               progress={smoothScroll}
               introRadius={introRadius}
+              scrollSpread={dimensions.scrollSpread}
+              baseRadius={dimensions.baseRadius}
             />
           ))}
         </div>
 
-        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_20%,black_100%)] opacity-80" />
+        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_10%,black_90%)] opacity-90" />
       </div>
     </div>
   );
 };
 
-const OrbitalFrame = ({ src, index, progress, introRadius }) => {
-  const total = IMAGES.length;
+const OrbitalFrame = ({ src, index, total, progress, introRadius, scrollSpread, baseRadius }) => {
   const angle = (index / total) * Math.PI * 2;
 
-  // COMBINED RADIUS:
-  // It takes the introRadius (0 to 200) and adds the scrollRadius (0 to 300)
-  const scrollRadius = useTransform(progress, [0, 0.5], [0, 300]);
+  const scrollRadius = useTransform(progress, [0, 1], [0, scrollSpread]);
+  const rotationOffset = useTransform(progress, [0, 1], [0, Math.PI / 2]); // Slower rotation for premium feel
 
-  const rotationOffset = useTransform(progress, [0, 1], [0, Math.PI]);
-
-  // We combine the intro animation value with the scroll value
   const x = useTransform([introRadius, scrollRadius, rotationOffset], ([intro, scroll, rot]) =>
     Math.cos(angle + rot) * (intro + scroll)
   );
@@ -112,13 +111,12 @@ const OrbitalFrame = ({ src, index, progress, introRadius }) => {
     Math.sin(angle + rot) * (intro + scroll)
   );
 
-  // Initial fade-in on load, stay visible on scroll
   const scale = useTransform([introRadius, progress], ([intro, prog]) => {
-     if (prog > 0) return 1 + prog * 0.2; // grow slightly on scroll
-     return intro / 200; // scale up during intro
+     const initialScale = intro / baseRadius;
+     return initialScale + (prog * 0.1); // Subtle growth
   });
 
-  const opacity = useTransform(introRadius, [0, 100], [0, 1]);
+  const opacity = useTransform(introRadius, [0, baseRadius * 0.4], [0, 1]);
 
   return (
     <motion.div
@@ -126,20 +124,17 @@ const OrbitalFrame = ({ src, index, progress, introRadius }) => {
         position: 'absolute',
         left: '50%',
         top: '50%',
-        x,
-        y,
-        scale,
-        opacity,
+        x, y, scale, opacity,
         translateX: "-50%",
         translateY: "-50%",
       }}
       className="group"
     >
-      <div className="relative w-32 h-44 md:w-52 md:h-72 bg-zinc-900 border border-white/10 p-1 shadow-2xl transition-all duration-500 group-hover:scale-110 group-hover:border-red-600 group-hover:z-[100]">
+      <div className="relative w-24 h-36 sm:w-44 sm:h-64 md:w-48 md:h-68 bg-[#111] border border-white/10 p-1 shadow-2xl transition-all duration-500 group-hover:border-red-500/50 group-hover:z-[100] rounded-sm overflow-hidden">
         <img
           src={src}
-          className="w-full h-full object-cover  group-hover:grayscale-0 group-hover:brightness-110 transition-all duration-700"
-          alt=""
+          className="w-full h-full object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-700"
+          alt="Portfolio Item"
         />
       </div>
     </motion.div>
