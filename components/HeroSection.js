@@ -14,10 +14,10 @@ const NucleusHero = () => {
   const containerRef = useRef(null);
   
   // We initialize with desktop-friendly defaults
-  const [dimensions, setDimensions] = useState({ 
-    baseRadius: 200, 
-    scrollSpread: 300, 
-    logoSize: "w-48" 
+  const [dimensions, setDimensions] = useState({
+    baseRadius: 140,
+    scrollSpread: 180,
+    logoSize: "w-48"
   });
 
   const introRadius = useMotionValue(0);
@@ -25,16 +25,15 @@ const NucleusHero = () => {
   useEffect(() => {
     const updateDimensions = () => {
       const width = window.innerWidth;
-      if (width < 640) { 
-        // Mobile: Kept your "perfect" settings
-        setDimensions({ baseRadius: 100, scrollSpread: 120, logoSize: "w-28" });
-      } else if (width < 1024) { 
-        // Tablet: Mid-range
-        setDimensions({ baseRadius: 150, scrollSpread: 200, logoSize: "w-40" });
-      } else { 
-        // Laptop/Desktop: Reduced from 240 to 200 for a tighter fit
-        // Reduced scrollSpread to 300 so they don't fly away too fast
-        setDimensions({ baseRadius: 200, scrollSpread: 300, logoSize: "w-60" });
+      if (width < 640) {
+        // Mobile: Tight circle
+        setDimensions({ baseRadius: 90, scrollSpread: 100, logoSize: "w-28" });
+      } else if (width < 1024) {
+        // Tablet: Medium circle
+        setDimensions({ baseRadius: 110, scrollSpread: 140, logoSize: "w-40" });
+      } else {
+        // Laptop/Desktop: Tighter circle (reduced from 200 to 140)
+        setDimensions({ baseRadius: 140, scrollSpread: 180, logoSize: "w-60" });
       }
     };
 
