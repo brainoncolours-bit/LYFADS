@@ -2,12 +2,13 @@ import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring, animate, useMotionValue } from 'framer-motion';
 
 const IMAGES = [
-  "/assets/imagec.png",
-  "/assets/imagec.png",
-  "/assets/imagec.png",
-  "/assets/imagec.png",
-  "/assets/imagec.png",
-  "/assets/imagec.png",
+  "/assets/home/img1.jpeg",
+  "/assets/home/img2.jpeg",
+  "/assets/home/img3.jpeg",
+  "/assets/home/img4.jpeg",
+  "/assets/home/img5.jpeg",
+  // "/assets/home/img6.jpeg",
+  "/assets/home/img7.jpeg",
 ];
 
 const NucleusHero = () => {

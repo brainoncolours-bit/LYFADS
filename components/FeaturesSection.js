@@ -30,32 +30,41 @@ const FilmstripHero = () => {
             </div>
           </div>
 
-          {/* BLOCK 2: PROJECT CARDS */}
-          {[
-            { title: "URBAN", category: "COMMERCIAL", img: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=1000&auto=format&fit=crop" },
-            { title: "VELOCITY", category: "AUTOMOTIVE", img: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1000&auto=format&fit=crop" },
-            { title: "NEON", category: "MUSIC VIDEO", img: "https://images.unsplash.com/photo-1493225255756-d9584f8606e9?q=80&w=1000&auto=format&fit=crop" },
-          ].map((project, i) => (
-            <div key={i} className="flex-shrink-0 group relative">
-              <div className="relative w-[600px] h-[400px] overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700">
-                <img 
-                  src={project.img} 
-                  alt={project.title}
-                  className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
-              </div>
-              <div className="mt-6 flex justify-between items-end">
-                <div>
-                  <p className="text-red-600 font-mono text-xs mb-1">[{project.category}]</p>
-                  <h3 className="text-4xl font-black italic tracking-tighter text-white">{project.title}</h3>
-                </div>
-                <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-red-600 group-hover:border-red-600 transition-all">
-                  <ExternalLink size={20} className="text-white" />
-                </div>
-              </div>
-            </div>
-          ))}
+         {/* BLOCK 2: PROJECT CARDS */}
+{[
+  { title: "Create", category: "Brand", video: "/assets/lap/growth.mp4" },
+  { title: "Capture", category: "Production", video: "/assets/lap/web....mp4" },
+  { title: "Inspire", category: "MUSIC VIDEO", video: "/assets/lap/Out.mp4" },
+].map((project, i) => (
+  <div key={i} className="flex-shrink-0 group relative cursor-pointer">
+    {/* Video Container */}
+    <div className="relative w-[600px] h-[400px] overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700">
+      <video
+        src={project.video}
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-transform duration-700"
+      />
+      {/* Overlay for that cinematic depth */}
+      <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-colors duration-500" />
+    </div>
+
+    {/* Metadata Section */}
+    <div className="mt-6 flex justify-between items-end">
+      <div>
+        <p className="text-red-600 font-mono text-xs mb-1">[{project.category}]</p>
+        <h3 className="text-4xl font-black italic tracking-tighter text-white uppercase">
+          {project.title}
+        </h3>
+      </div>
+      <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-red-600 group-hover:border-red-600 group-hover:rotate-45 transition-all duration-500">
+        <ExternalLink size={20} className="text-white" />
+      </div>
+    </div>
+  </div>
+))}
 
           {/* BLOCK 3: FINAL CALL TO ACTION */}
           <div className="flex-shrink-0 pr-[20vw]">

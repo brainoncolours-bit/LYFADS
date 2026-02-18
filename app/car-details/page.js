@@ -9,35 +9,35 @@ const SERVICES = [
     title: "⁠Commercial & Brand Video Production",
     tag: "YT_MOBILE",
     desc: "High-impact visual storytelling crafted to elevate brands. From concept to execution, we produce commercials, brand films, product videos, and high-volume digital content.",
-    img: "https://images.unsplash.com/photo-1536240478700-b869070f9279?q=80&w=1200",
+    img: "/assets/services/img1.png",
   },
   {
     id: "02",
     title: "Corporate Video Production",
     tag: "PR_BRAND",
     desc: "Professional films that communicate credibility and vision. We create corporate profiles, leadership interviews, culture films, and business-focused visual content.",
-    img: "https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=1200",
+    img: "/assets/services/img4.png",
   },
   {
     id: "03",
     title: "Event Coverage",
     tag: "DEST_FILM",
     desc: "Cinematic multi-camera coverage that captures every key moment. From product launches to corporate events, we deliver impactful highlight and platform-ready edits.",
-    img: "https://images.unsplash.com/photo-1501117716987-c8e1ecb210c7?q=80&w=1200",
+    img: "/assets/services/img5.jpeg",
   },
   {
     id: "04",
     title: "3D Modeling and AI Video Production",
     tag: "EDITORIAL",
     desc: "Photoreal 3D product visualization Next-generation Al-powered visuals and enhanced video creation. From Al-generated scenes to advanced visual enhancements, we help brands produce futuristic, high-impact content.",
-    img: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=1200",
+    img: "/assets/services/3dModeling.jpeg",
   },
   {
     id: "05",
     title: "Post-Production",
     tag: "3D_TECH",
     desc: "Precision editing, color grading, motion graphics, and finishing that transform raw footage into powerful final visuals.",
-    img: "https://images.unsplash.com/photo-1633167606207-d840b5070fc2?q=80&w=1200",
+    img: "/assets/services/img2.jpeg",
   }
 ];
 

@@ -17,7 +17,7 @@ export default function Navbar() {
     { label: "About Us", path: "/about" },
     { label: "Services", path: "/car-details" },
     { label: "Works", path: "/works" },
-    { label: "Contact", path: "/#contact" },
+    { label: "Contact", path: "/contact" },
   ];
 
   const pathname = usePathname();

@@ -2,229 +2,173 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import {
-  MapPin, Phone, Mail, Send, Instagram, Facebook, Youtube, Clock
-} from "lucide-react";
-import PhoneInput from "react-phone-input-2";
-import "react-phone-input-2/lib/style.css";
+import { Zap, Navigation, Target, Globe, ArrowUpRight } from "lucide-react";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0 }
-};
+export default function TacticalBentoTerminal() {
+  const [coords, setCoords] = useState({ x: 0, y: 0 });
 
-const SOCIALS = [
-  {
-    name: "Instagram",
-    icon: <Instagram />,
-    link: "https://instagram.com/your-handle",
-    color: "hover:text-pink-500"
-  },
-  {
-    name: "Facebook",
-    icon: <Facebook />,
-    link: "https://facebook.com/your-page",
-    color: "hover:text-blue-600"
-  },
-  {
-    name: "Youtube",
-    icon: <Youtube />,
-    link: "https://youtube.com/your-channel",
-    color: "hover:text-red-600"
-  }
-];
-
-export default function ContactCinematicPremium() {
-  const [focus, setFocus] = useState(null);
+  // Tracking mouse for the "Radar" coordinate readout
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setCoords({
+      x: Math.round(e.clientX - rect.left),
+      y: Math.round(e.clientY - rect.top),
+    });
+  };
 
   return (
-    <div className="relative min-h-screen bg-[#0a0a0a] text-white overflow-hidden">
-
-      {/* Ambient animated background */}
-      <motion.div
-        className="absolute inset-0 bg-gradient-to-br from-red-900/20 via-black to-black"
-        animate={{ opacity: [0.4, 0.7, 0.4] }}
-        transition={{ duration: 8, repeat: Infinity }}
-      />
-
-      {/* Floating particles */}
-      {[...Array(30)].map((_, i) => (
-        <motion.span
-          key={i}
-          className="absolute w-1 h-1 bg-white/20 rounded-full"
-          initial={{
-            x: Math.random() * 1500,
-            y: Math.random() * 900,
-            opacity: 0.1
-          }}
-          animate={{
-            y: ["0%", "100%"],
-            opacity: [0.1, 0.4, 0.1]
-          }}
-          transition={{
-            duration: 10 + Math.random() * 10,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-        />
-      ))}
-
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-24">
-
-        {/* HEADER */}
-        <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="text-center mb-20"
+    <div className="min-h-screen bg-[#020202] text-white p-4 md:p-10 flex flex-col gap-6 overflow-hidden font-sans selection:bg-purple-500/30">
+      
+      {/* --- HEADER --- */}
+      <nav className="flex justify-between items-center z-20 border-b border-white/5 pb-6">
+        <motion.div 
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="group cursor-crosshair"
         >
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight">
-            Let’s Build Something <span className="text-red-500">Legendary</span>
+          <h1 className="text-2xl font-black tracking-tighter uppercase italic group-hover:text-purple-500 transition-colors">
+            Node_Terminal
           </h1>
-          <p className="mt-6 text-gray-400 max-w-2xl mx-auto">
-            Strategy, design, motion, production, systems — this is where ideas turn into realities.
-          </p>
+          <div className="h-[2px] w-12 bg-purple-600 group-hover:w-full transition-all duration-500" />
         </motion.div>
+        
+        <div className="hidden md:block text-[10px] text-zinc-500 font-mono tracking-[0.2em] text-right leading-relaxed">
+          LAT: 34.0522° N <br />
+          LONG: 118.2437° W
+        </div>
+      </nav>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-start">
-
-          {/* LEFT INFO */}
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="space-y-6"
+      {/* --- MAIN BENTO GRID --- */}
+      <main className="flex-1 grid grid-cols-12 gap-4 max-w-7xl mx-auto w-full">
+        
+        {/* LEFT COLUMN: THE FORM ENGINE */}
+        <div className="col-span-12 lg:col-span-7 grid grid-cols-1 gap-4">
+          
+          {/* FIELD 01: NAME */}
+          <motion.div 
+            whileHover={{ scale: 1.005 }}
+            className="relative bg-zinc-950 border border-white/5 p-8 rounded-3xl overflow-hidden group transition-colors hover:border-purple-500/30"
           >
-            {[
-              { icon: <MapPin />, title: "Visit Us", info: "Main Road, Ernakulam, Kerala" },
-              { icon: <Phone />, title: "Call", info: "+91 98765 43210" },
-              { icon: <Mail />, title: "Email", info: "lyfads@gmail.com" },
-            ].map((item, i) => (
-              <motion.div
-                key={i}
-                variants={fadeUp}
-                whileHover={{ scale: 1.03, y: -6 }}
-                className="group bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 flex gap-6 items-center transition-all hover:border-red-500/50 hover:shadow-[0_0_40px_rgba(255,0,0,0.15)]"
-              >
-                <div className="p-4 bg-red-600/20 rounded-2xl text-red-400 group-hover:scale-110 transition">
-                  {React.cloneElement(item.icon, { size: 26 })}
-                </div>
-                <div>
-                  <h4 className="font-bold text-lg">{item.title}</h4>
-                  <p className="text-gray-400 text-sm">{item.info}</p>
-                </div>
-              </motion.div>
-            ))}
-
-            {/* HOURS */}
-            <motion.div
-              variants={fadeUp}
-              className="bg-gradient-to-br from-red-600/20 to-black border border-white/10 rounded-3xl p-8"
-            >
-              <h4 className="font-bold text-lg flex items-center gap-2 mb-4">
-                <Clock size={18} className="text-red-400" /> Working Hours
-              </h4>
-              <div className="space-y-2 text-gray-400 text-sm">
-                <div className="flex justify-between"><span>Mon - Sat</span><span className="text-white">9AM - 8PM</span></div>
-                <div className="flex justify-between"><span>Sunday</span><span className="text-red-400">Closed</span></div>
-              </div>
-            </motion.div>
-          </motion.div>
-
-          {/* RIGHT FORM */}
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2.5rem] p-10 shadow-[0_0_80px_rgba(0,0,0,0.6)]"
-          >
-            <h3 className="text-2xl font-bold mb-8">Send Message</h3>
-
-            <form className="space-y-6">
-              <input
-                placeholder="Full Name"
-                onFocus={() => setFocus("name")}
-                onBlur={() => setFocus(null)}
-                className={`w-full px-6 py-4 rounded-2xl bg-black/40 border transition-all outline-none ${
-                  focus==="name" ? "border-red-500 shadow-[0_0_20px_rgba(255,0,0,0.3)]" : "border-white/10"
-                }`}
-              />
-
-              <input
-                placeholder="Email"
-                type="email"
-                onFocus={() => setFocus("email")}
-                onBlur={() => setFocus(null)}
-                className={`w-full px-6 py-4 rounded-2xl bg-black/40 border transition-all outline-none ${
-                  focus==="email" ? "border-red-500 shadow-[0_0_20px_rgba(255,0,0,0.3)]" : "border-white/10"
-                }`}
-              />
-
-              <PhoneInput
-                country={"in"}
-                inputStyle={{
-                  width: "100%",
-                  height: "60px",
-                  borderRadius: "1rem",
-                  background: "rgba(0,0,0,0.4)",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  color: "white"
-                }}
-                buttonStyle={{ background: "transparent", border: "none" }}
-              />
-
-              <textarea
-                rows={4}
-                placeholder="Tell us about your project..."
-                onFocus={() => setFocus("msg")}
-                onBlur={() => setFocus(null)}
-                className={`w-full px-6 py-4 rounded-2xl bg-black/40 border transition-all outline-none resize-none ${
-                  focus==="msg" ? "border-red-500 shadow-[0_0_20px_rgba(255,0,0,0.3)]" : "border-white/10"
-                }`}
-              />
-
-              <motion.button
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                className="w-full py-5 rounded-2xl bg-gradient-to-r from-red-600 to-red-700 font-bold flex items-center justify-center gap-3 shadow-[0_0_30px_rgba(255,0,0,0.4)]"
-              >
-                Send Message <Send size={18}/>
-              </motion.button>
-            </form>
-
-            {/* SOCIAL */}
-            <div className="mt-10 flex gap-6 justify-center text-gray-400">
-              {[<Instagram/>, <Facebook/>, <Youtube/>].map((icon,i)=>(
-                <motion.button
-                  key={i}
-                  whileHover={{ scale: 1.2, rotate: 5 }}
-                  className="hover:text-red-500 transition"
-                >
-                  {React.cloneElement(icon, { size: 22 })}
-                </motion.button>
-              ))}
+            <div className="flex justify-between items-center mb-6">
+              <span className="text-[10px] font-mono text-purple-500/50 uppercase tracking-[0.2em]">Sector_01 // Identity</span>
+              <Target size={14} className="text-zinc-800 group-hover:text-purple-500 transition-colors" />
             </div>
+            <input 
+              placeholder="ENTER_OPERATOR_NAME"
+              className="w-full bg-transparent border-none outline-none text-3xl md:text-5xl font-black uppercase tracking-tighter placeholder:text-zinc-900 focus:placeholder:text-purple-900/20 transition-all"
+            />
           </motion.div>
+
+          {/* SECOND ROW: EMAIL & SUBMIT */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <motion.div className="bg-zinc-950 border border-white/5 p-8 rounded-3xl group transition-colors hover:border-blue-500/30">
+              <span className="text-[10px] font-mono text-blue-500/50 block mb-6 uppercase tracking-widest">Sector_02 // Comms</span>
+              <input 
+                placeholder="EMAIL_HANDLE"
+                className="w-full bg-transparent border-none outline-none text-xl font-bold uppercase tracking-tight placeholder:text-zinc-800"
+              />
+            </motion.div>
+            
+            <motion.button 
+              whileHover={{ backgroundColor: "#A855F7", color: "#000" }}
+              whileTap={{ scale: 0.98 }}
+              className="bg-white text-black rounded-3xl p-8 flex flex-col justify-between transition-all duration-300 group"
+            >
+              <div className="flex justify-between w-full">
+                <Zap size={28} fill="currentColor" />
+                <ArrowUpRight size={28} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+              </div>
+              <span className="text-2xl font-black uppercase italic leading-none text-left">Initiate<br/>Uplink</span>
+            </motion.button>
+          </div>
+
+          {/* FIELD 03: MESSAGE */}
+          <div className="bg-zinc-950 border border-white/5 p-8 rounded-3xl relative group min-h-[220px] transition-colors hover:border-emerald-500/30">
+            <span className="text-[10px] font-mono text-emerald-500/50 block mb-6 uppercase tracking-widest">Sector_03 // Mission_Brief</span>
+            <textarea 
+              rows={4}
+              placeholder="ENCODE_YOUR_MESSAGE_HERE..."
+              className="w-full bg-transparent border-none outline-none text-lg font-medium uppercase tracking-[0.15em] placeholder:text-zinc-900 resize-none leading-relaxed"
+            />
+            <div className="absolute bottom-6 right-8 text-[10px] font-mono text-zinc-800 group-hover:text-zinc-600 transition-colors">ENC_TYPE: RSA_4096</div>
+          </div>
         </div>
 
-        {/* MAP */}
-        <motion.div
-          initial={{ opacity: 0, y: 80 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mt-24 rounded-[2.5rem] overflow-hidden border border-white/10 shadow-[0_0_60px_rgba(0,0,0,0.8)]"
+        {/* RIGHT COLUMN: THE TACTICAL MAP */}
+        <motion.div 
+          onMouseMove={handleMouseMove}
+          className="col-span-12 lg:col-span-5 relative group min-h-[450px] lg:min-h-full"
         >
-          <iframe
-            title="map"
-            className="w-full h-[450px] grayscale contrast-125"
-            src="https://www.google.com/maps?q=Ernakulam%20Kerala&output=embed"
-            loading="lazy"
-          />
+          <div className="absolute inset-0 bg-zinc-950 border border-white/5 rounded-3xl overflow-hidden shadow-2xl flex flex-col">
+            
+            {/* MAP HUD ELEMENTS */}
+            <div className="absolute top-6 left-6 z-20 flex flex-col gap-2 pointer-events-none">
+              <div className="px-3 py-1 bg-black/80 backdrop-blur-md border border-white/10 rounded flex items-center gap-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse" />
+                <span className="text-[9px] font-mono text-purple-400 tracking-tighter uppercase">Live_Position_Sync</span>
+              </div>
+              <div className="px-3 py-1 bg-black/40 backdrop-blur-sm border border-white/5 rounded text-[9px] font-mono text-zinc-500 uppercase">
+                X: {coords.x} // Y: {coords.y}
+              </div>
+            </div>
+
+            {/* THE IFRAME MAP */}
+            <div className="flex-1 relative">
+              <iframe
+                title="map"
+                className="w-full h-[450px] grayscale contrast-125"
+                src="https://www.google.com/maps?q=Ernakulam%20Kerala&output=embed"
+                loading="lazy"
+              />
+              
+              {/* RADAR SWEEP EFFECT */}
+              <motion.div 
+                animate={{ top: ['-10%', '110%'] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+                className="absolute left-0 right-0 h-[2px] bg-purple-500/20 shadow-[0_0_20px_rgba(168,85,247,0.4)] z-10 pointer-events-none"
+              />
+            </div>
+
+            {/* MAP FOOTER */}
+            <div className="p-6 bg-zinc-950 border-t border-white/5 flex justify-between items-center">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-purple-500/10 rounded-lg">
+                  <Navigation size={16} className="text-purple-500" />
+                </div>
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-white">Grid_Ref_Alpha</p>
+                  <p className="text-[9px] font-mono text-zinc-600">ST_SULPICE_DISTRICT_V</p>
+                </div>
+              </div>
+              <Globe size={18} className="text-zinc-800 group-hover:text-purple-500 transition-colors duration-500" />
+            </div>
+          </div>
         </motion.div>
 
-      </div>
+      </main>
+
+      {/* --- FOOTER DATA STREAM --- */}
+      <footer className="flex justify-between items-center py-4 border-t border-white/5 z-20">
+        <div className="text-[10px] font-mono text-zinc-600 flex gap-8">
+          <span className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            SECURE_LINK_STABLE
+          </span>
+          <span className="hidden sm:block">UPTIME: 99.998%</span>
+        </div>
+        
+        {/* AUDIO-VISUALIZER STYLE BARS */}
+        <div className="flex gap-1 items-end h-4">
+          {[...Array(8)].map((_, i) => (
+            <motion.div 
+              key={i}
+              animate={{ height: [2, 12, 4, 16, 2] }}
+              transition={{ repeat: Infinity, delay: i * 0.15, duration: 1.5 }}
+              className="w-1 bg-zinc-800 rounded-full group-hover:bg-purple-500 transition-colors"
+            />
+          ))}
+        </div>
+      </footer>
     </div>
   );
 }
