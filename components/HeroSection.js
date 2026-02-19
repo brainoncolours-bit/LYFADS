@@ -93,6 +93,27 @@ const NucleusHero = () => {
         </div>
 
         <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_10%,black_90%)] opacity-90" />
+
+        {/* SCROLL INDICATOR */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.5, duration: 1 }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-3"
+        >
+          <p className="text-[10px] font-mono tracking-[0.5em] text-zinc-500 uppercase">Scroll to Explore</p>
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+            className="w-6 h-10 border-2 border-red-600/50 rounded-full flex justify-center pt-2"
+          >
+            <motion.div
+              animate={{ opacity: [1, 0], y: [0, 6] }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              className="w-1 h-2 bg-red-600 rounded-full"
+            />
+          </motion.div>
+        </motion.div>
       </div>
     </div>
   );
