@@ -155,7 +155,7 @@ const WorksCategories = () => {
   }, []);
 
   // Horizontal scroll logic
-  const x = useTransform(scrollYProgress, [0, 1], isMobile ? ["2%", "-180%"] : ["5%", "-65%"]);
+  const x = useTransform(scrollYProgress, [0, 1], isMobile ? ["2%", "-180%"] : ["5%", "-80%"]);
   const physicsX = useSpring(x, { stiffness: 60, damping: 15 });
 
   useEffect(() => {
@@ -166,9 +166,16 @@ const WorksCategories = () => {
     fetchCategories();
   }, []);
 
-  const orderedCategories = CATEGORY_DISPLAY_CONFIG.map((config) =>
-    categoriesData.find((cat) => cat.id === config.id)
-  ).filter(Boolean);
+  const orderedCategories = [
+    // First, include categories in the defined order
+    ...CATEGORY_DISPLAY_CONFIG.map((config) =>
+      categoriesData.find((cat) => cat.id === config.id)
+    ).filter(Boolean),
+    // Then, append any newly added categories that aren't in the config
+    ...categoriesData.filter((cat) =>
+      !CATEGORY_DISPLAY_CONFIG.some((config) => config.id === cat.id)
+    ),
+  ];
 
   return (
     <div className="bg-[#050505] text-white selection:bg-red-600 selection:text-white">
