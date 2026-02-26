@@ -10,8 +10,9 @@ import { supabase } from '@/lib/supabaseClient';
 // --- CONFIGURATION ---
 const thum = [
   "/assets/cat/comm.mp4",
-  "/assets/cat/copo.mp4",
   "/assets/cat/digi.mp4",
+  "/assets/cat/copo.mp4",
+  
   
   "/assets/cat/aivdo.mp4",
 
@@ -23,7 +24,7 @@ const thum = [
 ];
 
 const CATEGORY_DISPLAY_CONFIG = [
-  { id: 1 }, { id: 4 }, { id: 16 }, { id: 14 }, { id: 18 }, { id: 6 }
+  { id: 1 }, { id: 4 }, { id: 18 }, { id: 14 }, { id: 16 },   { id: 6 }
 ];
 
 // --- HOOKS ---
