@@ -17,7 +17,7 @@ export const Timeline = () => {
         <p className="text-new-white text-xs md:text-lg font-normal mb-8">
           Founded by <span className="font-semibold">Shameer S</span> from
           Cherukulam, Calicut — the journey began with a simple dream and a single car.
-          After gaining experience as a bus checking inspector in his father’s
+          After gaining experience as a bus checking inspector in his father's
           service and later at Jay Motors and TVS Limited, Shameer turned his
           passion for automobiles into a purpose.
         </p>
@@ -55,7 +55,7 @@ export const Timeline = () => {
         <p className="text-new-white text-xs md:text-lg font-normal mb-8">
           With nearly two decades of hard work and reputation, Shameer Cars
           inaugurated its <span className="font-semibold">first centralized showroom</span> in 2023 —
-          marking a major milestone in the company’s growth journey.
+          marking a major milestone in the company's growth journey.
         </p>
         <div className="grid grid-cols-2 gap-4">
           <Image src="/aboutcarsimage.avif" alt="2023 showroom" width={500} height={500}

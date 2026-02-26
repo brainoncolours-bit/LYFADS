@@ -1,16 +1,19 @@
-"use client";
+import { PAGE_METADATA } from "@/lib/seo";
+import ContactPage from "./ContactPage";
 
-import React from "react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import ContactUs from "@/components/ContactUs";
+export const metadata = {
+  ...PAGE_METADATA.CONTACT,
+  keywords: [
+    "contact Lyf Ads",
+    "get in touch",
+    "start a project",
+    "video production inquiry",
+    "brand film quote",
+    "content creation collaboration",
+    "Bangalore video agency contact",
+  ],
+};
 
-export default function ContactPage() {
-  return (
-    <div className="bg-[#050505] text-white min-h-screen">
-      <Navbar />
-      <ContactUs />
-      <Footer />
-    </div>
-  );
+export default function Contact() {
+  return <ContactPage />;
 }

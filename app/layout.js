@@ -2,26 +2,97 @@
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import { ToastProvider } from "@/components/ToastProvider";
+import StructuredData, { organizationData } from "@/components/StructuredData";
 
 const poppins = Poppins({
   subsets: ["latin"],
-  weight: ["400", "600", "700"], // Add desired weights
-  variable: "--font-poppins", // Custom CSS variable
+  weight: ["400", "600", "700"],
+  variable: "--font-poppins",
 });
 
+const SITE_URL = "https://lyfads.com"; // TODO: Update with your actual domain
+
 export const metadata = {
-  title: "Lyf Ads ",
-  description: " We are the best when it comes to Exotic Cars.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Lyf Ads - Premium Exotic Car Marketing & Motion Systems",
+    template: "%s | Lyf Ads",
+  },
+  description:
+    "Lyf Ads specializes in premium exotic car marketing, motion design, and brand elevation. We create stunning visual experiences that elevate your brand to the next level.",
+  keywords: [
+    "exotic cars",
+    "luxury cars",
+    "car marketing",
+    "motion design",
+    "automotive advertising",
+    "brand elevation",
+    "video production",
+    "creative agency",
+    "supercars",
+    "hypercars",
+  ],
+  authors: [{ name: "Lyf Ads" }],
+  creator: "Lyf Ads",
+  publisher: "Lyf Ads",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   icons: {
-    icon: "/brandLogo.png", 
+    icon: "/brandLogo.png",
+    apple: "/brandLogo.png",
+    shortcut: "/brandLogo.png",
+  },
+  manifest: "/manifest.json",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: SITE_URL,
+    siteName: "Lyf Ads",
+    title: "Lyf Ads - Premium Exotic Car Marketing & Motion Systems",
+    description:
+      "Lyf Ads specializes in premium exotic car marketing, motion design, and brand elevation.",
+    images: [
+      {
+        url: "/og-image.png", // TODO: Add og-image.png to /public folder (1200x630px)
+        width: 1200,
+        height: 630,
+        alt: "Lyf Ads - Premium Exotic Car Marketing",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Lyf Ads - Premium Exotic Car Marketing & Motion Systems",
+    description:
+      "Lyf Ads specializes in premium exotic car marketing, motion design, and brand elevation.",
+    images: ["/og-image.png"], // TODO: Add og-image.png to /public folder
+    creator: "@lyfads", // TODO: Update with your Twitter handle
+  },
+  verification: {
+    // TODO: Add your verification codes
+    // google: "your-google-verification-code",
+    // yandex: "your-yandex-verification-code",
+    // yahoo: "your-yahoo-verification-code",
   },
 };
-export default function RootLayout({ children }) {
-  
 
+export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={`${poppins.variable}`}>
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="canonical" href={SITE_URL} />
+      </head>
+      <body className={`${poppins.variable} antialiased`}>
+        <StructuredData data={organizationData} />
         <ToastProvider>{children}</ToastProvider>
       </body>
     </html>
