@@ -13,7 +13,13 @@ const thum = [
   "/assets/cat/copo.mp4",
   "/assets/cat/digi.mp4",
   
-  "/assets/cat/aivdo.mp4"
+  "/assets/cat/aivdo.mp4",
+
+  "/assets/cat/copo.mp4",
+  "/assets/cat/comm.mp4",
+
+  "/assets/cat/cover photos ad.mp4"
+
 ];
 
 const CATEGORY_DISPLAY_CONFIG = [
