@@ -11,20 +11,20 @@ import { supabase } from '@/lib/supabaseClient';
 const thum = [
   "/assets/cat/comm.mp4",
   "/assets/cat/digi.mp4",
+ "/assets/cat/cover photos ad.mp4",
+
+  
   "/assets/cat/copo.mp4",
-  
-  
   "/assets/cat/aivdo.mp4",
 
-  "/assets/cat/copo.mp4",
-  "/assets/cat/comm.mp4",
+  
 
   "/assets/cat/cover photos ad.mp4"
 
 ];
 
 const CATEGORY_DISPLAY_CONFIG = [
-  { id: 1 }, { id: 4 }, { id: 18 }, { id: 14 }, { id: 16 },   { id: 6 }
+  { id: 1 }, { id: 4 }, { id: 18 }, { id: 14 }, { id: 16 },   
 ];
 
 // --- HOOKS ---
@@ -46,15 +46,17 @@ const useResponsiveCardDimensions = () => {
 };
 
 // --- COMPONENTS ---
-const CategoryCard = ({ cat, index, cardWidth, cardHeight }) => {
+const CategoryCard = ({ cat, index, cardWidth, cardHeight, isStatic = false, redirectUrl }) => {
   const cardRef = useRef(null);
   const videoRef = useRef(null);
   const isInView = useInView(cardRef, { once: false, margin: "-10% 0px -10% 0px" });
-  
+
   const [isHovered, setIsHovered] = useState(false);
   const [isMobileActive, setIsMobileActive] = useState(false);
 
-  const isVideo = thum[index % thum.length].toLowerCase().endsWith('.mp4');
+  // Use static media or dynamic based on index
+  const mediaSource = isStatic ? "/assets/cat/copo.mp4" : thum[index % thum.length];
+  const isVideo = mediaSource.toLowerCase().endsWith('.mp4');
   const isSelected = isHovered || isMobileActive;
 
   useEffect(() => {
@@ -88,26 +90,26 @@ const CategoryCard = ({ cat, index, cardWidth, cardHeight }) => {
         {isVideo ? (
           <video
             ref={videoRef}
-            src={thum[index % thum.length]}
+            src={mediaSource}
             muted loop playsInline
             className={`h-full w-full object-cover transition-all duration-[1200ms] ease-[cubic-bezier(0.23,1,0.32,1)] ${
-              isSelected 
-                ? 'scale-57 grayscale-0 opacity-80' 
+              isSelected
+                ? 'scale-57 grayscale-0 opacity-80'
                 : 'scale-125 grayscale opacity-30'
             }`}
           />
         ) : (
           <img
-            src={thum[index % thum.length]}
+            src={mediaSource}
             alt={cat.name}
             className={`h-full w-full object-cover transition-all duration-[1200ms] ease-[cubic-bezier(0.23,1,0.32,1)] ${
-              isSelected 
-                ? 'scale-100 grayscale-0 opacity-100' 
+              isSelected
+                ? 'scale-100 grayscale-0 opacity-100'
                 : 'scale-125 grayscale opacity-40'
             }`}
           />
         )}
-        
+
         {/* Cinematic Gradient Overlay */}
         <div className={`absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent transition-opacity duration-1000 ${
           isSelected ? 'opacity-60' : 'opacity-90'
@@ -126,7 +128,7 @@ const CategoryCard = ({ cat, index, cardWidth, cardHeight }) => {
           <h3 className="text-3xl md:text-5xl font-black mb-6 uppercase leading-[0.9] tracking-tighter">
             {cat.name}
           </h3>
-          
+
           <div className={`inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-full border transition-all duration-500 ${
             isSelected ? 'bg-white border-white text-black translate-x-2' : 'border-white/20 text-white'
           }`}>
@@ -137,7 +139,8 @@ const CategoryCard = ({ cat, index, cardWidth, cardHeight }) => {
         </motion.div>
       </div>
 
-      <Link href={`/works/${cat?.id}`} className="absolute inset-0 z-20" />
+      {/* Dynamic Link: static card uses redirectUrl, others use category ID */}
+      <Link href={isStatic ? redirectUrl : `/works/${cat?.id}`} className="absolute inset-0 z-20" />
 
       {/* Interactive Progress Line */}
       <div className={`absolute bottom-0 left-0 h-1.5 bg-red-600 transition-all duration-1000 ease-in-out ${
@@ -222,6 +225,16 @@ const WorksCategories = () => {
                 cardHeight={cardDimensions.height}
               />
             ))}
+
+            {/* STATIC SPECIAL CARD */}
+            {/* <CategoryCard
+              cat={{ name: "Branding", sub: "Custom_Solution" }}
+              index={orderedCategories.length}
+              cardWidth={cardDimensions.width}
+              cardHeight={cardDimensions.height}
+              isStatic
+              redirectUrl="/your-special-page"
+            /> */}
 
             {/* OUTRO CTA */}
             <div className="flex flex-col justify-center min-w-[300px] md:min-w-[700px] pl-10">
