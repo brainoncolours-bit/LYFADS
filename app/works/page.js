@@ -23,7 +23,7 @@ const thum = [
 ];
 
 const CATEGORY_DISPLAY_CONFIG = [
-  { id: 1 }, { id: 15 }, { id: 4 }, { id: 13 }, { id: 5 }, { id: 6 }
+  { id: 1 }, { id: 4 }, { id: 16 }, { id: 14 }, { id: 18 }, { id: 6 }
 ];
 
 // --- HOOKS ---
