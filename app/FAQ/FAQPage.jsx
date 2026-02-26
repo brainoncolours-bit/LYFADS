@@ -15,7 +15,7 @@ const faqData = [
       'Original RC (Registration Certificate)',
       'Valid insurance papers',
       'Pollution certificate',
-      'Owner's ID proof',
+      "Owner's ID proof",
       'Bank NOC (if car was financed)',
     ],
   },
@@ -98,7 +98,7 @@ const faqData = [
   {
     question: 'Can I list more than one car?',
     answer: [
-      'Absolutely, there's no limit.',
+      "Absolutely, there's no limit.",
       'We offer special support for car dealers too.',
     ],
   },

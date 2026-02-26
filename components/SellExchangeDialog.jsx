@@ -224,7 +224,7 @@ export default function SellExchangeDialog({ open, setOpen }) {
               Meanwhile, explore our premium car collection:
             </p>
             <p style="text-align:center;margin:30px 0;">
-              <a href="https://shameercars.vercel.app/car-details" style="background-color:#1890ff;color:#fff;padding:12px 24px;border-radius:4px;text-decoration:none;font-size:16px;">
+              <a href="https://shameercars.vercel.app/services" style="background-color:#1890ff;color:#fff;padding:12px 24px;border-radius:4px;text-decoration:none;font-size:16px;">
                 Browse Car Collection
               </a>
             </p>

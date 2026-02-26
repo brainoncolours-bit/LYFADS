@@ -54,7 +54,7 @@ export default function CarListing() {
   }, []);
 
   const handleNavigate = (car) => () => {
-    router.push(`/car-details/${car?.variant}`);
+    router.push(`/services/${car?.variant}`);
     sessionStorage.setItem("selectedCar", JSON.stringify(car));
   };
 

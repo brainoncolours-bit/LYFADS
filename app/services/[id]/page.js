@@ -23,11 +23,11 @@ const CarDetailsPage = () => {
         setCarData(parsedData);
       } catch (error) {
         // If parsing fails, redirect
-        router.push("/car-details");
+        router.push("/services");
       }
     } else {
       // If no data, redirect
-      router.push("/car-details");
+      router.push("/services");
     }
   }, [router]);
 

@@ -132,18 +132,7 @@ export default function FilmStripServices() {
       </section>
 
       {/* FOOTER CALL TO ACTION */}
-      <section className="h-[80vh] flex flex-col items-center justify-center text-center px-6">
-        <div className="w-1 bg-red-600 h-24 mb-10" />
-        <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-8">
-          CUT TO: <br /><span className="text-red-600 italic">CONVERSATION.</span>
-        </h2>
-        <motion.button 
-          whileHover={{ backgroundColor: "#dc2626", color: "#fff" }}
-          className="px-12 py-4 border-2 border-red-600 text-red-600 font-bold uppercase tracking-widest transition-all"
-        >
-          Book Your Shoot
-        </motion.button>
-      </section>
+    
 
       <Footer />
     </div>
