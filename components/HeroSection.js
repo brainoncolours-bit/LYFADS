@@ -5,7 +5,7 @@ const IMAGES = [
   "/assets/home/img1.jpeg",
   "/assets/home/img2.jpeg",
   "/assets/home/img3.jpeg",
-  "/assets/home/img4.jpeg",
+  "/assets/home/img4.webp",
   "/assets/home/img5.jpeg",
   // "/assets/home/img6.jpeg",
   "/assets/home/img7.jpeg",

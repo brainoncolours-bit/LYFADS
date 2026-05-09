@@ -9,7 +9,7 @@ const SERVICES = [
     title: "⁠Commercial & Brand Video Production",
     tag: "YT_MOBILE",
     desc: "High-impact visual storytelling crafted to elevate brands. From concept to execution, we produce commercials, brand films, product videos, and high-volume digital content.",
-    img: "/assets/services/img1.png",
+    img: "/assets/services/img1.webp",
   },
   {
     id: "02",
@@ -23,7 +23,7 @@ const SERVICES = [
     title: "Event Coverage",
     tag: "DEST_FILM",
     desc: "Cinematic multi-camera coverage that captures every key moment. From product launches to corporate events, we deliver impactful highlight and platform-ready edits.",
-    img: "/assets/services/img5.jpeg",
+    img: "/assets/services/img5.webp",
   },
   {
     id: "04",
