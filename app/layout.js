@@ -1,4 +1,3 @@
-
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import { ToastProvider } from "@/components/ToastProvider";
@@ -47,9 +46,9 @@ export const metadata = {
     },
   },
   icons: {
-    icon: "/brandLogo.png",
-    apple: "/brandLogo.png",
-    shortcut: "/brandLogo.png",
+    icon: "/bg.png",
+    apple: "/bg.png",
+    shortcut: "/bg.png",
   },
   manifest: "/manifest.json",
   openGraph: {
@@ -87,7 +86,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
         <link rel="canonical" href={SITE_URL} />
       </head>

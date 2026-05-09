@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  turbopack: {
+    root: process.cwd(),
+  },
   images: {
     domains: [
       "res.cloudinary.com", // Allow images from Cloudinary

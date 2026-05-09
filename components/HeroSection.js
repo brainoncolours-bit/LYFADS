@@ -2,13 +2,13 @@ import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring, animate, useMotionValue } from 'framer-motion';
 
 const IMAGES = [
-  "/assets/home/img1.jpeg",
-  "/assets/home/img2.jpeg",
-  "/assets/home/img3.jpeg",
+  "/assets/home/img1.webp",
+  "/assets/home/img2%20(1).webp",
+  "/assets/home/img3.webp",
   "/assets/home/img4.webp",
-  "/assets/home/img5.jpeg",
+  "/assets/home/img5.webp",
   // "/assets/home/img6.jpeg",
-  "/assets/home/img7.jpeg",
+  "/assets/home/img7.webp",
 ];
 
 const NucleusHero = () => {
@@ -71,7 +71,7 @@ const NucleusHero = () => {
           className="relative z-50 pointer-events-none"
         >
           <img
-            src="./bg.png"
+            src="/bg.png"
             alt="Logo"
             className={`${dimensions.logoSize} h-auto drop-shadow-[0_0_50px_rgba(255,255,255,0.1)]`}
           />

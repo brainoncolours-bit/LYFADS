@@ -65,7 +65,7 @@ export default function Navbar() {
         {/* Brand/Logo (Visible on Mobile to push Menu to Right) */}
         <div className="md:hidden relative z-10 font-black tracking-tighter text-red-600">
        {/* logo image */}
-          <img src="./bg.png" alt="Logo" className="w-12 h-auto" />
+          <img src="/bg.png" alt="Logo" className="w-12 h-auto" />
         </div>
 
         {/* Desktop Nav */}

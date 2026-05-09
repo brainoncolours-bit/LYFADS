@@ -1,0 +1,15 @@
+{
+  "name": "Lyf Ads",
+  "short_name": "Lyf Ads",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050505",
+  "theme_color": "#050505",
+  "icons": [
+    {
+      "src": "/bg.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

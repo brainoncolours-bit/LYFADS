@@ -70,7 +70,7 @@ export default function LyfAdsFooter() {
             <div className="inline-block px-4 py-1 border border-red-600 text-red-600 text-xs font-black tracking-[0.2em] uppercase">
               Now In Production
             </div>
-            <img src={"./bg.png"} width="200" alt="Lyf Ads Logo" />
+            <img src="/bg.png" width="200" alt="Lyf Ads Logo" />
           </div>
 
           <div className="hidden md:block text-right space-y-2">

@@ -23,7 +23,7 @@ export default function LyfAdsNexusRibbon() {
   const tunnelZ = useTransform(smoothProgress, [0, 1], [0, -1000]);
 
   return (
-    <div ref={containerRef} style={{ height: "500vh", background: "#000", color: "#fff", overflow: "hidden" }}>
+    <div ref={containerRef} style={{ position: "relative", height: "500vh", background: "#000", color: "#fff", overflow: "hidden" }}>
       <motion.div
         style={{
           position: "sticky",

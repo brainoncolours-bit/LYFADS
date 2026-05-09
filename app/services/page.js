@@ -16,7 +16,7 @@ const SERVICES = [
     title: "Corporate Video Production",
     tag: "PR_BRAND",
     desc: "Professional films that communicate credibility and vision. We create corporate profiles, leadership interviews, culture films, and business-focused visual content.",
-    img: "/assets/services/img4.png",
+    img: "/assets/services/img4.webp",
   },
   {
     id: "03",
@@ -37,7 +37,7 @@ const SERVICES = [
     title: "Post-Production",
     tag: "3D_TECH",
     desc: "Precision editing, color grading, motion graphics, and finishing that transform raw footage into powerful final visuals.",
-    img: "/assets/services/img2.jpeg",
+    img: "/assets/services/img2.webp",
   }
 ];
 

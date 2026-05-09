@@ -5,7 +5,7 @@ import { motion, useScroll, useTransform, useSpring, useInView, AnimatePresence 
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { supabase } from '@/lib/supabaseClient';
+import { hasSupabaseConfig, supabase } from '@/lib/supabaseClient';
 
 // --- CONFIGURATION ---
 const thum = [
@@ -25,6 +25,14 @@ const thum = [
 
 const CATEGORY_DISPLAY_CONFIG = [
   { id: 1 }, { id: 4 }, { id: 18 }, { id: 14 }, { id: 16 },   
+];
+
+const FALLBACK_CATEGORIES = [
+  { id: "fallback-1", name: "Commercial", sub: "Film" },
+  { id: "fallback-2", name: "Digital", sub: "Campaign" },
+  { id: "fallback-3", name: "Corporate", sub: "Branding" },
+  { id: "fallback-4", name: "AI Video", sub: "Content" },
+  { id: "fallback-5", name: "Cinematic", sub: "Production" },
 ];
 
 // --- HOOKS ---
@@ -170,8 +178,19 @@ const WorksCategories = () => {
 
   useEffect(() => {
     const fetchCategories = async () => {
+      if (!hasSupabaseConfig) {
+        setCategoriesData(FALLBACK_CATEGORIES);
+        return;
+      }
+
       const { data, error } = await supabase.from('video_categories').select('*').order('id', { ascending: true });
-      if (!error) setCategoriesData(data || []);
+      if (!error && data?.length) {
+        setCategoriesData(data);
+        return;
+      }
+
+      // Fall back to local demo cards if the database is empty or unavailable.
+      setCategoriesData(FALLBACK_CATEGORIES);
     };
     fetchCategories();
   }, []);
@@ -201,7 +220,11 @@ const WorksCategories = () => {
         </motion.h1>
       </div>
 
-      <section ref={targetRef} className="relative h-[400vh] bg-transparent">
+      <section
+        ref={targetRef}
+        className="relative h-[400vh] bg-transparent"
+        style={{ position: "relative" }}
+      >
         <div className="sticky top-0 flex h-screen items-center overflow-hidden">
           <motion.div style={{ x: physicsX }} className="flex gap-6 md:gap-16 px-10 md:px-20 items-center">
 
