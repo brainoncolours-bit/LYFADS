@@ -62,9 +62,10 @@ const CategoryCard = ({ cat, index, cardWidth, cardHeight, isStatic = false, red
   const [isHovered, setIsHovered] = useState(false);
   const [isMobileActive, setIsMobileActive] = useState(false);
 
-  // Use static media or dynamic based on index
-  const mediaSource = isStatic ? "/assets/cat/copo.mp4" : thum[index % thum.length];
-  const isVideo = mediaSource.toLowerCase().endsWith('.mp4');
+  // Prefer dashboard-managed card video; keep local files as fallback.
+  const hasUploadedVideo = Boolean(cat?.carousel_video_url);
+  const mediaSource = isStatic ? "/assets/cat/copo.mp4" : cat?.carousel_video_url || thum[index % thum.length];
+  const isVideo = hasUploadedVideo || /\.(mp4|webm|ogg|mov)(\?|$)/i.test(mediaSource);
   const isSelected = isHovered || isMobileActive;
 
   useEffect(() => {
@@ -97,9 +98,10 @@ const CategoryCard = ({ cat, index, cardWidth, cardHeight, isStatic = false, red
       <div className="absolute inset-0 z-0 overflow-hidden bg-black">
         {isVideo ? (
           <video
+            key={mediaSource}
             ref={videoRef}
             src={mediaSource}
-            muted loop playsInline
+            muted loop playsInline preload="metadata"
             className={`h-full w-full object-cover transition-all duration-[1200ms] ease-[cubic-bezier(0.23,1,0.32,1)] ${
               isSelected
                 ? 'scale-57 grayscale-0 opacity-80'

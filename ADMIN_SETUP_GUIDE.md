@@ -10,8 +10,10 @@ Your admin panel is now configured to manage a production company's video portfo
 CREATE TABLE videos (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   title TEXT NOT NULL,
+  description TEXT,
   video_url TEXT NOT NULL,
   thumbnail_url TEXT NOT NULL,
+  category_id INTEGER,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
@@ -36,6 +38,42 @@ CREATE POLICY "Allow authenticated users to update videos"
 
 CREATE POLICY "Allow authenticated users to delete videos"
   ON videos FOR DELETE
+  TO authenticated
+  USING (true);
+
+-- If your videos table already exists, run this to add missing fields safely.
+ALTER TABLE videos
+ADD COLUMN IF NOT EXISTS description TEXT,
+ADD COLUMN IF NOT EXISTS category_id INTEGER;
+```
+
+### Table: `video_categories`
+```sql
+-- Stores the Works carousel cards shown on /works.
+-- name = visible card title, carousel_video_url = uploaded card video.
+ALTER TABLE video_categories
+ADD COLUMN IF NOT EXISTS carousel_video_url TEXT;
+
+-- If Row Level Security is enabled on video_categories, these policies allow
+-- the admin dashboard to add, edit, and delete Works carousel cards.
+CREATE POLICY "Allow authenticated users to read video categories"
+  ON video_categories FOR SELECT
+  TO authenticated
+  USING (true);
+
+CREATE POLICY "Allow authenticated users to insert video categories"
+  ON video_categories FOR INSERT
+  TO authenticated
+  WITH CHECK (true);
+
+CREATE POLICY "Allow authenticated users to update video categories"
+  ON video_categories FOR UPDATE
+  TO authenticated
+  USING (true)
+  WITH CHECK (true);
+
+CREATE POLICY "Allow authenticated users to delete video categories"
+  ON video_categories FOR DELETE
   TO authenticated
   USING (true);
 ```
@@ -65,6 +103,64 @@ CREATE POLICY "Allow authenticated users to delete thumbnails"
   USING (bucket_id = 'thumbnails');
 ```
 
+### Bucket: `carousel-videos`
+```sql
+-- Stores the original video files for the main Works carousel cards.
+INSERT INTO storage.buckets (id, name, public)
+VALUES ('carousel-videos', 'carousel-videos', true)
+ON CONFLICT (id) DO NOTHING;
+
+CREATE POLICY "Allow authenticated users to upload carousel videos"
+  ON storage.objects FOR INSERT
+  TO authenticated
+  WITH CHECK (bucket_id = 'carousel-videos');
+
+CREATE POLICY "Allow authenticated users to update carousel videos"
+  ON storage.objects FOR UPDATE
+  TO authenticated
+  USING (bucket_id = 'carousel-videos')
+  WITH CHECK (bucket_id = 'carousel-videos');
+
+CREATE POLICY "Allow public to read carousel videos"
+  ON storage.objects FOR SELECT
+  TO public
+  USING (bucket_id = 'carousel-videos');
+
+CREATE POLICY "Allow authenticated users to delete carousel videos"
+  ON storage.objects FOR DELETE
+  TO authenticated
+  USING (bucket_id = 'carousel-videos');
+```
+
+### Bucket: `work-videos`
+```sql
+-- Stores original files for the individual videos inside /works/[category].
+INSERT INTO storage.buckets (id, name, public)
+VALUES ('work-videos', 'work-videos', true)
+ON CONFLICT (id) DO NOTHING;
+
+CREATE POLICY "Allow authenticated users to upload work videos"
+  ON storage.objects FOR INSERT
+  TO authenticated
+  WITH CHECK (bucket_id = 'work-videos');
+
+CREATE POLICY "Allow authenticated users to update work videos"
+  ON storage.objects FOR UPDATE
+  TO authenticated
+  USING (bucket_id = 'work-videos')
+  WITH CHECK (bucket_id = 'work-videos');
+
+CREATE POLICY "Allow public to read work videos"
+  ON storage.objects FOR SELECT
+  TO public
+  USING (bucket_id = 'work-videos');
+
+CREATE POLICY "Allow authenticated users to delete work videos"
+  ON storage.objects FOR DELETE
+  TO authenticated
+  USING (bucket_id = 'work-videos');
+```
+
 ## 🚀 How to Set Up in Supabase Dashboard
 
 ### Step 1: Create the Database Table
@@ -72,14 +168,15 @@ CREATE POLICY "Allow authenticated users to delete thumbnails"
 2. Copy the `videos` table SQL from above
 3. Click **Run** to create the table
 
-### Step 2: Create Storage Bucket
+### Step 2: Create Storage Buckets
 1. Go to **Storage** → **Create a new bucket**
-2. Name: `thumbnails`
-3. Make it **Public**
-4. Save
+2. Create `thumbnails` and make it **Public**
+3. Create `carousel-videos` and make it **Public**
+4. Create `work-videos` and make it **Public**
+5. Save
 
 ### Step 3: Set Storage Policies
-1. In **Storage** → Click on `thumbnails` bucket
+1. In **Storage** → Click on each bucket
 2. Go to **Policies** tab
 3. Add the policies from above (or use the UI to create similar policies)
 
@@ -94,8 +191,9 @@ CREATE POLICY "Allow authenticated users to delete thumbnails"
 ### ✅ Add/Edit Video Form
 - **Title input** - Name of the production
 - **Google Drive URL input** - Link to the video
+- **Category selector** - Decides which Works category page shows the video
 - **Thumbnail upload** - File picker with preview
-- **Supabase Storage integration** - Automatic upload to `thumbnails` bucket
+- **Supabase Storage integration** - Automatic upload to `thumbnails`
 - **Loading states** - "Uploading..." and "Saving..." indicators
 - **Error handling** - User-friendly error messages
 - **Form validation** - Required field checks
@@ -148,13 +246,13 @@ app/admin/
 1. Click **"Add New Video"** button
 2. Enter video **title**
 3. Paste **Google Drive link**
-4. Click to **upload thumbnail** (max 5MB, images only)
-5. Preview appears below
+4. Choose the category, such as Commercial
+5. Click to **upload thumbnail** (max 5MB, images only)
 6. Click **"Add Video"** to save
 
 ### Editing a Video
 1. Click **"Edit"** button on any video card
-2. Modify title/URL as needed
+2. Modify title, URL, category, or thumbnail as needed
 3. Optionally upload new thumbnail
 4. Click **"Update Video"** to save
 
@@ -164,14 +262,13 @@ app/admin/
 3. Video removed from database
 
 ### Viewing Videos
-- Click on any **thumbnail** to open Google Drive link
-- Or click **"View on Google Drive"** link
+- Click on any **thumbnail** in a category page to open the saved video URL
 
 ## 🔒 Security Notes
 
 1. **Authentication Required** - All operations require logged-in user
 2. **RLS Enabled** - Row Level Security on `videos` table
-3. **Public Thumbnails** - Stored images are publicly accessible
+3. **Public Media** - Stored thumbnails and portfolio videos are publicly accessible
 4. **File Validation** - Type and size checks before upload
 
 ## 📝 Environment Variables

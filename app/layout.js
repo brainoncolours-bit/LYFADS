@@ -1,5 +1,6 @@
 import { Poppins } from "next/font/google";
 import "./globals.css";
+import AntdReactPatch from "@/components/AntdReactPatch";
 import { ToastProvider } from "@/components/ToastProvider";
 import StructuredData, { organizationData } from "@/components/StructuredData";
 
@@ -91,6 +92,7 @@ export default function RootLayout({ children }) {
         <link rel="canonical" href={SITE_URL} />
       </head>
       <body className={`${poppins.variable} antialiased`}>
+        <AntdReactPatch />
         <StructuredData data={organizationData} />
         <ToastProvider>{children}</ToastProvider>
       </body>
