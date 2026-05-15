@@ -11,7 +11,6 @@ import { supabase } from "@/lib/supabaseClient";
 import { Card, Skeleton } from "antd";
 import WorksModal from "./WorksModal";
 import WorksList from "./WorksList";
-import WorksCategoryCards from "./WorksCategoryCards";
 import CategoryVideosManager from "./CategoryVideosManager";
 
 const AdminDashboard = () => {
@@ -137,8 +136,6 @@ const AdminDashboard = () => {
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
       />
-
-      <WorksCategoryCards />
 
       <CategoryVideosManager />
 
