@@ -110,6 +110,11 @@ INSERT INTO storage.buckets (id, name, public)
 VALUES ('carousel-videos', 'carousel-videos', true)
 ON CONFLICT (id) DO NOTHING;
 
+-- Required for large category card videos. The admin uses resumable uploads.
+UPDATE storage.buckets
+SET file_size_limit = 524288000
+WHERE id = 'carousel-videos';
+
 CREATE POLICY "Allow authenticated users to upload carousel videos"
   ON storage.objects FOR INSERT
   TO authenticated
@@ -138,6 +143,11 @@ CREATE POLICY "Allow authenticated users to delete carousel videos"
 INSERT INTO storage.buckets (id, name, public)
 VALUES ('work-videos', 'work-videos', true)
 ON CONFLICT (id) DO NOTHING;
+
+-- Required for large portfolio videos. The admin uses resumable uploads.
+UPDATE storage.buckets
+SET file_size_limit = 524288000
+WHERE id = 'work-videos';
 
 CREATE POLICY "Allow authenticated users to upload work videos"
   ON storage.objects FOR INSERT
@@ -173,7 +183,8 @@ CREATE POLICY "Allow authenticated users to delete work videos"
 2. Create `thumbnails` and make it **Public**
 3. Create `carousel-videos` and make it **Public**
 4. Create `work-videos` and make it **Public**
-5. Save
+5. Set the file size limit for `carousel-videos` and `work-videos` to **500MB**
+6. Save
 
 ### Step 3: Set Storage Policies
 1. In **Storage** → Click on each bucket

@@ -4,14 +4,11 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
   LucideLogOut,
-  LucideVideo,
-  LucidePlus,
 } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
 import { Card, Skeleton } from "antd";
 import WorksModal from "./WorksModal";
 import WorksList from "./WorksList";
-import CategoryVideosManager from "./CategoryVideosManager";
 
 const AdminDashboard = () => {
   const router = useRouter();
@@ -19,8 +16,10 @@ const AdminDashboard = () => {
   const [error, setError] = useState("");
   const [editData,setEditData] = useState(null);
   const [works, setWorks] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [worksLoading, setWorksLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [defaultCategoryId, setDefaultCategoryId] = useState("");
   
 
   const handleLogout = async () => {
@@ -71,6 +70,21 @@ const AdminDashboard = () => {
     }
   };
 
+  const fetchCategories = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("video_categories")
+        .select("*")
+        .order("name", { ascending: true });
+
+      if (error) throw error;
+      setCategories(data || []);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+      setCategories([]);
+    }
+  };
+
   useEffect(() => {
     const checkAuth = async () => {
       const { data, error } = await supabase.auth.getSession();
@@ -79,6 +93,7 @@ const AdminDashboard = () => {
         router.push("/admin/login");
       } else {
         fetchWorks();
+        fetchCategories();
       }
     };
 
@@ -102,32 +117,6 @@ const AdminDashboard = () => {
           Logout
         </button>
       </div>
-      
-      {/* Stats Card */}
-      <div className="bg-white rounded-2xl shadow-xl p-8 mb-8 border border-purple-100">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            <div className="bg-gradient-to-br from-purple-500 to-blue-600 p-6 rounded-2xl shadow-lg">
-              <LucideVideo size={48} className="text-white" />
-            </div>
-            <div>
-              <p className="text-gray-500 text-sm font-medium mb-1">Total Works</p>
-              <p className="text-5xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-                {works.length}
-              </p>
-            </div>
-          </div>
-          
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-4 flex items-center gap-3 rounded-xl hover:shadow-2xl transition-all transform hover:scale-105 font-semibold text-lg"
-          >
-            <LucidePlus size={24} />
-            Add New Work
-          </button>
-        </div>
-      </div>
-
       {/* Works Modal */}
       <WorksModal
         editData={editData}
@@ -135,9 +124,11 @@ const AdminDashboard = () => {
         fetchWorks={fetchWorks}
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
+        categories={categories}
+        fetchCategories={fetchCategories}
+        defaultCategoryId={defaultCategoryId}
+        setDefaultCategoryId={setDefaultCategoryId}
       />
-
-      <CategoryVideosManager />
 
       {/* Loading State */}
       {worksLoading ? (
@@ -160,13 +151,21 @@ const AdminDashboard = () => {
           {/* Works List */}
           <WorksList
             setEditData={(data) => {
+              setDefaultCategoryId("");
               setEditData(data);
               setIsModalOpen(true);
             }}
             editData={editData}
             fetchWorks={fetchWorks}
+            fetchCategories={fetchCategories}
             loading={worksLoading}
             videos={works}
+            categories={categories}
+            onAddWork={(categoryId = "") => {
+              setEditData(null);
+              setDefaultCategoryId(categoryId ? String(categoryId) : "");
+              setIsModalOpen(true);
+            }}
           />
         </>
       )}

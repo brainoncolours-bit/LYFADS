@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Modal, Button } from "antd";
 import { Upload } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
+import { uploadResumableFile } from "@/lib/supabaseResumableUpload";
 import InputField from "@/components/utilities/InputField";
 import Image from "next/image";
 
@@ -13,16 +14,28 @@ const initialState = {
   category_id: "",
 };
 
-const WorksModal = ({ editData, setEditData, fetchWorks, isModalOpen, setIsModalOpen }) => {
+const VIDEO_BUCKET = "work-videos";
+const MAX_VIDEO_SIZE = 500 * 1024 * 1024;
+
+const WorksModal = ({
+  editData,
+  setEditData,
+  fetchWorks,
+  isModalOpen,
+  setIsModalOpen,
+  categories = [],
+  fetchCategories,
+  defaultCategoryId = "",
+  setDefaultCategoryId,
+}) => {
   const [formData, setFormData] = useState(initialState);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [videoFile, setVideoFile] = useState(null);
   const [thumbnailFile, setThumbnailFile] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
   const [previewUrl, setPreviewUrl] = useState("");
-  const [categories, setCategories] = useState([]);
-  const [newCategory, setNewCategory] = useState("");
-  const [addingCategory, setAddingCategory] = useState(false);
 
   const handleChange = (val, field) => {
     setFormData((prev) => ({ ...prev, [field]: val }));
@@ -35,55 +48,36 @@ const WorksModal = ({ editData, setEditData, fetchWorks, isModalOpen, setIsModal
     : url;
 };
 
-  const fetchCategories = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('video_categories')
-        .select('*')
-        .order('name', { ascending: true });
-      
-      if (error) throw error;
-      setCategories(data || []);
-    } catch (err) {
-      console.error('Error fetching categories:', err);
-    }
-  };
-
-  const handleAddCategory = async () => {
-    if (!newCategory.trim()) {
-      setError('Please enter a category name');
-      return;
-    }
-
-    setAddingCategory(true);
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) throw new Error("User is not authenticated.");
-
-      const { error } = await supabase
-        .from('video_categories')
-        .insert({ name: newCategory.trim() });
-      
-      if (error) throw error;
-      
-      setNewCategory('');
-      await fetchCategories();
-    } catch (err) {
-      console.error('Error adding category:', err);
-      setError(err.message || 'Failed to add category');
-    } finally {
-      setAddingCategory(false);
-    }
-  };
-
   const handleClose = () => {
     setIsModalOpen(false);
     setFormData(initialState);
+    setVideoFile(null);
     setThumbnailFile(null);
+    setUploadProgress(0);
     setPreviewUrl("");
     setError("");
-    setNewCategory("");
+    setDefaultCategoryId?.("");
     setEditData?.(null);
+  };
+
+  const handleVideoFileSelect = (e) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+
+    if (!file) return;
+
+    if (!file.type.startsWith("video/")) {
+      setError("Please select a video file.");
+      return;
+    }
+
+    if (file.size > MAX_VIDEO_SIZE) {
+      setError("Video file should be less than 500MB.");
+      return;
+    }
+
+    setVideoFile(file);
+    setError("");
   };
 
   const handleFileSelect = (e) => {
@@ -110,6 +104,24 @@ const WorksModal = ({ editData, setEditData, fetchWorks, isModalOpen, setIsModal
         setPreviewUrl(reader.result);
       };
       reader.readAsDataURL(file);
+    }
+  };
+
+  const uploadVideo = async () => {
+    if (!videoFile) return "";
+
+    setUploading(true);
+    setUploadProgress(0);
+    try {
+      return await uploadResumableFile({
+        bucket: VIDEO_BUCKET,
+        file: videoFile,
+        prefix: "work-video",
+        onProgress: setUploadProgress,
+      });
+    } finally {
+      setUploading(false);
+      setUploadProgress(0);
     }
   };
 
@@ -149,29 +161,42 @@ const WorksModal = ({ editData, setEditData, fetchWorks, isModalOpen, setIsModal
 
   const handleSubmit = async () => {
     setError("");
+
+    const title = formData.title.trim();
+    const videoUrl = formData.video_url.trim();
+    const categoryId = formData.category_id;
+
+    if (!title) {
+      setError("Please enter a video title.");
+      return;
+    }
+
+    if (!categoryId) {
+      setError("Please select a category.");
+      return;
+    }
+
+    if (!videoFile && !videoUrl) {
+      setError("Please upload a video file or paste a video URL.");
+      return;
+    }
+
+    if (!editData && !thumbnailFile) {
+      setError("Please select a thumbnail image.");
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const { title, video_url, category_id } = formData;
-      
-      // Convert Google Drive link to preview link
-      const convertedVideoUrl = convertDriveLinkToPreview(video_url);
-
-      if (!title || !convertedVideoUrl) {
-        throw new Error("Please fill in title and video URL.");
-      }
-
-      if (!category_id) {
-        throw new Error("Please select a category.");
-      }
-
-      if (!editData && !thumbnailFile) {
-        throw new Error("Please select a thumbnail image.");
-      }
+      const { category_id } = formData;
 
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) throw new Error("User is not authenticated.");
 
+      const uploadedVideoUrl = videoFile
+        ? await uploadVideo()
+        : convertDriveLinkToPreview(videoUrl);
       let thumbnailUrl = formData.thumbnail_url;
 
       if (thumbnailFile) {
@@ -179,7 +204,7 @@ const WorksModal = ({ editData, setEditData, fetchWorks, isModalOpen, setIsModal
         if (!thumbnailUrl) throw new Error("Thumbnail upload failed.");
       }
 
-      const videoData = { title, video_url: convertedVideoUrl, thumbnail_url: thumbnailUrl, category_id };
+      const videoData = { title, video_url: uploadedVideoUrl, thumbnail_url: thumbnailUrl, category_id };
 
       const { error } = editData
         ? await supabase.from("videos").update(videoData).eq("id", editData.id)
@@ -190,7 +215,6 @@ const WorksModal = ({ editData, setEditData, fetchWorks, isModalOpen, setIsModal
       handleClose();
       fetchWorks(); // Refresh the videos list
     } catch (err) {
-      console.error(err);
       setError(err.message || "Unexpected error occurred.");
     } finally {
       setLoading(false);
@@ -198,9 +222,8 @@ const WorksModal = ({ editData, setEditData, fetchWorks, isModalOpen, setIsModal
   };
 
   useEffect(() => {
-    if (isModalOpen) {
-      fetchCategories();
-    }
+    if (isModalOpen) fetchCategories?.();
+
     if (editData) {
       setFormData({
         title: editData.title || "",
@@ -209,8 +232,17 @@ const WorksModal = ({ editData, setEditData, fetchWorks, isModalOpen, setIsModal
         category_id: editData.category_id || "",
       });
       setPreviewUrl(editData.thumbnail_url || "");
+      setVideoFile(null);
+    } else if (isModalOpen) {
+      setFormData({
+        ...initialState,
+        category_id: defaultCategoryId ? String(defaultCategoryId) : "",
+      });
+      setVideoFile(null);
+      setThumbnailFile(null);
+      setPreviewUrl("");
     }
-  }, [editData, isModalOpen]);
+  }, [defaultCategoryId, editData, isModalOpen]);
 
   return (
     <>
@@ -259,8 +291,58 @@ const WorksModal = ({ editData, setEditData, fetchWorks, isModalOpen, setIsModal
             label="Video URL"
             value={formData.video_url}
             onValueChange={(val) => handleChange(val, "video_url")}
-            placeholder="Enter video URL"
+            placeholder="Paste Drive, YouTube, Vimeo, or direct video URL"
           />
+
+          <div>
+            <label className="block text-sm font-medium mb-1">Upload Video</label>
+
+            <input
+              type="file"
+              accept="video/*"
+              onChange={handleVideoFileSelect}
+              className="hidden"
+              id="portfolio-video-upload"
+            />
+
+            <label
+              htmlFor="portfolio-video-upload"
+              className="w-full border-2 border-dashed border-gray-300 px-4 py-7 rounded-lg bg-gray-50 hover:bg-gray-100 hover:border-purple-400 transition-all duration-200 flex flex-col items-center justify-center gap-2 cursor-pointer"
+            >
+              <Upload size={30} className="text-gray-400" />
+              <span className="text-sm font-medium text-gray-600">
+                {videoFile ? videoFile.name : "Click to Upload Video"}
+              </span>
+              <span className="text-xs text-gray-400">
+                Optional if a URL is provided. Uploaded file takes priority. Max 500MB.
+              </span>
+            </label>
+
+            {uploading && videoFile && (
+              <div className="mt-3">
+                <div className="h-2 overflow-hidden rounded-full bg-gray-200">
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-purple-600 to-blue-600 transition-all"
+                    style={{ width: `${uploadProgress}%` }}
+                  />
+                </div>
+                <p className="mt-2 text-xs font-medium text-gray-500">
+                  Uploading video... {uploadProgress}%
+                </p>
+              </div>
+            )}
+
+            {editData?.video_url && !videoFile && (
+              <a
+                href={editData.video_url}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-2 block text-xs font-medium text-blue-600 underline"
+              >
+                Current video saved
+              </a>
+            )}
+          </div>
           
           {/* Category Section */}
           <div>
@@ -279,46 +361,6 @@ const WorksModal = ({ editData, setEditData, fetchWorks, isModalOpen, setIsModal
             </select>
           </div>
 
-          {/* Add New Category */}
-          <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-            <label className="block text-sm font-medium mb-2">Add New Category</label>
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={newCategory}
-                onChange={(e) => setNewCategory(e.target.value)}
-                placeholder="Enter category name"
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddCategory())}
-              />
-              <Button
-                type="default"
-                onClick={handleAddCategory}
-                loading={addingCategory}
-                disabled={!newCategory.trim()}
-                className="bg-gradient-to-r from-purple-600 to-blue-600 text-white border-none"
-              >
-                Add
-              </Button>
-            </div>
-          </div>
-
-          {/* Category List */}
-          {categories.length > 0 && (
-            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-              <label className="block text-sm font-medium mb-2">Existing Categories</label>
-              <div className="flex flex-wrap gap-2">
-                {categories.map((cat) => (
-                  <span
-                    key={cat.id}
-                    className="px-3 py-1 bg-white border border-purple-300 text-purple-700 rounded-full text-sm font-medium"
-                  >
-                    {cat.name}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
           <div>
             <label className="block text-sm font-medium mb-1">Thumbnail Image</label>
 

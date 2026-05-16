@@ -56,7 +56,7 @@ const useResponsiveCardDimensions = () => {
 };
 
 // --- COMPONENTS ---
-const CategoryCard = ({ cat, index, cardWidth, cardHeight, categoryVideos = [], isStatic = false, redirectUrl }) => {
+const CategoryCard = ({ cat, index, cardWidth, cardHeight, isStatic = false, redirectUrl }) => {
   const cardRef = useRef(null);
   const videoRef = useRef(null);
   const isInView = useInView(cardRef, { once: false, margin: "-10% 0px -10% 0px" });
@@ -64,13 +64,6 @@ const CategoryCard = ({ cat, index, cardWidth, cardHeight, categoryVideos = [], 
   const [isHovered, setIsHovered] = useState(false);
   const [isMobileActive, setIsMobileActive] = useState(false);
 
-  const syncedVideos = categoryVideos
-    .filter((video) => video.video_url || video.thumbnail_url)
-    .slice(0, 6);
-  const canPlaySyncedGrid =
-    !isStatic &&
-    syncedVideos.length > 0 &&
-    syncedVideos.every((video) => isDirectVideoSource(video.video_url));
   const mediaSource = isStatic ? "/assets/cat/copo.mp4" : cat?.carousel_video_url || thum[index % thum.length];
   const isVideo = isDirectVideoSource(mediaSource);
   const isSelected = isHovered || isMobileActive;
@@ -86,20 +79,11 @@ const CategoryCard = ({ cat, index, cardWidth, cardHeight, categoryVideos = [], 
   }, [isInView]);
 
   useEffect(() => {
-    if (canPlaySyncedGrid && cardRef.current) {
-      const tileVideos = cardRef.current.querySelectorAll("video[data-work-tile='true']");
-      tileVideos.forEach((video) => {
-        if (isSelected) video.play().catch(() => {});
-        else video.pause();
-      });
-      return;
-    }
-
     if (isVideo && videoRef.current) {
       if (isSelected) videoRef.current.play().catch(() => {});
       else videoRef.current.pause();
     }
-  }, [isSelected, isVideo, canPlaySyncedGrid]);
+  }, [isSelected, isVideo]);
 
   return (
     <motion.div
@@ -112,32 +96,7 @@ const CategoryCard = ({ cat, index, cardWidth, cardHeight, categoryVideos = [], 
     >
       {/* --- BACKGROUND LAYER: ZOOM OUT EFFECT --- */}
       <div className="absolute inset-0 z-0 overflow-hidden bg-black">
-        {canPlaySyncedGrid ? (
-          <div
-            className={`grid h-full w-full grid-cols-3 grid-rows-2 transition-all duration-[1200ms] ease-[cubic-bezier(0.23,1,0.32,1)] ${
-              isSelected
-                ? 'scale-100 grayscale-0 opacity-90'
-                : 'scale-110 grayscale opacity-35'
-            }`}
-          >
-            {syncedVideos.map((video, tileIndex) => {
-              return (
-                <div key={`${video.id || video.title}-${tileIndex}`} className="min-h-0 min-w-0 overflow-hidden bg-zinc-950">
-                  <video
-                    key={video.video_url}
-                    data-work-tile="true"
-                    src={video.video_url}
-                    muted
-                    loop
-                    playsInline
-                    preload="metadata"
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-              );
-            })}
-          </div>
-        ) : isVideo ? (
+        {isVideo ? (
           <video
             key={mediaSource}
             ref={videoRef}
@@ -203,7 +162,6 @@ const CategoryCard = ({ cat, index, cardWidth, cardHeight, categoryVideos = [], 
 
 const WorksCategories = () => {
   const [categoriesData, setCategoriesData] = useState([]);
-  const [videosByCategory, setVideosByCategory] = useState({});
   const targetRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: targetRef });
   const cardDimensions = useResponsiveCardDimensions();
@@ -227,25 +185,13 @@ const WorksCategories = () => {
         return;
       }
 
-      const [{ data: categories, error: categoriesError }, { data: videos, error: videosError }] = await Promise.all([
-        supabase.from('video_categories').select('*').order('id', { ascending: true }),
-        supabase
-          .from('videos')
-          .select('id,title,video_url,thumbnail_url,category_id,created_at')
-          .order('created_at', { ascending: false }),
-      ]);
+      const { data: categories, error: categoriesError } = await supabase
+        .from('video_categories')
+        .select('*')
+        .order('id', { ascending: true });
 
       if (!categoriesError && categories?.length) {
         setCategoriesData(categories);
-
-        if (!videosError && videos?.length) {
-          const groupedVideos = videos.reduce((acc, video) => {
-            const categoryId = String(video.category_id);
-            acc[categoryId] = [...(acc[categoryId] || []), video];
-            return acc;
-          }, {});
-          setVideosByCategory(groupedVideos);
-        }
         return;
       }
 
@@ -306,7 +252,6 @@ const WorksCategories = () => {
                 index={i}
                 cardWidth={cardDimensions.width}
                 cardHeight={cardDimensions.height}
-                categoryVideos={videosByCategory[String(cat.id)] || []}
               />
             ))}
 

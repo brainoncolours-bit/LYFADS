@@ -1,13 +1,12 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Film, Pencil, Play, Plus, RefreshCw, Trash2, Upload } from "lucide-react";
+import { ArrowLeft, Film, Pencil, Play, Plus, RefreshCw, Trash2, Upload, X } from "lucide-react";
 import Swal from "sweetalert2";
 import { supabase } from "@/lib/supabaseClient";
 
 const VIDEO_BUCKET = "work-videos";
 const THUMBNAIL_BUCKET = "thumbnails";
-const CATEGORY_VIDEO_BUCKET = "carousel-videos";
 const MAX_VIDEO_SIZE = 500 * 1024 * 1024;
 const MAX_THUMBNAIL_SIZE = 5 * 1024 * 1024;
 const preferredCategoryOrder = [1, 4, 18, 14, 16];
@@ -21,7 +20,6 @@ const initialForm = {
 
 const initialCategoryForm = {
   name: "",
-  carousel_video_url: "",
 };
 
 const convertDriveLinkToPreview = (url = "") => {
@@ -50,7 +48,6 @@ const CategoryVideosManager = () => {
   const [formData, setFormData] = useState(initialForm);
   const [categoryFormData, setCategoryFormData] = useState(initialCategoryForm);
   const [videoFile, setVideoFile] = useState(null);
-  const [categoryVideoFile, setCategoryVideoFile] = useState(null);
   const [thumbnailFile, setThumbnailFile] = useState(null);
   const [thumbnailPreview, setThumbnailPreview] = useState("");
 
@@ -136,7 +133,6 @@ const CategoryVideosManager = () => {
   const openAddCategoryModal = () => {
     setEditCategoryData(null);
     setCategoryFormData(initialCategoryForm);
-    setCategoryVideoFile(null);
     setError("");
     setIsCategoryModalOpen(true);
   };
@@ -147,9 +143,7 @@ const CategoryVideosManager = () => {
     setEditCategoryData(category);
     setCategoryFormData({
       name: category.name || "",
-      carousel_video_url: category.carousel_video_url || "",
     });
-    setCategoryVideoFile(null);
     setError("");
     setIsCategoryModalOpen(true);
   };
@@ -158,7 +152,6 @@ const CategoryVideosManager = () => {
     setIsCategoryModalOpen(false);
     setEditCategoryData(null);
     setCategoryFormData(initialCategoryForm);
-    setCategoryVideoFile(null);
     setError("");
   };
 
@@ -179,26 +172,6 @@ const CategoryVideosManager = () => {
     }
 
     setVideoFile(file);
-    setError("");
-  };
-
-  const handleCategoryVideoSelect = (event) => {
-    const file = event.target.files?.[0];
-    event.target.value = "";
-
-    if (!file) return;
-
-    if (!file.type.startsWith("video/")) {
-      setError("Please select a video file.");
-      return;
-    }
-
-    if (file.size > MAX_VIDEO_SIZE) {
-      setError("Video file should be less than 500MB.");
-      return;
-    }
-
-    setCategoryVideoFile(file);
     setError("");
   };
 
@@ -258,8 +231,8 @@ const CategoryVideosManager = () => {
       return;
     }
 
-    if (!editData && !videoFile && !formData.video_url) {
-      setError("Please upload a video or paste a video URL.");
+    if (!editData && !videoFile) {
+      setError("Please upload a video.");
       return;
     }
 
@@ -362,13 +335,8 @@ const CategoryVideosManager = () => {
     setSaving(true);
 
     try {
-      const uploadedCategoryVideoUrl = categoryVideoFile
-        ? await uploadFile(CATEGORY_VIDEO_BUCKET, categoryVideoFile, "category-card")
-        : categoryFormData.carousel_video_url;
-
       const categoryData = {
         name: categoryFormData.name.trim(),
-        carousel_video_url: uploadedCategoryVideoUrl || null,
       };
 
       const { data, error: saveError } = editCategoryData
@@ -451,7 +419,7 @@ const CategoryVideosManager = () => {
             Videos Inside Works Categories
           </h2>
           <p className="mt-2 max-w-2xl text-sm text-white/60">
-            Edit one specific video card inside Commercial, Digital Content, or any other category.
+            Edit the video cards shown inside each Works category page. These videos stay inside the category grid and do not appear in the main carousel.
           </p>
         </div>
 
@@ -524,7 +492,7 @@ const CategoryVideosManager = () => {
                 {selectedCategory.name}
               </h3>
               <p className="mt-1 text-sm text-white/50">
-                Controls /works/{selectedCategory.id} and the main Works category card title.
+                Controls the title and videos shown on /works/{selectedCategory.id}.
               </p>
             </div>
 
@@ -638,14 +606,34 @@ const CategoryVideosManager = () => {
 
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 backdrop-blur-sm">
-          <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white p-6 text-gray-900 shadow-2xl">
-            <div className="mb-5">
-              <h3 className="text-2xl font-bold">
-                {editData ? "Edit / Replace Video" : "Add Category Video"}
-              </h3>
-              <p className="mt-1 text-sm text-gray-500">
-                This changes one video card inside the selected Works category.
-              </p>
+          <div className="relative max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white p-6 text-gray-900 shadow-2xl">
+            <button
+              type="button"
+              onClick={closeModal}
+              disabled={saving}
+              className="absolute right-5 top-5 inline-flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-600 shadow-sm transition hover:bg-gray-100 hover:text-gray-900 disabled:opacity-50"
+              aria-label="Close video editor"
+            >
+              <X size={20} />
+            </button>
+            <div className="mb-5 flex items-start gap-4">
+              <button
+                type="button"
+                onClick={closeModal}
+                disabled={saving}
+                className="mt-1 inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-gray-50 text-gray-700 transition hover:bg-gray-100 disabled:opacity-50"
+                aria-label="Back to video cards"
+              >
+                <ArrowLeft size={20} />
+              </button>
+              <div className="pr-12">
+                <h3 className="text-2xl font-bold">
+                  {editData ? "Edit / Replace Video" : "Add Category Video"}
+                </h3>
+                <p className="mt-1 text-sm text-gray-500">
+                  This changes one video card inside the selected Works category.
+                </p>
+              </div>
             </div>
 
             {error && (
@@ -732,23 +720,6 @@ const CategoryVideosManager = () => {
 
               <div>
                 <label className="mb-1 block text-sm font-medium">
-                  Or Video URL
-                </label>
-                <input
-                  value={formData.video_url}
-                  onChange={(event) =>
-                    setFormData((current) => ({
-                      ...current,
-                      video_url: event.target.value,
-                    }))
-                  }
-                  placeholder="Paste existing video link"
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500"
-                />
-              </div>
-
-              <div>
-                <label className="mb-1 block text-sm font-medium">
                   Cover Image
                 </label>
                 <input
@@ -809,14 +780,34 @@ const CategoryVideosManager = () => {
 
       {isCategoryModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 backdrop-blur-sm">
-          <div className="w-full max-w-xl rounded-2xl bg-white p-6 text-gray-900 shadow-2xl">
-            <div className="mb-5">
-              <h3 className="text-2xl font-bold">
-                {editCategoryData ? "Edit Category Card" : "Add Category Card"}
-              </h3>
-              <p className="mt-1 text-sm text-gray-500">
-                This controls the category title on /works. Preview video is optional.
-              </p>
+          <div className="relative w-full max-w-xl rounded-2xl bg-white p-6 text-gray-900 shadow-2xl">
+            <button
+              type="button"
+              onClick={closeCategoryModal}
+              disabled={saving}
+              className="absolute right-5 top-5 inline-flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-600 shadow-sm transition hover:bg-gray-100 hover:text-gray-900 disabled:opacity-50"
+              aria-label="Close category editor"
+            >
+              <X size={20} />
+            </button>
+            <div className="mb-5 flex items-start gap-4">
+              <button
+                type="button"
+                onClick={closeCategoryModal}
+                disabled={saving}
+                className="mt-1 inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-gray-50 text-gray-700 transition hover:bg-gray-100 disabled:opacity-50"
+                aria-label="Back to category cards"
+              >
+                <ArrowLeft size={20} />
+              </button>
+              <div className="pr-12">
+                <h3 className="text-2xl font-bold">
+                  {editCategoryData ? "Edit Category Card" : "Add Category Card"}
+                </h3>
+                <p className="mt-1 text-sm text-gray-500">
+                  This controls the category title. Individual uploaded videos stay inside the category page only.
+                </p>
+              </div>
             </div>
 
             {error && (
@@ -841,34 +832,6 @@ const CategoryVideosManager = () => {
                 />
               </div>
 
-              <div>
-                <label className="mb-1 block text-sm font-medium">
-                  Optional Category Preview Video
-                </label>
-                <input
-                  id="category-card-video"
-                  type="file"
-                  accept="video/*"
-                  className="hidden"
-                  onChange={handleCategoryVideoSelect}
-                />
-                <label
-                  htmlFor="category-card-video"
-                  className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 px-4 py-7 transition hover:border-purple-400 hover:bg-gray-100"
-                >
-                  <Upload size={28} className="text-gray-400" />
-                  <span className="text-sm font-semibold text-gray-700">
-                    {categoryVideoFile
-                      ? categoryVideoFile.name
-                      : editCategoryData
-                        ? "Upload replacement preview video"
-                        : "Upload preview video"}
-                  </span>
-                  <span className="text-xs text-gray-400">
-                    Optional fallback for the main Works carousel card. Max 500MB.
-                  </span>
-                </label>
-              </div>
             </div>
 
             <div className="mt-6 flex justify-end gap-3">
