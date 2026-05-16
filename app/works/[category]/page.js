@@ -8,6 +8,7 @@ import { useParams } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { supabase } from '@/lib/supabaseClient';
+import VideoPlayer from '@/components/VideoPlayer';
 
 const categories = {
   'commercial': { name: 'Commercial', color: 'from-red-500 to-orange-500', icon: '🎬' },
@@ -37,6 +38,7 @@ const CategoryWorksPage = () => {
   
   
   const [videos, setVideos] = useState([]);
+  const [selectedVideo, setSelectedVideo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [categoryData, setCategoryData] = useState(null);
 
@@ -157,12 +159,11 @@ const CategoryWorksPage = () => {
               <p className="text-gray-500 col-span-full text-center">Loading videos...</p>
             ) : (
               videos.map((video) => (
-                <motion.a
+                <motion.button
                   key={video.id}
-                  href={video.video_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group block rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300"
+                  type="button"
+                  onClick={() => setSelectedVideo(video)}
+                  className="group block overflow-hidden rounded-lg text-left shadow-lg transition-shadow duration-300 hover:shadow-2xl"
                   whileHover={{ scale: 1.03 }}
                 >
                   <div className="relative w-full h-48 md:h-64 lg:h-48 xl:h-64">
@@ -181,13 +182,16 @@ const CategoryWorksPage = () => {
                     <h2 className="text-lg font-semibold text-white mb-2">{video.title}</h2>
                     <p className="text-gray-400 text-sm">{video.description}</p>
                   </div>
-                </motion.a>
+                </motion.button>
               ))
             )}
           </div>
         )}
         
       </div>
+      {selectedVideo && (
+        <VideoPlayer video={selectedVideo} onClose={() => setSelectedVideo(null)} />
+      )}
       <Footer />
     </>
   );

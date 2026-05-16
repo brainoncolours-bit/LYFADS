@@ -7,6 +7,7 @@ import { useParams } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { supabase } from '@/lib/supabaseClient';
+import { getPlayableVideoUrl, isDirectVideoSource } from '@/lib/videoUrls';
 
 const categories = {
   'commercial': { name: 'Commercial', color: 'from-red-500 to-orange-500', icon: '🎬' },
@@ -66,7 +67,7 @@ const VideoDetailPage = () => {
       const { data, error } = await supabase
         .from('videos')
         .select('*')
-        .eq('category', categoryId)
+        .eq('category_id', categoryId)
         .neq('id', videoId)
         .limit(4)
         .order('created_at', { ascending: false });
@@ -89,35 +90,8 @@ const VideoDetailPage = () => {
     });
   };
 
-  const getEmbedUrl = (url) => {
-    if (!url) return '';
-    
-    // Google Drive
-    if (url.includes('drive.google.com')) {
-      const fileId = url.match(/[-\w]{25,}/);
-      if (fileId) {
-        return `https://drive.google.com/file/d/${fileId[0]}/preview`;
-      }
-    }
-    
-    // YouTube
-    if (url.includes('youtube.com') || url.includes('youtu.be')) {
-      const videoId = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/);
-      if (videoId) {
-        return `https://www.youtube.com/embed/${videoId[1]}`;
-      }
-    }
-    
-    // Vimeo
-    if (url.includes('vimeo.com')) {
-      const videoId = url.match(/vimeo\.com\/(\d+)/);
-      if (videoId) {
-        return `https://player.vimeo.com/video/${videoId[1]}`;
-      }
-    }
-    
-    return url;
-  };
+  const playableVideoUrl = getPlayableVideoUrl(video?.video_url);
+  const isDirectVideo = isDirectVideoSource(playableVideoUrl);
 
   if (loading) {
     return (
@@ -276,12 +250,22 @@ const VideoDetailPage = () => {
             >
               <div className="relative aspect-video rounded-2xl overflow-hidden bg-gray-900 border border-gray-800 shadow-2xl">
                 {video.video_url ? (
-                  <iframe
-                    src={getEmbedUrl(video.video_url)}
-                    className="absolute inset-0 w-full h-full"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
+                  isDirectVideo ? (
+                    <video
+                      src={playableVideoUrl}
+                      className="absolute inset-0 h-full w-full bg-black"
+                      controls
+                      playsInline
+                      preload="metadata"
+                    />
+                  ) : (
+                    <iframe
+                      src={playableVideoUrl}
+                      className="absolute inset-0 w-full h-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  )
                 ) : (
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center">
