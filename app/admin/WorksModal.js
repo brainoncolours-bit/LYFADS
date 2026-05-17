@@ -9,7 +9,6 @@ import Image from "next/image";
 
 const initialState = {
   title: "",
-  video_url: "",
   thumbnail_url: "",
   category_id: "",
 };
@@ -36,25 +35,35 @@ const WorksModal = ({
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [previewUrl, setPreviewUrl] = useState("");
+  const [videoPreviewUrl, setVideoPreviewUrl] = useState("");
+
+  const normalizeFormValue = (value, field) => {
+    if (field === "category_id") {
+      if (value == null) return "";
+      if (typeof value === "object") {
+        return value.id ?? value.value ?? "";
+      }
+      return String(value);
+    }
+    return value;
+  };
 
   const handleChange = (val, field) => {
-    setFormData((prev) => ({ ...prev, [field]: val }));
+    setFormData((prev) => ({
+      ...prev,
+      [field]: normalizeFormValue(val, field),
+    }));
   };
-  // video url 
-  const convertDriveLinkToPreview = (url) => {
-  const fileId = url.match(/\/file\/d\/([^/]+)/)?.[1];
-  return fileId
-    ? `https://drive.google.com/file/d/${fileId}/preview`
-    : url;
-};
 
   const handleClose = () => {
+    if (videoPreviewUrl) URL.revokeObjectURL(videoPreviewUrl);
     setIsModalOpen(false);
     setFormData(initialState);
     setVideoFile(null);
     setThumbnailFile(null);
     setUploadProgress(0);
     setPreviewUrl("");
+    setVideoPreviewUrl("");
     setError("");
     setDefaultCategoryId?.("");
     setEditData?.(null);
@@ -76,7 +85,16 @@ const WorksModal = ({
       return;
     }
 
+    const previewUrl = URL.createObjectURL(file);
     setVideoFile(file);
+    setVideoPreviewUrl(previewUrl);
+    setError("");
+  };
+
+  const handleRemoveSelectedVideo = () => {
+    if (videoPreviewUrl) URL.revokeObjectURL(videoPreviewUrl);
+    setVideoFile(null);
+    setVideoPreviewUrl("");
     setError("");
   };
 
@@ -163,8 +181,7 @@ const WorksModal = ({
     setError("");
 
     const title = formData.title.trim();
-    const videoUrl = formData.video_url.trim();
-    const categoryId = formData.category_id;
+    const categoryId = normalizeFormValue(formData.category_id, "category_id").trim();
 
     if (!title) {
       setError("Please enter a video title.");
@@ -176,12 +193,12 @@ const WorksModal = ({
       return;
     }
 
-    if (!videoFile && !videoUrl) {
-      setError("Please upload a video file or paste a video URL.");
+    if (!videoFile && !editData?.video_url) {
+      setError("Please upload a video file.");
       return;
     }
 
-    if (!editData && !thumbnailFile) {
+    if (!thumbnailFile && !formData.thumbnail_url) {
       setError("Please select a thumbnail image.");
       return;
     }
@@ -189,14 +206,14 @@ const WorksModal = ({
     setLoading(true);
 
     try {
-      const { category_id } = formData;
+      const category_id = categoryId;
 
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) throw new Error("User is not authenticated.");
 
       const uploadedVideoUrl = videoFile
         ? await uploadVideo()
-        : convertDriveLinkToPreview(videoUrl);
+        : editData?.video_url || "";
       let thumbnailUrl = formData.thumbnail_url;
 
       if (thumbnailFile) {
@@ -287,12 +304,6 @@ const WorksModal = ({
             onValueChange={(val) => handleChange(val, "title")}
             placeholder="Enter video title"
           />
-          <InputField
-            label="Video URL"
-            value={formData.video_url}
-            onValueChange={(val) => handleChange(val, "video_url")}
-            placeholder="Paste Drive, YouTube, Vimeo, or direct video URL"
-          />
 
           <div>
             <label className="block text-sm font-medium mb-1">Upload Video</label>
@@ -314,9 +325,34 @@ const WorksModal = ({
                 {videoFile ? videoFile.name : "Click to Upload Video"}
               </span>
               <span className="text-xs text-gray-400">
-                Optional if a URL is provided. Uploaded file takes priority. Max 500MB.
+                Direct upload only. Max 500MB.
               </span>
             </label>
+
+            {videoFile && (
+              <div className="mt-3 flex flex-col gap-3">
+                <div className="flex flex-wrap items-center gap-2 text-sm">
+                  <span className="font-medium text-gray-700">Selected file:</span>
+                  <span className="text-gray-600 truncate">{videoFile.name}</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleRemoveSelectedVideo}
+                  className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition"
+                >
+                  Remove
+                </button>
+                {videoPreviewUrl && (
+                  <div className="rounded-lg overflow-hidden border border-gray-200 bg-black">
+                    <video
+                      src={videoPreviewUrl}
+                      controls
+                      className="w-full h-48 object-cover bg-black"
+                    />
+                  </div>
+                )}
+              </div>
+            )}
 
             {uploading && videoFile && (
               <div className="mt-3">
@@ -333,14 +369,9 @@ const WorksModal = ({
             )}
 
             {editData?.video_url && !videoFile && (
-              <a
-                href={editData.video_url}
-                target="_blank"
-                rel="noreferrer"
-                className="mt-2 block text-xs font-medium text-blue-600 underline"
-              >
-                Current video saved
-              </a>
+              <div className="mt-2 rounded-lg border border-gray-200 bg-gray-50 p-3 text-sm text-gray-600">
+                Current saved video remains until a new file is uploaded.
+              </div>
             )}
           </div>
           

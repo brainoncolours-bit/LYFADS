@@ -28,6 +28,7 @@ const VideoPlayer = ({ video, onClose }) => {
             autoPlay
             playsInline
             preload="metadata"
+            title={video.title}
           />
         ) : (
           <iframe
@@ -36,6 +37,7 @@ const VideoPlayer = ({ video, onClose }) => {
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
+            title={video.title}
           />
         )
       ) : (
