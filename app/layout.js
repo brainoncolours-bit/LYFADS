@@ -15,22 +15,22 @@ const SITE_URL = "https://lyfads.com"; // TODO: Update with your actual domain
 export const metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Lyf Ads - Premium Exotic Car Marketing & Motion Systems",
+    default: "Lyf Ads - Video Production & Motion Systems Agency",
     template: "%s | Lyf Ads",
   },
   description:
-    "Lyf Ads specializes in premium exotic car marketing, motion design, and brand elevation. We create stunning visual experiences that elevate your brand to the next level.",
+    "Lyf Ads specializes in high-end video production, motion design, and brand storytelling. We create stunning visual experiences that elevate your brand to the next level.",
   keywords: [
-    "exotic cars",
-    "luxury cars",
-    "car marketing",
-    "motion design",
-    "automotive advertising",
-    "brand elevation",
     "video production",
+    "motion design",
+    "brand storytelling",
     "creative agency",
-    "supercars",
-    "hypercars",
+    "cinematography",
+    "visual effects",
+    "commercial video",
+    "brand elevation",
+    "digital content",
+    "Lyf Ads",
   ],
   authors: [{ name: "Lyf Ads" }],
   creator: "Lyf Ads",
@@ -57,23 +57,23 @@ export const metadata = {
     locale: "en_US",
     url: SITE_URL,
     siteName: "Lyf Ads",
-    title: "Lyf Ads - Premium Exotic Car Marketing & Motion Systems",
+    title: "Lyf Ads - Video Production & Motion Systems Agency",
     description:
-      "Lyf Ads specializes in premium exotic car marketing, motion design, and brand elevation.",
+      "Lyf Ads specializes in high-end video production, motion design, and brand storytelling.",
     images: [
       {
         url: "/og-image.png", // TODO: Add og-image.png to /public folder (1200x630px)
         width: 1200,
         height: 630,
-        alt: "Lyf Ads - Premium Exotic Car Marketing",
+        alt: "Lyf Ads - Video Production & Motion Systems Agency",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Lyf Ads - Premium Exotic Car Marketing & Motion Systems",
+    title: "Lyf Ads - Video Production & Motion Systems Agency",
     description:
-      "Lyf Ads specializes in premium exotic car marketing, motion design, and brand elevation.",
+      "Lyf Ads specializes in high-end video production, motion design, and brand storytelling.",
     images: ["/og-image.png"], // TODO: Add og-image.png to /public folder
     creator: "@lyfads", // TODO: Update with your Twitter handle
   },

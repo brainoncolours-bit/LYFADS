@@ -4,16 +4,15 @@ import HomePage from "./HomePage";
 export const metadata = {
   ...PAGE_METADATA.HOME,
   keywords: [
-    "exotic cars",
-    "luxury cars",
-    "car marketing",
-    "motion design",
-    "automotive advertising",
-    "brand elevation",
     "video production",
+    "motion design",
+    "brand storytelling",
     "creative agency",
-    "supercars",
-    "hypercars",
+    "cinematography",
+    "visual effects",
+    "commercial video",
+    "brand elevation",
+    "digital content",
     "Lyf Ads",
   ],
 };

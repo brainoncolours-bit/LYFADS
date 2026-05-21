@@ -282,7 +282,7 @@ const WorksList = ({
                 Visual Works Library
               </h2>
               <p className="text-lg text-white/70">
-                Curate, refine and showcase your production catalogue with a cinematic workspace inspired by the car experience.
+                Curate, refine and showcase your production catalogue with a cinematic professional workspace.
               </p>
             </div>
             <div className="grid min-w-[260px] grid-cols-2 gap-4">

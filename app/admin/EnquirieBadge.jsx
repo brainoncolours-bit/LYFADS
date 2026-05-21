@@ -142,7 +142,7 @@ export const EnquiryBadge = ({ enquiries, isModalOpen, setIsModalOpen,fetchProdu
                   {record.test_drive_date && (
                     <div className="p-3 bg-yellow-50 border-l-4 border-yellow-400">
                       <div className="text-yellow-700 font-medium mb-1 flex items-center">
-                        <CalendarClock size={18} className="mr-2" /> Test Drive Requested
+                        <CalendarClock size={18} className="mr-2" /> Project Date Requested
                       </div>
                       <div className="text-sm text-gray-700 pl-6">
                         {record.message}

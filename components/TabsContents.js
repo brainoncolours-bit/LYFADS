@@ -7,7 +7,7 @@ import CarEnquiryForm from "./utilities/CarEnquiryForm";
 
 export function TabsContents() {
 
-  const images = ["/car1.jpg","/car2.jpg","/car3.jpg","/car4.jpg","/car5.jpg","/car6.jpg",];
+  const images = ["/bg.png"]; // TODO: Replace with actual production agency images
 
   const tabs = [
     // {
@@ -21,8 +21,8 @@ export function TabsContents() {
     //   ),
     // },
     {
-      title: "Enquire",
-      value: "enquire",
+      title: "Inquiry",
+      value: "inquiry",
       content: (
         <div
           className="w-fit items-center overflow-hidden relative h-fit rounded-2xl text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-new-black to-black">

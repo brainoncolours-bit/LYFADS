@@ -22,7 +22,7 @@ export async function POST(request) {
   });
 
   const mailOptions = {
-    from: `"Shameer Cars" <${process.env.SMTP_USER}>`,
+    from: `"Lyf Ads" <${process.env.SMTP_USER}>`,
     to: email,
     subject,
     html,

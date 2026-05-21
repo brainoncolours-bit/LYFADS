@@ -8,7 +8,7 @@ const CarEnquiryForm = () => {
     name: "",
     contact: "",
     email: "",
-    testDriveDate: "",
+    projectDate: "",
   });
 
   const handleChange = (e) => {
@@ -19,7 +19,7 @@ const CarEnquiryForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     alert("Thank you for your enquiry! We will contact you soon.");
-    setFormData({ name: "", contact: "", email: "", testDriveDate: "" });
+    setFormData({ name: "", contact: "", email: "", projectDate: "" });
   };
 
   return (
@@ -32,10 +32,10 @@ const CarEnquiryForm = () => {
       >
         {/* Headline */}
         <h1 className="text-2xl lg:text-3xl font-bold mb-4 text-white">
-          Book Your Test <span className="text-brand-color">Drive</span>
+          Start Your <span className="text-brand-color">Project</span>
         </h1>
         <p className="text-neutral-400 text-sm mb-6">
-          Experience the thrill of driving your dream car. Fill out the form below, and we&apos;ll get in
+          Ready to elevate your brand with stunning visuals? Fill out the form below, and we&apos;ll get in
           touch with you shortly.
         </p>
 
@@ -95,21 +95,19 @@ const CarEnquiryForm = () => {
             />
           </motion.div>
 
-          {/* Test Drive Date Field */}
+          {/* Project Date Field */}
           <motion.div
-            // whileHover={{ scale: 1.02 }}
-            // whileTap={{ scale: 0.98 }}
             className="relative"
           >
-            <label className=" text-sm text-neutral-400 mb-1 flex items-center gap-2">Test Drive Date  <IconCalendar className=" w-4 h-4 text-neutral-400" /></label>
-            
+            <label className=" text-sm text-neutral-400 mb-1 flex items-center gap-2">Preferred Project Date <IconCalendar className=" w-4 h-4 text-neutral-400" /></label>
+
             <input
               type="date"
-              name="testDriveDate"
-              value={formData.testDriveDate}
+              name="projectDate"
+              value={formData.projectDate}
               onChange={handleChange} 
               required
-              className="w-full pl-2 pr-4 py-2 bg-neutral-800 rounded-lg text-sm text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-brand-color transition-all appearance-none" // Add appearance-none for better styling
+              className="w-full pl-2 pr-4 py-2 bg-neutral-800 rounded-lg text-sm text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-brand-color transition-all appearance-none"
             />
           </motion.div>
 
@@ -120,7 +118,7 @@ const CarEnquiryForm = () => {
             type="submit"
             className="w-full bg-brand-color text-black py-2 rounded-lg text-sm font-semibold hover:bg-brand-color/90 transition-all"
           >
-            Submit 
+            Submit Enquiry
           </motion.button>
         </form>
       </motion.div>

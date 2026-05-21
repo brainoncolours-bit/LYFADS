@@ -201,9 +201,9 @@ export default function SellExchangeDialog({ open, setOpen }) {
     }
 
     // After successful DB insert — send email
-    const { email, firstName, variant } = formData;
+    const { email, firstName } = formData;
 
-    const subject = 'Sell Enquiry Received - Shameer Cars';
+    const subject = 'Project Enquiry Received - Lyf Ads';
     const html = `
     <div style="background-color:#f5f5f5;padding:20px 0;font-family:Arial,sans-serif;">
       <table align="center" width="600" style="background-color:#ffffff;border-radius:8px;overflow:hidden;">
@@ -215,43 +215,38 @@ export default function SellExchangeDialog({ open, setOpen }) {
           <td style="padding:30px;">
             <h2 style="color:#333;">Hi ${firstName},</h2>
             <p style="font-size:16px;color:#555;">
-              Thank you for showing interest in selling your <strong>${variant}</strong> with <strong>Shameer Cars</strong>.
+              Thank you for your interest in collaborating with <strong>Lyf Ads</strong>.
             </p>
             <p style="font-size:16px;color:#555;">
-              Our team has received your enquiry and will contact you shortly to discuss the next steps.
+              Our team has received your enquiry and will contact you shortly to discuss your project requirements.
             </p>
             <p style="font-size:16px;color:#555;">
-              Meanwhile, explore our premium car collection:
+              Meanwhile, explore our latest work:
             </p>
             <p style="text-align:center;margin:30px 0;">
-              <a href="https://shameercars.vercel.app/services" style="background-color:#1890ff;color:#fff;padding:12px 24px;border-radius:4px;text-decoration:none;font-size:16px;">
-                Browse Car Collection
+              <a href="https://lyfads.com/works" style="background-color:#1890ff;color:#fff;padding:12px 24px;border-radius:4px;text-decoration:none;font-size:16px;">
+                View Portfolio
               </a>
             </p>
             <p style="font-size:16px;color:#555;">
-              We look forward to doing business with you.
+              We look forward to working with you.
             </p>
-            <p style="font-size:16px;color:#555;">Best regards,<br/>Shameer Cars Team</p>
+            <p style="font-size:16px;color:#555;">Best regards,<br/>Lyf Ads Team</p>
           </td>
         </tr>
         <tr>
           <td style="background-color:#fafafa;padding:20px;text-align:center;">
             <p style="margin:0;color:#666;font-size:14px;">
-              📞 <strong>+91 98765 43210</strong> &nbsp; | &nbsp; 📧 <a href="mailto:support@shameercars.in" style="color:#1890ff;text-decoration:none;">support@shameercars.in</a>
+              📧 <a href="mailto:support@lyfads.com" style="color:#1890ff;text-decoration:none;">support@lyfads.com</a>
             </p>
             <p style="margin:8px 0;color:#666;font-size:14px;">
-              📍 <strong>Shameer Cars</strong>, Main Road, Ernakulam, Kerala - 682001
+              📍 <strong>Lyf Ads</strong>, Bangalore, India
             </p>
-            <div style="margin-top:10px;">
-              <a href="https://facebook.com/shameercars" style="margin:0 8px;"><img src="https://img.icons8.com/ios-filled/24/000000/facebook--v1.png" alt="Facebook" /></a>
-              <a href="https://instagram.com/shameercars" style="margin:0 8px;"><img src="https://img.icons8.com/ios-filled/24/000000/instagram-new.png" alt="" /></a>
-              <a href="https://wa.me/919876543210" style="margin:0 8px;"><img src="https://img.icons8.com/ios-filled/24/000000/whatsapp.png" alt="WhatsApp" /></a>
-            </div>
           </td>
         </tr>
         <tr>
           <td style="background-color:#f0f0f0;text-align:center;padding:12px;color:#999;font-size:12px;">
-            © ${new Date().getFullYear()} Shameer Cars. All rights reserved.
+            © ${new Date().getFullYear()} Lyf Ads. All rights reserved.
           </td>
         </tr>
       </table>

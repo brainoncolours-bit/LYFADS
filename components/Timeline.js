@@ -11,74 +11,72 @@ export const Timeline = () => {
 
   const data = [
   {
-    title: "2004 – Humble Beginnings",
+    title: "2020 – The Beginning",
     content: (
       <div>
         <p className="text-new-white text-xs md:text-lg font-normal mb-8">
-          Founded by <span className="font-semibold">Shameer S</span> from
-          Cherukulam, Calicut — the journey began with a simple dream and a single car.
-          After gaining experience as a bus checking inspector in his father's
-          service and later at Jay Motors and TVS Limited, Shameer turned his
-          passion for automobiles into a purpose.
+          Lyf Ads was founded with a vision to revolutionize visual storytelling.
+          Starting as a small team in Bangalore, we focused on creating impactful
+          digital content that resonates with audiences.
         </p>
         <div className="grid grid-cols-2 gap-4">
-          <Image src="/shameercars.avif" alt="First car" width={500} height={500}
+          <Image src="/bg.png" alt="First project" width={500} height={500}
             className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06)]" />
-          <Image src="/aboutcarsimage.avif" alt="First showroom" width={500} height={500}
+          <Image src="/bg.png" alt="Early studio" width={500} height={500}
             className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full shadow-[0_0_24px_rgba(34,_42,_53,_0.06)]" />
         </div>
       </div>
     ),
   },
   {
-    title: "2010 – Building Trust & Name",
+    title: "2022 – Building Our Portfolio",
     content: (
       <div>
         <p className="text-new-white text-xs md:text-lg font-normal mb-8">
-          As the brand grew, so did its trust. Through consistent honesty,
-          transparent deals, and personalized service, Shameer Cars became a
-          household name among pre-owned car buyers in Calicut.
+          As our reputation grew, so did our client list. By delivering high-quality
+          commercial content and brand films, Lyf Ads became a trusted name for
+          brands looking to elevate their visual identity.
         </p>
         <div className="grid grid-cols-2 gap-4">
-          <Image src="/jshameercars.avif" alt="Customer trust" width={500} height={500}
+          <Image src="/bg.png" alt="Client work" width={500} height={500}
             className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full" />
-          <Image src="/aboutcarsimage.avif" alt="Car yard" width={500} height={500}
+          <Image src="/bg.png" alt="Production set" width={500} height={500}
             className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full" />
         </div>
       </div>
     ),
   },
   {
-    title: "2023 – First Centralized Showroom",
+    title: "2023 – Expanded Services",
     content: (
       <div>
         <p className="text-new-white text-xs md:text-lg font-normal mb-8">
-          With nearly two decades of hard work and reputation, Shameer Cars
-          inaugurated its <span className="font-semibold">first centralized showroom</span> in 2023 —
-          marking a major milestone in the company's growth journey.
+          We expanded our capabilities into motion design and high-end cinematography.
+          Moving to a new, larger production space allowed us to handle more complex
+          projects and deliver even greater value to our partners.
         </p>
         <div className="grid grid-cols-2 gap-4">
-          <Image src="/aboutcarsimage.avif" alt="2023 showroom" width={500} height={500}
+          <Image src="/bg.png" alt="New studio" width={500} height={500}
             className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full" />
-          <Image src="/aboutcarsimage.avif" alt="Team 2023" width={500} height={500}
+          <Image src="/bg.png" alt="Team expansion" width={500} height={500}
             className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full" />
         </div>
       </div>
     ),
   },
   {
-    title: "2024 – Third Yard Expansion",
+    title: "2024 – Major Growth",
     content: (
       <div>
         <p className="text-new-white text-xs md:text-lg font-normal mb-8">
-          The growing demand led to the opening of a <span className="font-semibold">third yard</span> in 2024,
-          increasing capacity and improving service efficiency. Every milestone
-          reflected the same commitment to customer satisfaction and trust.
+          The growing demand for premium visual content led to a significant expansion
+          of our team and equipment. Lyf Ads solidified its position as a leading
+          agency for high-end digital production and motion systems.
         </p>
         <div className="grid grid-cols-2 gap-4">
-          <Image src="/aboutcarsimage.avif" alt="Third yard" width={500} height={500}
+          <Image src="/bg.png" alt="Production scale" width={500} height={500}
             className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full" />
-          <Image src="/shameercars.avif" alt="Cars collection" width={500} height={500}
+          <Image src="/bg.png" alt="Works collection" width={500} height={500}
             className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full" />
         </div>
       </div>
@@ -89,15 +87,14 @@ export const Timeline = () => {
     content: (
       <div>
         <p className="text-new-white text-xs md:text-lg font-normal mb-8">
-          In <span className="font-semibold">October 2025</span>, Shameer Cars proudly unveiled its
-          <span className="font-semibold"> second centralized showroom</span> — a modern space symbolizing
-          two decades of dedication, transparency, and growth. The journey
-          continues, built on values that started with a single dream.
+          In 2025, Lyf Ads unveiled its state-of-the-art production suite,
+          a modern space symbolizing five years of dedication, creativity, and growth.
+          Our journey continues, driven by the same passion for excellence we started with.
         </p>
         <div className="grid grid-cols-2 gap-4">
-          <Image src="/aboutcarsimage.avif" alt="2025 showroom" width={500} height={500}
+          <Image src="/bg.png" alt="Modern suite" width={500} height={500}
             className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full" />
-          <Image src="/aboutcarsimage.avif" alt="Legacy continues" width={500} height={500}
+          <Image src="/bg.png" alt="Future vision" width={500} height={500}
             className="rounded-lg object-cover h-20 md:h-44 lg:h-60 w-full" />
         </div>
       </div>

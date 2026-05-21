@@ -51,7 +51,7 @@ export default function About() {
         {/* Background Image */}
         <Image
           ref={imageRef}
-          src="/shameercars.avif"
+          src="/bg.png"
           alt="about image"
           fill
           className="object-cover object-center z-0"
@@ -65,10 +65,10 @@ export default function About() {
             ref={textRef}
             className={`${poppins.className} !leading-tight text-3xl md:text-6xl font-semibold mb-20 text-white`}
           >
-            Crafting Car Dreams
+            Crafting Visual Stories
             <br />
             With Passion & Precision. <br /> Since{" "}
-            <CountUp from={2025} to={1971} duration={2} separator="" />
+            <CountUp from={1971} to={2020} duration={2} separator="" />
           </h2>
         </div>
       </div>

@@ -31,8 +31,8 @@ const EnquiryForm = ({ carModel }) => {
     email: "",
     mobile: "",
     message: "",
-    testDriveDate: "",
-    testDriveTime: "",
+    projectDate: "",
+    projectTime: "",
     dialCode: dialcodeJson[0],
   });
 
@@ -41,10 +41,10 @@ const EnquiryForm = ({ carModel }) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const isTestDriveDateValid = () => {
-  if (!formData.testDriveDate) return true; // no date = valid (optional)
+  const isProjectDateValid = () => {
+  if (!formData.projectDate) return true; // no date = valid (optional)
 
-  const selectedDate = new Date(formData.testDriveDate);
+  const selectedDate = new Date(formData.projectDate);
   selectedDate.setHours(0, 0, 0, 0); // reset time to start of day
 
   const today = new Date();
@@ -57,7 +57,7 @@ const EnquiryForm = ({ carModel }) => {
     e.preventDefault();
       toast.loading("Submitting","submit");
 
-    if (!isTestDriveDateValid()) {
+    if (!isProjectDateValid()) {
       toast.error("Please select a valid future date.","submit");
       return;
     }
@@ -69,18 +69,12 @@ const EnquiryForm = ({ carModel }) => {
     const enquiryData = {
       car_id: carModel.id,
       model_name: carModel.variant,
-      year: carModel.year,
-      fuel_type: carModel.fuelType,
-      kilometers: carModel.kilometers,
-      owners: carModel.owners,
-      transmission: carModel.transmission,
-      price: carModel.price,
       user_name: formData.name,
       user_email: formData.email,
       user_mobile: fullMobile,
       message: formData.message,
-      test_drive_date: formData.testDriveDate,
-      test_drive_time: formData.testDriveTime || null,
+      test_drive_date: formData.projectDate,
+      test_drive_time: formData.projectTime || null,
       attended: false,
       notes:[]
     };
@@ -94,62 +88,49 @@ const EnquiryForm = ({ carModel }) => {
     }
 
 // After successful DB insert — send email
-const { user_email, user_name, model_name, test_drive_date, test_drive_time } = enquiryData;
+const { user_email, user_name, model_name } = enquiryData;
 
-const subject = 'Car Enquiry Received - Shameer Cars';
+const subject = 'Project Enquiry Received - Lyf Ads';
 const html = `
   <div style="background-color:#f5f5f5;padding:20px 0;font-family:Arial,sans-serif;">
     <table align="center" width="600" style="background-color:#ffffff;border-radius:8px;overflow:hidden;">
       <tr>
         <td style="text-align:center;background-color:#001529;padding:20px;">
-          <img src="http://res.cloudinary.com/dtyojyr94/image/upload/v1747421154/brandLogo_ntzxbe.png" alt="Shameer Cars" style="max-width:100%;height:auto;" />
         </td>
       </tr>
       <tr>
         <td style="padding:30px;">
           <h2 style="color:#333;">Hi ${user_name},</h2>
           <p style="font-size:16px;color:#555;">
-            Thank you for your enquiry about the <strong>${model_name}</strong> with <strong>Shameer Cars</strong>.
+            Thank you for your enquiry regarding our <strong>${model_name}</strong> services with <strong>Lyf Ads</strong>.
           </p>
           <p style="font-size:16px;color:#555;">
-            We have received your message and will get back to you shortly.
+            We have received your message and our team will get back to you shortly to discuss your project.
           </p>
-          ${
-            test_drive_date && test_drive_time
-              ? `<p style="font-size:16px;color:#555;">
-                   You requested a test drive on <strong>${test_drive_date}</strong> at <strong>${test_drive_time}</strong>.
-                 </p>`
-              : ''
-          }
           <p style="font-size:16px;color:#555;">
-            Meanwhile, feel free to browse our premium car collection:
+            Meanwhile, feel free to browse our portfolio:
           </p>
           <p style="text-align:center;margin:30px 0;">
-            <a href="https://shameercars.vercel.app/services" style="background-color:#1890ff;color:#fff;padding:12px 24px;border-radius:4px;text-decoration:none;font-size:16px;">
-              Browse Car Collection
+            <a href="https://lyfads.com/works" style="background-color:#1890ff;color:#fff;padding:12px 24px;border-radius:4px;text-decoration:none;font-size:16px;">
+              View Our Portfolio
             </a>
           </p>
-          <p style="font-size:16px;color:#555;">Best regards,<br/>Shameer Cars Team</p>
+          <p style="font-size:16px;color:#555;">Best regards,<br/>Lyf Ads Team</p>
         </td>
       </tr>
       <tr>
         <td style="background-color:#fafafa;padding:20px;text-align:center;">
           <p style="margin:0;color:#666;font-size:14px;">
-            📞 <strong>+91 98765 43210</strong> &nbsp; | &nbsp; 📧 <a href="mailto:support@shameercars.in" style="color:#1890ff;text-decoration:none;">support@shameercars.in</a>
+            📧 <a href="mailto:support@lyfads.com" style="color:#1890ff;text-decoration:none;">support@lyfads.com</a>
           </p>
           <p style="margin:8px 0;color:#666;font-size:14px;">
-            📍 <strong>Shameer Cars</strong>, Main Road, Ernakulam, Kerala - 682001
+            📍 <strong>Lyf Ads</strong>, Bangalore, India
           </p>
-          <div style="margin-top:10px;">
-            <a href="https://facebook.com/shameercars" style="margin:0 8px;"><img src="https://img.icons8.com/ios-filled/24/000000/facebook--v1.png" alt="Facebook" /></a>
-            <a href="https://instagram.com/shameercars" style="margin:0 8px;"><img src="https://img.icons8.com/ios-filled/24/000000/instagram-new.png" alt="Instagram" /></a>
-            <a href="https://wa.me/919876543210" style="margin:0 8px;"><img src="https://img.icons8.com/ios-filled/24/000000/whatsapp.png" alt="WhatsApp" /></a>
-          </div>
         </td>
       </tr>
       <tr>
         <td style="background-color:#f0f0f0;text-align:center;padding:12px;color:#999;font-size:12px;">
-          © ${new Date().getFullYear()} Shameer Cars. All rights reserved.
+          © ${new Date().getFullYear()} Lyf Ads. All rights reserved.
         </td>
       </tr>
     </table>
@@ -164,15 +145,15 @@ await fetch('/api/sendSellMail', {
 
 
 
-    toast.success(`We've received your enquiry about the ${carModel.variant}. We'll get back to you soon.`,"submit");
+    toast.success(`We've received your enquiry about our ${carModel.variant} services. We'll get back to you soon.`,"submit");
 
     setFormData({
       name: "",
       email: "",
       mobile: "",
       message: "",
-      testDriveDate: "",
-      testDriveTime: "",
+      projectDate: "",
+      projectTime: "",
       dialCode: dialcodeJson[0],
     });
   };
@@ -187,7 +168,7 @@ await fetch('/api/sendSellMail', {
       viewport={{ once: true }}
       className="bg-zinc-900 rounded-lg p-6 mt-10 max-w-screen-md mx-auto"
     >
-      <h2 className="text-2xl font-bold text-white mb-6">Enquire About This Car</h2>
+      <h2 className="text-2xl font-bold text-white mb-6">Enquire About This Service</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Name */}
         <div>
@@ -267,17 +248,17 @@ await fetch('/api/sendSellMail', {
           ></textarea>
         </div>
 
-        {/* Test Drive Date & Time */}
+        {/* Project Date & Time */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label htmlFor="testDriveDate" className="block text-sm font-medium text-gray-300 mb-1">
-              Preferred Test Drive Date
+            <label htmlFor="projectDate" className="block text-sm font-medium text-gray-300 mb-1">
+              Preferred Project Date
             </label>
             <input
               type="date"
-              id="testDriveDate"
-              name="testDriveDate"
-              value={formData.testDriveDate}
+              id="projectDate"
+              name="projectDate"
+              value={formData.projectDate}
               onChange={handleChange}
               min={todayDate}
               required
@@ -285,14 +266,14 @@ await fetch('/api/sendSellMail', {
             />
           </div>
           <div>
-            <label htmlFor="testDriveTime" className="block text-sm font-medium text-gray-300 mb-1">
-              Preferred Test Drive Time
+            <label htmlFor="projectTime" className="block text-sm font-medium text-gray-300 mb-1">
+              Preferred Project Time
             </label>
             <input
               type="time"
-              id="testDriveTime"
-              name="testDriveTime"
-              value={formData.testDriveTime}
+              id="projectTime"
+              name="projectTime"
+              value={formData.projectTime}
               onChange={handleChange}
               className="w-full min-w-24 px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#ea942a]"
             />

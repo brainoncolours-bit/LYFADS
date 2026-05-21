@@ -10,117 +10,71 @@ const { Panel } = Collapse;
 
 const faqData = [
   {
-    question: 'What documents do I need to sell my car?',
+    question: 'What types of video production services do you offer?',
     answer: [
-      'Original RC (Registration Certificate)',
-      'Valid insurance papers',
-      'Pollution certificate',
-      "Owner's ID proof",
-      'Bank NOC (if car was financed)',
+      'Commercials and brand films',
+      'Social media content (Reels, TikToks, etc.)',
+      'Corporate videos and interviews',
+      'Product showcase and motion design',
+      'Event coverage and documentaries',
     ],
   },
   {
-    question: 'Do you provide car inspection services?',
+    question: 'How long does a typical video project take?',
     answer: [
-      'Yes, we offer both in-person and doorstep inspection.',
-      'Inspection covers engine, body, tires, brakes, etc.',
-      'Free of cost in selected cities.',
+      'Timelines vary based on project complexity.',
+      'Social media content: 3-5 business days.',
+      'Full brand films: 2-4 weeks.',
+      'Concept to delivery, we keep you updated throughout.',
     ],
   },
   {
-    question: 'How long does it take to sell a car?',
+    question: 'Do you provide scriptwriting and concept development?',
     answer: [
-      'Usually 24-48 hours after inspection.',
-      'Depends on condition, brand, and paperwork readiness.',
-      'Instant payment available for verified sellers.',
+      'Yes, we offer full-service production.',
+      'We help with ideation, scripting, and storyboarding.',
+      'Collaborative approach to match your brand voice.',
     ],
   },
   {
-    question: 'What is the process to exchange my car?',
+    question: 'What is your pricing structure?',
     answer: [
-      'Schedule an inspection of your current car.',
-      'We evaluate and offer a value.',
-      'Use that value towards your next car purchase.',
+      'Project-based pricing tailored to your needs.',
+      'Retainer packages for ongoing content needs.',
+      'Transparent quotes with no hidden costs.',
     ],
   },
   {
-    question: 'Are there any hidden charges?',
+    question: 'Do you offer monthly content packages?',
     answer: [
-      'No hidden fees for selling your car.',
-      'Evaluation and listing are completely free.',
-      'Any charges are disclosed upfront.',
+      'Yes, we have specialized packages for social media.',
+      'Regular content delivery to keep your brand active.',
+      'Consistent quality across all platforms.',
     ],
   },
   {
-    question: 'Do you offer financing for buyers?',
+    question: 'Can you work with clients remotely?',
     answer: [
-      'Yes, we have tie-ups with multiple banks.',
-      'Finance options for both salaried and self-employed.',
-      'EMI calculator available on request.',
+      'Absolutely, we handle post-production for clients worldwide.',
+      'Remote feedback and revision process via specialized tools.',
+      'We can also travel for on-site shoots if required.',
     ],
   },
   {
-    question: 'How do I know the car value offered is fair?',
+    question: 'What information do I need to provide for a quote?',
     answer: [
-      'We use AI-powered valuation based on market trends.',
-      'You receive multiple offers from verified dealers.',
-      'You are free to accept or decline.',
+      'Project goals and target audience.',
+      'Estimated duration or number of deliverables.',
+      'Reference videos or style preferences.',
+      'Preferred timeline and budget range.',
     ],
   },
   {
-    question: 'Is test drive available before selling?',
+    question: 'How many rounds of revisions do you offer?',
     answer: [
-      'Yes, test drives are available for buyers.',
-      'All test drives are scheduled and supervised.',
-    ],
-  },
-  {
-    question: 'Can I sell a financed car?',
-    answer: [
-      'Yes, just provide the loan account statement.',
-      'We assist with foreclosure and NOC issuance.',
-    ],
-  },
-  {
-    question: 'What if I change my mind after inspection?',
-    answer: [
-      'No obligation to sell after inspection.',
-      'You can cancel or reschedule anytime.',
-    ],
-  },
-  {
-    question: 'Do you buy commercial vehicles?',
-    answer: [
-      'Yes, we deal in both private and commercial vehicles.',
-      'Submit your details via our commercial vehicle form.',
-    ],
-  },
-  {
-    question: 'Can I list more than one car?',
-    answer: [
-      "Absolutely, there's no limit.",
-      'We offer special support for car dealers too.',
-    ],
-  },
-  {
-    question: 'How secure is the payment process?',
-    answer: [
-      'Payments are done via NEFT/IMPS same day.',
-      'All transactions are legally documented.',
-    ],
-  },
-  {
-    question: 'Do you help with RTO work?',
-    answer: [
-      'Yes, we take care of ownership transfer and RTO formalities.',
-      'No need for seller to visit RTO physically.',
-    ],
-  },
-  {
-    question: 'Where are your service centers located?',
-    answer: [
-      'We are available across major cities in India.',
-      'Use our locator tool to find the nearest branch.',
+      'Standard projects include 2 rounds of revisions.',
+      'Major structural changes after approval may incur costs.',
+      'Our goal is your 100% satisfaction.',
     ],
   },
 ];
@@ -140,7 +94,7 @@ export default function FAQPage() {
           Frequently Asked Questions
         </h1>
         <p className="text-gray-700 mb-6 max-w-xl">
-          Everything you need to know about selling, buying, and exchanging your car.
+          Everything you need to know about our video production and creative services.
         </p>
         <Input
           size="large"
