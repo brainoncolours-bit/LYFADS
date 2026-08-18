@@ -1,165 +1,104 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { motion, useScroll, useTransform, useSpring, animate, useMotionValue } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-const IMAGES = [
-  "/assets/home/img1.webp",
-  "/assets/home/img2%20(1).webp",
-  "/assets/home/img3.webp",
-  "/assets/home/img4.webp",
-  "/assets/home/img5.webp",
-  // "/assets/home/img6.jpeg",
-  "/assets/home/img7.webp",
+const BANNERS = [
+  {
+    src: "/assets/home/img1.webp",
+    title: "Crafting Digital Experiences",
+    subtitle: "2026 ARCHIVE / VOL. 01"
+  },
+  {
+    src: "/assets/home/img3.webp",
+    title: "Visual Design & Direction",
+    subtitle: "SELECTED WORKS"
+  },
+  {
+    src: "/assets/home/img5.webp",
+    title: "Minimalist Modern Aesthetic",
+    subtitle: "PORTFOLIO EDITION"
+  },
 ];
 
-const NucleusHero = () => {
-  const containerRef = useRef(null);
-  
-  // We initialize with desktop-friendly defaults
-  const [dimensions, setDimensions] = useState({
-    baseRadius: 140,
-    scrollSpread: 180,
-    logoSize: "w-48"
-  });
+const AutoMovingBannerHero = () => {
+  const [index, setIndex] = useState(0);
 
-  const introRadius = useMotionValue(0);
-
+  // Auto-slide every 5 seconds
   useEffect(() => {
-    const updateDimensions = () => {
-      const width = window.innerWidth;
-      if (width < 640) {
-        // Mobile: Tight circle
-        setDimensions({ baseRadius: 90, scrollSpread: 100, logoSize: "w-28" });
-      } else if (width < 1024) {
-        // Tablet: Medium circle
-        setDimensions({ baseRadius: 110, scrollSpread: 140, logoSize: "w-40" });
-      } else {
-        // Laptop/Desktop: Tighter circle (reduced from 200 to 140)
-        setDimensions({ baseRadius: 140, scrollSpread: 180, logoSize: "w-60" });
-      }
-    };
-
-    updateDimensions();
-    window.addEventListener('resize', updateDimensions);
-    
-    const controls = animate(introRadius, dimensions.baseRadius, {
-      duration: 1.8,
-      ease: [0.16, 1, 0.3, 1],
-    });
-
-    return () => {
-      window.removeEventListener('resize', updateDimensions);
-      controls.stop();
-    };
-  }, [dimensions.baseRadius]);
-
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
-
-  const smoothScroll = useSpring(scrollYProgress, { stiffness: 50, damping: 20 });
-  const logoScale = useTransform(smoothScroll, [0, 0.5], [1, 0.8]);
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % BANNERS.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
-    <div ref={containerRef} className="relative h-[300vh] bg-[#030303] overflow-clip">
-      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
-        
+    <div className="relative w-full h-screen bg-[#080808] overflow-hidden text-white font-sans">
+      
+      {/* 1. AUTO-SLIDING BACKGROUND IMAGES */}
+      <AnimatePresence mode="wait">
         <motion.div
-          initial={{ scale: 0.5, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          style={{ scale: logoScale }}
-          className="relative z-50 pointer-events-none"
+          key={index}
+          initial={{ opacity: 0, scale: 1.08 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+          className="absolute inset-0 w-full h-full"
         >
           <img
-            src="/bg.png"
-            alt="Logo"
-            className={`${dimensions.logoSize} h-auto drop-shadow-[0_0_50px_rgba(255,255,255,0.1)]`}
+            src={BANNERS[index].src}
+            alt={BANNERS[index].title}
+            className="w-full h-full object-cover"
           />
         </motion.div>
+      </AnimatePresence>
 
-        <div className="absolute inset-0" style={{ perspective: "1200px" }}>
-          {IMAGES.map((src, i) => (
-            <OrbitalFrame
+      {/* 2. OVERLAY GRADIENT FOR TEXT READABILITY */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/40 pointer-events-none" />
+
+      {/* 3. TOP BRANDING BAR */}
+      <header className="absolute top-0 left-0 w-full p-8 md:p-12 z-20 flex justify-between items-center">
+        <img src="/bg.png" alt="Logo" className="w-10 h-auto invert opacity-90" />
+        <span className="text-xs font-mono tracking-widest text-zinc-400 uppercase">
+          [ Studio ]
+        </span>
+      </header>
+
+      {/* 4. BOTTOM CENTERED ANIMATED HEADING */}
+      <div className="absolute bottom-16 left-0 right-0 z-20 flex flex-col items-center text-center px-6">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="flex flex-col items-center gap-3 max-w-4xl"
+          >
+            <span className="text-xs font-mono tracking-[0.3em] text-zinc-400 uppercase">
+              {BANNERS[index].subtitle}
+            </span>
+            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-tight text-white leading-tight">
+              {BANNERS[index].title}
+            </h1>
+          </motion.div>
+        </AnimatePresence>
+
+        {/* SLIDE INDICATOR DOTS */}
+        <div className="flex gap-2 mt-8">
+          {BANNERS.map((_, i) => (
+            <button
               key={i}
-              src={src}
-              index={i}
-              total={IMAGES.length}
-              progress={smoothScroll}
-              introRadius={introRadius}
-              scrollSpread={dimensions.scrollSpread}
-              baseRadius={dimensions.baseRadius}
+              onClick={() => setIndex(i)}
+              className={`h-1 rounded-full transition-all duration-500 ${
+                i === index ? "w-8 bg-white" : "w-2 bg-white/30"
+              }`}
+              aria-label={`Go to slide ${i + 1}`}
             />
           ))}
         </div>
-
-        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_10%,black_90%)] opacity-90" />
-
-        {/* SCROLL INDICATOR */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5, duration: 1 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-3"
-        >
-          <p className="text-[10px] font-mono tracking-[0.5em] text-zinc-500 uppercase">Scroll to Explore</p>
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-            className="w-6 h-10 border-2 border-red-600/50 rounded-full flex justify-center pt-2"
-          >
-            <motion.div
-              animate={{ opacity: [1, 0], y: [0, 6] }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-              className="w-1 h-2 bg-red-600 rounded-full"
-            />
-          </motion.div>
-        </motion.div>
       </div>
+
     </div>
   );
 };
 
-const OrbitalFrame = ({ src, index, total, progress, introRadius, scrollSpread, baseRadius }) => {
-  const angle = (index / total) * Math.PI * 2;
-
-  const scrollRadius = useTransform(progress, [0, 1], [0, scrollSpread]);
-  const rotationOffset = useTransform(progress, [0, 1], [0, Math.PI / 2]); // Slower rotation for premium feel
-
-  const x = useTransform([introRadius, scrollRadius, rotationOffset], ([intro, scroll, rot]) =>
-    Math.cos(angle + rot) * (intro + scroll)
-  );
-  const y = useTransform([introRadius, scrollRadius, rotationOffset], ([intro, scroll, rot]) =>
-    Math.sin(angle + rot) * (intro + scroll)
-  );
-
-  const scale = useTransform([introRadius, progress], ([intro, prog]) => {
-     const initialScale = intro / baseRadius;
-     return initialScale + (prog * 0.1); // Subtle growth
-  });
-
-  const opacity = useTransform(introRadius, [0, baseRadius * 0.4], [0, 1]);
-
-  return (
-    <motion.div
-      style={{
-        position: 'absolute',
-        left: '50%',
-        top: '50%',
-        x, y, scale, opacity,
-        translateX: "-50%",
-        translateY: "-50%",
-      }}
-      className="group"
-    >
-      <div className="relative w-24 h-36 sm:w-44 sm:h-64 md:w-48 md:h-68 bg-[#111] border border-white/10 p-1 shadow-2xl transition-all duration-500 group-hover:border-red-500/50 group-hover:z-[100] rounded-sm overflow-hidden">
-        <img
-          src={src}
-          className="w-full h-full object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-700"
-          alt="Portfolio Item"
-        />
-      </div>
-    </motion.div>
-  );
-};
-
-export default NucleusHero;
+export default AutoMovingBannerHero;
