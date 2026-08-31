@@ -99,9 +99,7 @@ const CategoryRow = ({ cat, index }) => {
               <span className="text-[9px] sm:text-[10px] font-mono tracking-widest text-neutral-300 font-bold uppercase truncate pr-2">
                 {cat.name}
               </span>
-              <span className="px-2 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-[8px] sm:text-[9px] font-mono uppercase font-bold border border-white/20 flex-shrink-0">
-                Reel
-              </span>
+             
             </div>
           </div>
         </div>
