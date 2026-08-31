@@ -55,28 +55,27 @@ const ContactUs = () => {
   };
 
   return (
-    <section className="relative w-full bg-[#fafafa] text-neutral-900 pt-28 sm:pt-36 pb-24 px-6 sm:px-12 lg:px-16 overflow-hidden">
+    <section className="relative w-full bg-[#fafafa] text-neutral-900 pt-20 sm:pt-28 md:pt-36 pb-20 sm:pb-24 px-4 sm:px-8 lg:px-16 overflow-hidden">
       <div className="max-w-[1440px] mx-auto">
         
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
           
           {/* LEFT: FORM SECTION */}
           <div className="lg:col-span-7 flex flex-col justify-center">
             
-            <div className="mb-10">
-              
-              <h2 className="text-4xl sm:text-6xl font-black italic tracking-tighter text-neutral-950 uppercase leading-none">
+            <div className="mb-6 sm:mb-10">
+              <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black italic tracking-tighter text-neutral-950 uppercase leading-none">
                 GET IN <span className="text-red-600">TOUCH.</span>
               </h2>
-              <p className="text-xs sm:text-sm font-mono text-neutral-600 mt-3 max-w-lg leading-relaxed">
+              <p className="text-xs sm:text-sm font-mono text-neutral-600 mt-2 sm:mt-3 max-w-lg leading-relaxed">
                 Send raw data specs or film project briefs directly to our core production unit.
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 <div>
-                  <label className="block text-[10px] font-mono uppercase tracking-widest text-neutral-500 font-bold mb-2">
+                  <label className="block text-[10px] font-mono uppercase tracking-widest text-neutral-500 font-bold mb-1.5 sm:mb-2">
                     NAME *
                   </label>
                   <input
@@ -86,12 +85,12 @@ const ContactUs = () => {
                     onChange={handleChange}
                     placeholder="FULL NAME"
                     required
-                    className="w-full bg-white border border-neutral-300 rounded-xl px-4 py-3.5 text-xs font-mono uppercase text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-950 focus:ring-1 focus:ring-neutral-950 transition-all shadow-sm"
+                    className="w-full bg-white border border-neutral-300 rounded-xl px-4 py-3 sm:py-3.5 text-sm sm:text-xs font-mono uppercase text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-950 focus:ring-1 focus:ring-neutral-950 transition-all shadow-sm"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-mono uppercase tracking-widest text-neutral-500 font-bold mb-2">
+                  <label className="block text-[10px] font-mono uppercase tracking-widest text-neutral-500 font-bold mb-1.5 sm:mb-2">
                     EMAIL *
                   </label>
                   <input
@@ -101,13 +100,13 @@ const ContactUs = () => {
                     onChange={handleChange}
                     placeholder="EMAIL ADDRESS"
                     required
-                    className="w-full bg-white border border-neutral-300 rounded-xl px-4 py-3.5 text-xs font-mono uppercase text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-950 focus:ring-1 focus:ring-neutral-950 transition-all shadow-sm"
+                    className="w-full bg-white border border-neutral-300 rounded-xl px-4 py-3 sm:py-3.5 text-sm sm:text-xs font-mono uppercase text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-950 focus:ring-1 focus:ring-neutral-950 transition-all shadow-sm"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-[10px] font-mono uppercase tracking-widest text-neutral-500 font-bold mb-2">
+                <label className="block text-[10px] font-mono uppercase tracking-widest text-neutral-500 font-bold mb-1.5 sm:mb-2">
                   PHONE NUMBER (OPTIONAL)
                 </label>
                 <input
@@ -116,12 +115,12 @@ const ContactUs = () => {
                   value={formData.phone}
                   onChange={handleChange}
                   placeholder="+91 XXXXX XXXXX"
-                  className="w-full bg-white border border-neutral-300 rounded-xl px-4 py-3.5 text-xs font-mono uppercase text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-950 focus:ring-1 focus:ring-neutral-950 transition-all shadow-sm"
+                  className="w-full bg-white border border-neutral-300 rounded-xl px-4 py-3 sm:py-3.5 text-sm sm:text-xs font-mono uppercase text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-950 focus:ring-1 focus:ring-neutral-950 transition-all shadow-sm"
                 />
               </div>
 
               <div>
-                <label className="block text-[10px] font-mono uppercase tracking-widest text-neutral-500 font-bold mb-2">
+                <label className="block text-[10px] font-mono uppercase tracking-widest text-neutral-500 font-bold mb-1.5 sm:mb-2">
                   MESSAGE / PROJECT SCOPE *
                 </label>
                 <textarea
@@ -131,7 +130,7 @@ const ContactUs = () => {
                   onChange={handleChange}
                   placeholder="DESCRIBE PROJECT OR SCOPE..."
                   required
-                  className="w-full bg-white border border-neutral-300 rounded-xl px-4 py-3.5 text-xs font-mono uppercase text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-950 focus:ring-1 focus:ring-neutral-950 transition-all shadow-sm resize-none"
+                  className="w-full bg-white border border-neutral-300 rounded-xl px-4 py-3 sm:py-3.5 text-sm sm:text-xs font-mono uppercase text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-950 focus:ring-1 focus:ring-neutral-950 transition-all shadow-sm resize-none"
                 />
               </div>
 
@@ -139,7 +138,7 @@ const ContactUs = () => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-10 py-4 rounded-full bg-neutral-950 text-white font-mono text-xs font-bold tracking-widest uppercase hover:bg-red-600 transition-all duration-300 shadow-md hover:shadow-xl hover:scale-105 active:scale-95 disabled:opacity-50 cursor-pointer"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 sm:gap-3 px-8 sm:px-10 py-3.5 sm:py-4 rounded-full bg-neutral-950 text-white font-mono text-xs font-bold tracking-widest uppercase hover:bg-red-600 transition-all duration-300 shadow-md hover:shadow-xl hover:scale-105 active:scale-95 disabled:opacity-50 cursor-pointer"
                 >
                   <span>{loading ? 'SENDING...' : 'SEND MESSAGE'}</span>
                   <ArrowUpRight size={15} />

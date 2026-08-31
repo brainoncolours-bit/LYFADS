@@ -135,7 +135,7 @@ const FeaturesSection = () => {
     <div className="w-full bg-[#fafafa] text-neutral-900 font-sans overflow-hidden">
       
       {/* 1. EXPANDING 3-CARD ACCORDION SECTION */}
-      <section className="relative w-full pt-16 pb-24 px-6 sm:px-12 lg:px-16 max-w-[1440px] mx-auto flex flex-col items-center">
+      <section className="relative w-full pt-16 pb-20 sm:pb-24 px-4 sm:px-8 lg:px-16 max-w-[1440px] mx-auto flex flex-col items-center">
         
         {/* Header Text Fall Down */}
         <motion.div 
@@ -143,29 +143,26 @@ const FeaturesSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.25 }}
           transition={{ duration: 0.7, ease: [0.25, 1, 0.5, 1] }}
-          className="text-center max-w-2xl mx-auto mb-14"
+          className="text-center max-w-2xl mx-auto mb-10 sm:mb-14"
         >
-          
-          
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black italic tracking-tighter text-neutral-950 uppercase leading-none">
-            Expert Direction &amp; Productions.
+          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black italic tracking-tighter text-neutral-950 uppercase leading-none">
+            Expert Direction &amp; <span className="text-red-600">Productions.</span>
           </h2>
-          <p className="text-sm sm:text-base text-neutral-600 font-normal mt-4 leading-relaxed">
+          <p className="text-xs sm:text-sm lg:text-base text-neutral-600 font-normal mt-3 sm:mt-4 leading-relaxed">
             Hover to expand and explore our core visual production disciplines.
           </p>
         </motion.div>
 
         {/* 3 Cards Pop Up from Bottom */}
-        <div className="flex flex-col md:flex-row gap-4 sm:gap-6 w-full h-[520px] sm:h-[580px] items-stretch justify-center max-w-6xl">
+        <div className="flex flex-col md:flex-row gap-4 sm:gap-6 w-full h-auto md:h-[500px] lg:h-[560px] items-stretch justify-center max-w-6xl">
           {THREE_PROJECTS.map((proj, idx) => {
             const isExpanded = activeAccordion === idx;
-            const IconComponent = proj.icon;
 
             return (
               <motion.div
                 key={proj.id}
                 layout
-                initial={{ opacity: 0, y: 80 }}
+                initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: false, amount: 0.2 }}
                 transition={{
@@ -178,10 +175,10 @@ const FeaturesSection = () => {
                   setActiveAccordion(idx);
                   setSelectedVideo({ video_url: proj.video, title: proj.title, category: proj.tag, description: proj.description });
                 }}
-                className={`relative overflow-hidden cursor-pointer bg-neutral-950 rounded-[32px] sm:rounded-[36px] border transition-all duration-500 ease-out flex flex-col justify-between ${
+                className={`relative overflow-hidden cursor-pointer bg-neutral-950 rounded-[28px] sm:rounded-[36px] border transition-all duration-500 ease-out flex flex-col justify-between min-h-[220px] md:min-h-0 ${
                   isExpanded
-                    ? 'flex-[3.5] border-white/40 ring-2 ring-white/20 shadow-[0_25px_50px_rgba(0,0,0,0.35)]'
-                    : 'flex-[1] border-white/10 opacity-75 hover:opacity-100 shadow-xl hover:border-white/25'
+                    ? 'md:flex-[3.5] border-white/40 ring-2 ring-white/20 shadow-[0_25px_50px_rgba(0,0,0,0.35)]'
+                    : 'md:flex-[1] border-white/10 opacity-85 md:opacity-75 hover:opacity-100 shadow-xl hover:border-white/25'
                 }`}
               >
                 {/* Background Video */}
@@ -202,32 +199,21 @@ const FeaturesSection = () => {
                 }`} />
 
                 {/* Top Badge & Play Button */}
-                <div className="relative top-5 left-5 right-5 flex justify-between items-center z-10 pointer-events-none">
-                  
-                  
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white transition-colors duration-300 ${
+                <div className="relative top-4 sm:top-5 left-4 sm:left-5 right-4 sm:right-5 flex justify-between items-center z-10 pointer-events-none">
+                  <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-white transition-colors duration-300 ${
                     isExpanded ? 'bg-red-600 shadow-lg' : 'bg-white/20'
                   }`}>
-                    <Play size={12} className="fill-current ml-0.5" />
+                    <Play size={11} className="fill-current ml-0.5" />
                   </div>
                 </div>
 
                 {/* Bottom Content Area */}
-                <div className="relative z-10 p-5 sm:p-6 flex flex-col gap-3 text-white pointer-events-none">
-                  
-                  {/* Category Pill & Title Row */}
-                  <div className="flex items-center gap-3">
-                    
-
-                    <div className="min-w-0">
-                      <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-white uppercase italic truncate">
-                        {proj.title}
-                      </h3>
-                     
-                    </div>
+                <div className="relative z-10 p-4 sm:p-6 flex flex-col gap-2 sm:gap-3 text-white pointer-events-none">
+                  <div className="min-w-0">
+                    <h3 className="text-lg sm:text-2xl font-bold tracking-tight text-white uppercase italic truncate">
+                      {proj.title}
+                    </h3>
                   </div>
-
-                  
 
                   {/* Expanded Description Reveal */}
                   <AnimatePresence>
@@ -239,19 +225,18 @@ const FeaturesSection = () => {
                         transition={{ duration: 0.3, ease: [0.25, 1, 0.5, 1] }}
                         className="overflow-hidden"
                       >
-                        <div className="flex items-center justify-between gap-3 bg-black/70 p-3.5 rounded-2xl border border-white/15 mt-1 shadow-md">
-                          <p className="text-xs text-neutral-200 font-normal leading-relaxed line-clamp-2">
+                        <div className="flex items-center justify-between gap-3 bg-black/70 p-3 sm:p-3.5 rounded-2xl border border-white/15 mt-1 shadow-md">
+                          <p className="text-[11px] sm:text-xs text-neutral-200 font-normal leading-relaxed line-clamp-2">
                             {proj.description}
                           </p>
                           
-                          <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white flex-shrink-0">
-                            <ArrowUpRight size={14} />
+                          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/20 flex items-center justify-center text-white flex-shrink-0">
+                            <ArrowUpRight size={13} />
                           </div>
                         </div>
                       </motion.div>
                     )}
                   </AnimatePresence>
-
                 </div>
               </motion.div>
             );
@@ -261,7 +246,7 @@ const FeaturesSection = () => {
       </section>
 
       {/* 2. CURVED FULL-WIDTH PANORAMA ARCHIVE */}
-      <section className="relative w-full pt-10 pb-20 bg-[#fafafa] flex flex-col items-center justify-center overflow-hidden">
+      <section className="relative w-full pt-8 pb-16 sm:pb-20 bg-[#fafafa] flex flex-col items-center justify-center overflow-hidden">
         
         {/* Header Content */}
         <motion.div 
@@ -269,47 +254,47 @@ const FeaturesSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.2 }}
           transition={{ duration: 0.7, ease: [0.25, 1, 0.5, 1] }}
-          className="text-center max-w-3xl mx-auto px-6 mb-12"
+          className="text-center max-w-3xl mx-auto px-4 sm:px-6 mb-8 sm:mb-12"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-neutral-900 text-white text-[11px] font-mono tracking-widest uppercase mb-6 shadow-md">
-            <Sparkles size={13} className="text-red-500" />
+          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-neutral-900 text-white text-[10px] sm:text-[11px] font-mono tracking-widest uppercase mb-4 sm:mb-6 shadow-md">
+            <Sparkles size={12} className="text-red-500" />
             <span>CLIENT WORKS &amp; COMMERCIAL ARCHIVE</span>
           </div>
 
-          <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl font-normal tracking-tight text-neutral-900 leading-[1.15]">
+          <h2 className="font-serif text-3xl sm:text-5xl md:text-6xl font-normal tracking-tight text-neutral-900 leading-[1.15]">
             Express Your Identity with Our Unique Visuals
           </h2>
-          <p className="text-sm sm:text-base text-neutral-600 font-normal mt-5 max-w-xl mx-auto leading-relaxed">
+          <p className="text-xs sm:text-base text-neutral-600 font-normal mt-3 sm:mt-5 max-w-xl mx-auto leading-relaxed">
             A curated showcase of live commercial films, brand campaigns, and creative reels engineered for high digital conversion.
           </p>
         </motion.div>
 
         {/* FULL-WIDTH Curved Window Panorama Container */}
-        <div className="relative w-full overflow-hidden my-4 py-8">
+        <div className="relative w-full overflow-hidden my-2 sm:my-4 py-4 sm:py-8">
           
           {/* Top Concave Curve Mask */}
-          <div className="absolute -top-1 left-0 right-0 h-24 sm:h-32 bg-[#fafafa] rounded-b-[100%] z-20 pointer-events-none shadow-[0_20px_35px_rgba(250,250,250,0.9)]" />
+          <div className="absolute -top-1 left-0 right-0 h-16 sm:h-24 md:h-32 bg-[#fafafa] rounded-b-[100%] z-20 pointer-events-none shadow-[0_20px_35px_rgba(250,250,250,0.9)]" />
 
           {/* Bottom Concave Curve Mask */}
-          <div className="absolute -bottom-1 left-0 right-0 h-24 sm:h-32 bg-[#fafafa] rounded-t-[100%] z-20 pointer-events-none shadow-[0_-20px_35px_rgba(250,250,250,0.9)]" />
+          <div className="absolute -bottom-1 left-0 right-0 h-16 sm:h-24 md:h-32 bg-[#fafafa] rounded-t-[100%] z-20 pointer-events-none shadow-[0_-20px_35px_rgba(250,250,250,0.9)]" />
 
           {/* Centered Floating Play Button */}
           <button
             type="button"
             onClick={() => setSelectedVideo({ video_url: displayCategories[0]?.video_url, title: displayCategories[0]?.name, category: displayCategories[0]?.sub })}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-white/90 border border-white/70 shadow-[0_15px_45px_rgba(0,0,0,0.2)] flex items-center justify-center text-neutral-900 hover:scale-110 hover:bg-white transition-all duration-300 group cursor-pointer"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 w-16 h-16 sm:w-22 sm:h-22 md:w-26 md:h-26 rounded-full bg-white/90 border border-white/70 shadow-[0_15px_45px_rgba(0,0,0,0.2)] flex items-center justify-center text-neutral-900 hover:scale-110 hover:bg-white transition-all duration-300 group cursor-pointer"
           >
-            <Play size={36} className="fill-neutral-900 text-neutral-900 ml-1.5 group-hover:text-red-600 group-hover:fill-red-600 transition-colors" />
+            <Play size={26} className="fill-neutral-900 text-neutral-900 ml-1 group-hover:text-red-600 group-hover:fill-red-600 transition-colors" />
           </button>
 
           {/* Continuous Full-Width Horizontal Motion Track */}
-          <div className="w-full flex overflow-hidden py-10">
-            <div className="flex gap-7 items-center animate-infinite-marquee hover:[animation-play-state:paused] flex-nowrap will-change-transform">
+          <div className="w-full flex overflow-hidden py-6 sm:py-10">
+            <div className="flex gap-4 sm:gap-7 items-center animate-infinite-marquee hover:[animation-play-state:paused] flex-nowrap will-change-transform">
               {[...displayCategories, ...displayCategories, ...displayCategories].map((item, idx) => (
                 <Link
                   key={`curve-${item.id || idx}-${idx}`}
                   href={`/works/${item.id}`}
-                  className="w-[320px] sm:w-[380px] md:w-[420px] aspect-[3/4] rounded-3xl overflow-hidden bg-neutral-900 relative flex-shrink-0 shadow-xl cursor-pointer group transition-all duration-300 hover:scale-[1.03] border border-neutral-200/80 block"
+                  className="w-[260px] sm:w-[320px] md:w-[380px] lg:w-[420px] aspect-[3/4] rounded-2xl sm:rounded-3xl overflow-hidden bg-neutral-900 relative flex-shrink-0 shadow-xl cursor-pointer group transition-all duration-300 hover:scale-[1.03] border border-neutral-200/80 block"
                 >
                   <video
                     src={item.video_url}
@@ -322,22 +307,22 @@ const FeaturesSection = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none" />
                   
                   {/* Floating Card Overlay */}
-                  <div className="absolute bottom-16 sm:bottom-20 left-4 right-4 z-10 flex flex-col gap-2 p-4 rounded-2xl bg-black/75 border border-white/15 text-white pointer-events-none shadow-2xl transition-transform duration-300 group-hover:-translate-y-1">
+                  <div className="absolute bottom-12 sm:bottom-16 md:bottom-20 left-3 sm:left-4 right-3 sm:right-4 z-10 flex flex-col gap-1.5 sm:gap-2 p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-black/75 border border-white/15 text-white pointer-events-none shadow-2xl transition-transform duration-300 group-hover:-translate-y-1">
                     <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-mono uppercase tracking-widest text-red-400 font-bold bg-black/50 px-2.5 py-1 rounded-md border border-white/10">
+                      <span className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-red-400 font-bold bg-black/50 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md border border-white/10">
                         {item.sub || 'WORK CATEGORY'}
                       </span>
-                      <div className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-red-600 transition-colors">
-                        <ArrowUpRight size={13} className="text-white" />
+                      <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-red-600 transition-colors">
+                        <ArrowUpRight size={12} className="text-white" />
                       </div>
                     </div>
 
-                    <h4 className="text-lg sm:text-xl font-black tracking-tight line-clamp-1 text-white uppercase italic">
+                    <h4 className="text-base sm:text-lg lg:text-xl font-black tracking-tight line-clamp-1 text-white uppercase italic">
                       {item.name}
                     </h4>
 
                     {item.description && (
-                      <p className="text-xs text-neutral-200 font-normal line-clamp-2 leading-relaxed opacity-95">
+                      <p className="text-[11px] sm:text-xs text-neutral-200 font-normal line-clamp-2 leading-relaxed opacity-95">
                         {item.description}
                       </p>
                     )}
@@ -355,16 +340,16 @@ const FeaturesSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.2 }}
           transition={{ duration: 0.7, delay: 0.1, ease: [0.25, 1, 0.5, 1] }}
-          className="w-full max-w-[1440px] mx-auto px-8 sm:px-16 mt-8 flex justify-center items-center z-30"
+          className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-16 mt-4 sm:mt-8 flex justify-center items-center z-30"
         >
           {/* Center: Premium Explore Works Button */}
           <Link 
             href="/works"
-            className="group relative inline-flex items-center gap-3 px-10 py-5 rounded-full bg-neutral-950 text-white font-bold text-sm tracking-wider uppercase shadow-[0_15px_35px_rgba(0,0,0,0.2)] hover:shadow-[0_20px_50px_rgba(220,38,38,0.35)] hover:bg-red-600 transition-all duration-300 hover:scale-105 active:scale-95 text-center"
+            className="group relative inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-10 py-3.5 sm:py-5 rounded-full bg-neutral-950 text-white font-bold text-xs sm:text-sm tracking-wider uppercase shadow-[0_15px_35px_rgba(0,0,0,0.2)] hover:shadow-[0_20px_50px_rgba(220,38,38,0.35)] hover:bg-red-600 transition-all duration-300 hover:scale-105 active:scale-95 text-center"
           >
-            <Sparkles size={16} className="text-red-500 group-hover:text-white transition-colors" />
+            
             <span>EXPLORE FULL WORKS ARCHIVE</span>
-            <ArrowUpRight size={16} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+            <ArrowUpRight size={15} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
           </Link>
         </motion.div>
 

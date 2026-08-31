@@ -308,12 +308,12 @@ const CategoryWorksPage = () => {
     <div className="w-full min-h-screen bg-white text-neutral-900 selection:bg-red-600 selection:text-white flex flex-col justify-between">
       <Navbar />
       
-      <main className="w-full pt-28 sm:pt-32 pb-24 px-4 sm:px-6 max-w-7xl mx-auto space-y-12 flex-grow">
+      <main className="w-full pt-28 sm:pt-32 pb-28 md:pb-24 px-4 sm:px-6 max-w-7xl mx-auto space-y-8 sm:space-y-12 flex-grow">
         {/* Header */}
-        <div className="space-y-4 text-left">
+        <div className="space-y-3 sm:space-y-4 text-left">
           <Link 
             href="/works" 
-            className="inline-flex items-center gap-2 text-neutral-500 hover:text-red-600 mb-2 transition-colors duration-300 text-xs font-mono uppercase tracking-widest font-bold"
+            className="inline-flex items-center gap-2 text-neutral-500 hover:text-red-600 mb-1 sm:mb-2 transition-colors duration-300 text-xs font-mono uppercase tracking-widest font-bold"
           >
             <ArrowLeft size={16} />
             <span>Back to Categories</span>
@@ -323,19 +323,19 @@ const CategoryWorksPage = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="space-y-3"
+            className="space-y-2 sm:space-y-3"
           >
             <div>
-              <span className="text-xs font-mono font-bold text-red-600 uppercase tracking-[0.3em] block">
+              <span className="text-[10px] sm:text-xs font-mono font-bold text-red-600 uppercase tracking-[0.3em] block">
                 {category.sub || "PORTFOLIO CATEGORY"}
               </span>
             </div>
 
-            <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black uppercase italic tracking-tight text-neutral-950 leading-[0.95]">
+            <h1 className="text-4xl sm:text-6xl lg:text-8xl font-black uppercase italic tracking-tight text-neutral-950 leading-[0.95]">
               {category.name}
             </h1>
 
-            <p className="text-sm sm:text-base text-neutral-600 font-normal pt-1">
+            <p className="text-xs sm:text-base text-neutral-600 font-normal pt-1">
               {videos.length} {videos.length === 1 ? 'production work' : 'production works'} in this category
             </p>
           </motion.div>

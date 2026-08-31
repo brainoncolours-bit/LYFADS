@@ -21,59 +21,46 @@ export default function AboutPage() {
     <div className="w-full bg-[#ffffff] text-neutral-900 font-sans min-h-screen selection:bg-red-600 selection:text-white">
       <Navbar />
 
-      <main className="w-full pt-0 pb-24 px-0 space-y-16">
+      <main className="w-full pt-0 pb-28 md:pb-24 px-0 space-y-12 sm:space-y-16">
         
-        {/* 1. HERO CONE SHOWCASE (FLUSH TO TOP / ZERO TOP PADDING) */}
         {/* 1. HERO CONE SHOWCASE (FLAT SEAMLESS WHITE BACKGROUND) */}
-        <section className="relative w-full bg-white pt-32 sm:pt-36 pb-16 px-6 sm:px-12 text-center overflow-hidden flex flex-col items-center justify-between">
+        <section className="relative w-full bg-white pt-28 sm:pt-36 pb-12 sm:pb-16 px-4 sm:px-8 lg:px-12 text-center overflow-hidden flex flex-col items-center justify-between">
           
-          {/* Subtle Vertical Background Lines */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#f1f5f9_1px,transparent_1px)] bg-[size:5rem] opacity-60 pointer-events-none" />
-
-          {/* Projector Cone Light Beam */}
-          <div 
-            className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-[600px] bg-gradient-to-b from-[#f8f9fa] via-[#edf0f5]/60 to-transparent pointer-events-none"
-            style={{
-              clipPath: 'polygon(30% 0%, 70% 0%, 95% 100%, 5% 100%)'
-            }}
-          />
-
           {/* Header Copy */}
-          <div className="relative z-10 space-y-5 max-w-4xl mx-auto">
-           
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black uppercase italic tracking-tighter text-neutral-950 leading-[0.95]">
-              BORN FROM <br /> PASSION
+          <div className="relative z-10 space-y-4 sm:space-y-5 max-w-4xl mx-auto">
+            <h1 className="text-3xl sm:text-5xl lg:text-7xl font-black uppercase italic tracking-tighter text-neutral-950 leading-[0.95]">
+              BORN FROM <br /> <span className="text-red-600">PASSION</span>
             </h1>
 
-            <p className="text-sm sm:text-base lg:text-lg text-neutral-600 font-normal max-w-3xl mx-auto pt-1 leading-relaxed">
+            <p className="text-xs sm:text-base lg:text-lg text-neutral-600 font-normal max-w-3xl mx-auto pt-1 leading-relaxed">
               Founded in 2018, LYF ADS emerged from a simple belief: that every brand has a story worth telling. What started as a two-person operation in a garage has evolved into a full-scale production powerhouse, serving clients across the globe.
             </p>
 
             {/* Stats Cards */}
-            <div className="grid grid-cols-3 gap-3 sm:gap-6 max-w-xl mx-auto pt-2">
-              <div className="bg-[#f8f9fa] border border-neutral-200/80 rounded-2xl p-4 sm:p-5 text-center shadow-xs">
-                <div className="text-2xl sm:text-4xl font-black italic tracking-tight text-neutral-950 font-mono">
+            <div className="grid grid-cols-3 gap-2 sm:gap-4 md:gap-6 max-w-xl mx-auto pt-2">
+              <div className="bg-[#f8f9fa] border border-neutral-200/80 rounded-xl sm:rounded-2xl p-3 sm:p-5 text-center shadow-xs">
+                <div className="text-xl sm:text-3xl md:text-4xl font-black italic tracking-tight text-neutral-950 font-mono">
                   8+
                 </div>
-                <div className="text-[9px] sm:text-[11px] font-mono uppercase tracking-widest text-neutral-500 font-bold mt-1">
+                <div className="text-[8px] sm:text-[10px] md:text-[11px] font-mono uppercase tracking-widest text-neutral-500 font-bold mt-1">
                   YEARS
                 </div>
               </div>
 
-              <div className="bg-[#f8f9fa] border border-neutral-200/80 rounded-2xl p-4 sm:p-5 text-center shadow-xs">
-                <div className="text-2xl sm:text-4xl font-black italic tracking-tight text-neutral-950 font-mono">
+              <div className="bg-[#f8f9fa] border border-neutral-200/80 rounded-xl sm:rounded-2xl p-3 sm:p-5 text-center shadow-xs">
+                <div className="text-xl sm:text-3xl md:text-4xl font-black italic tracking-tight text-neutral-950 font-mono">
                   500+
                 </div>
-                <div className="text-[9px] sm:text-[11px] font-mono uppercase tracking-widest text-neutral-500 font-bold mt-1">
+                <div className="text-[8px] sm:text-[10px] md:text-[11px] font-mono uppercase tracking-widest text-neutral-500 font-bold mt-1">
                   PROJECTS
                 </div>
               </div>
 
-              <div className="bg-[#f8f9fa] border border-neutral-200/80 rounded-2xl p-4 sm:p-5 text-center shadow-xs">
-                <div className="text-2xl sm:text-4xl font-black italic tracking-tight text-neutral-950 font-mono">
+              <div className="bg-[#f8f9fa] border border-neutral-200/80 rounded-xl sm:rounded-2xl p-3 sm:p-5 text-center shadow-xs">
+                <div className="text-xl sm:text-3xl md:text-4xl font-black italic tracking-tight text-neutral-950 font-mono">
                   100+
                 </div>
-                <div className="text-[9px] sm:text-[11px] font-mono uppercase tracking-widest text-neutral-500 font-bold mt-1">
+                <div className="text-[8px] sm:text-[10px] md:text-[11px] font-mono uppercase tracking-widest text-neutral-500 font-bold mt-1">
                   CLIENTS
                 </div>
               </div>
@@ -81,33 +68,26 @@ export default function AboutPage() {
 
           </div>
 
-          {/* 3D Visor Stage with Video */}
-          
-
         </section>
 
-        
-
-        {/* 3. CREATIVE MAVERICKS (OUR TEAM) */}
-        
         {/* 3. CREATIVE MAVERICKS (OUR TEAM WITH EMBEDDED VIDEO - CENTERED CONTAINER) */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <section className="w-full bg-white rounded-[36px] p-8 sm:p-12 lg:p-14 border border-neutral-200/80 shadow-sm grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          <section className="w-full bg-white rounded-[24px] sm:rounded-[36px] p-5 sm:p-10 lg:p-14 border border-neutral-200/80 shadow-sm grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-10 items-center">
             
             {/* Left Content */}
-            <div className="lg:col-span-7 space-y-6">
+            <div className="lg:col-span-7 space-y-4 sm:space-y-6">
               <div className="inline-flex items-center gap-2">
                 <Users size={14} className="text-red-600" />
-                <span className="text-xs font-mono font-bold tracking-[0.3em] uppercase text-red-600">
+                <span className="text-[10px] sm:text-xs font-mono font-bold tracking-[0.3em] uppercase text-red-600">
                   OUR TEAM
                 </span>
               </div>
 
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black italic uppercase tracking-tight text-neutral-950 leading-[0.95]">
+              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black italic uppercase tracking-tight text-neutral-950 leading-[0.95]">
                 CREATIVE <br /> MAVERICKS
               </h2>
 
-              <div className="space-y-4 text-sm sm:text-base text-neutral-600 font-normal leading-relaxed">
+              <div className="space-y-3 sm:space-y-4 text-xs sm:text-base text-neutral-600 font-normal leading-relaxed">
                 <p>
                   Our crew is a collective of directors, cinematographers, editors, and storytellers who live and breathe visual content. From concept to final cut, we bring decades of combined experience across commercials, music videos, documentaries, and branded content.
                 </p>
@@ -118,7 +98,7 @@ export default function AboutPage() {
             </div>
 
             {/* Right Video Card */}
-            <div className="lg:col-span-5 h-[280px] sm:h-[340px] rounded-3xl overflow-hidden bg-neutral-950 border-4 border-[#f8f9fa] shadow-md relative group">
+            <div className="lg:col-span-5 h-[220px] sm:h-[300px] lg:h-[340px] rounded-2xl sm:rounded-3xl overflow-hidden bg-neutral-950 border-2 sm:border-4 border-[#f8f9fa] shadow-md relative group">
               <video
                 src="/assets/lap/web....mp4"
                 autoPlay
@@ -128,8 +108,6 @@ export default function AboutPage() {
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-              
-              
             </div>
 
           </section>

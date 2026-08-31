@@ -158,10 +158,10 @@ const VideoDetailPage = () => {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-black text-white pt-24 pb-16">
+      <div className="min-h-screen bg-black text-white pt-24 pb-28 md:pb-16">
         {/* Navigation */}
-        <div className="container mx-auto px-6 mb-8">
-          <div className="flex items-center gap-4 text-sm">
+        <div className="container mx-auto px-4 sm:px-6 mb-6 sm:mb-8">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm">
             <Link href="/works" className="text-gray-400 hover:text-white transition-colors">
               Categories
             </Link>
@@ -170,12 +170,12 @@ const VideoDetailPage = () => {
               {category?.name}
             </Link>
             <span className="text-gray-600">/</span>
-            <span className="text-white">{video.title}</span>
+            <span className="text-white truncate max-w-[200px] sm:max-w-none">{video.title}</span>
           </div>
         </div>
 
         {/* Split Layout: Description (Left) & Video (Right) */}
-        <div className="container mx-auto px-6">
+        <div className="container mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
             {/* LEFT SIDE - Description */}
             <motion.div
@@ -186,7 +186,7 @@ const VideoDetailPage = () => {
             >
               {/* Title */}
               <div>
-                <h1 className="text-4xl md:text-6xl font-black mb-4 leading-tight">
+                <h1 className="text-3xl sm:text-4xl md:text-6xl font-black mb-4 leading-tight">
                   {video.title}
                 </h1>
                 
