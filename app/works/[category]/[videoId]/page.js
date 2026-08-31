@@ -6,61 +6,91 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { supabase } from '@/lib/supabaseClient';
+import { hasSupabaseConfig, supabase } from '@/lib/supabaseClient';
 import { getPlayableVideoUrl, isDirectVideoSource } from '@/lib/videoUrls';
 
-const categories = {
-  'commercial': { name: 'Commercial', color: 'from-red-500 to-orange-500', icon: '🎬' },
-  'corporate': { name: 'Corporate', color: 'from-blue-500 to-cyan-500', icon: '💼' },
+const FALLBACK_CATEGORIES_MAP = {
+  'fallback-1': { id: 'fallback-1', name: 'Commercial', sub: 'Film', color: 'from-red-500 to-orange-500', icon: '🎬' },
+  'fallback-2': { id: 'fallback-2', name: 'Digital', sub: 'Campaign', color: 'from-blue-500 to-cyan-500', icon: '📱' },
+  'fallback-3': { id: 'fallback-3', name: 'Corporate', sub: 'Branding', color: 'from-blue-500 to-cyan-500', icon: '💼' },
+  'fallback-4': { id: 'fallback-4', name: 'AI Video', sub: 'Content', color: 'from-violet-500 to-fuchsia-500', icon: '✨' },
+  'fallback-5': { id: 'fallback-5', name: 'Cinematic', sub: 'Production', color: 'from-yellow-500 to-red-500', icon: '🎞️' },
+};
+
+const CATEGORIES_BY_SLUG = {
+  '1': { id: 1, name: 'Commercial', color: 'from-red-500 to-orange-500', icon: '🎬' },
+  '4': { id: 4, name: 'Digital', color: 'from-blue-500 to-cyan-500', icon: '📱' },
+  '18': { id: 18, name: 'Corporate', color: 'from-blue-500 to-cyan-500', icon: '💼' },
+  '16': { id: 16, name: 'AI Video', color: 'from-violet-500 to-fuchsia-500', icon: '✨' },
+  '14': { id: 14, name: 'Brand Film', color: 'from-orange-500 to-pink-500', icon: '🏆' },
+  'commercial': { id: 1, name: 'Commercial', color: 'from-red-500 to-orange-500', icon: '🎬' },
+  'corporate': { id: 18, name: 'Corporate', color: 'from-blue-500 to-cyan-500', icon: '💼' },
+  'digital': { id: 4, name: 'Digital', color: 'from-blue-500 to-cyan-500', icon: '📱' },
   'music-video': { name: 'Music Video', color: 'from-pink-500 to-purple-500', icon: '🎵' },
   'documentary': { name: 'Documentary', color: 'from-green-500 to-teal-500', icon: '🎥' },
   'short-film': { name: 'Short Film', color: 'from-yellow-500 to-red-500', icon: '🎞️' },
   'event': { name: 'Event Coverage', color: 'from-indigo-500 to-purple-500', icon: '🎪' },
   'animation': { name: 'Animation', color: 'from-violet-500 to-fuchsia-500', icon: '✨' },
   'social-media': { name: 'Social Media', color: 'from-cyan-500 to-blue-500', icon: '📱' },
-  'brand-film': { name: 'Brand Film', color: 'from-orange-500 to-pink-500', icon: '🏆' },
+  'brand-film': { id: 14, name: 'Brand Film', color: 'from-orange-500 to-pink-500', icon: '🏆' },
   'product': { name: 'Product Videos', color: 'from-emerald-500 to-green-500', icon: '📦' },
   'testimonial': { name: 'Testimonials', color: 'from-purple-500 to-pink-500', icon: '💬' },
+  'ai-video': { id: 16, name: 'AI Video', color: 'from-violet-500 to-fuchsia-500', icon: '✨' },
+  'cinematic': { name: 'Cinematic', color: 'from-yellow-500 to-red-500', icon: '🎞️' },
   'other': { name: 'Other', color: 'from-gray-500 to-slate-500', icon: '🎨' },
+};
+
+const resolveCategory = (catIdParam) => {
+  if (!catIdParam) return { name: 'Category', color: 'from-red-500 to-orange-500', icon: '🎬' };
+  const paramStr = String(catIdParam);
+  if (FALLBACK_CATEGORIES_MAP[paramStr]) return FALLBACK_CATEGORIES_MAP[paramStr];
+  const lowerParam = paramStr.toLowerCase().trim();
+  if (CATEGORIES_BY_SLUG[lowerParam]) return CATEGORIES_BY_SLUG[lowerParam];
+  const matchByName = Object.values(CATEGORIES_BY_SLUG).find(
+    (c) => c.name.toLowerCase() === lowerParam || String(c.id) === paramStr
+  );
+  return matchByName || { name: 'Category', color: 'from-red-500 to-orange-500', icon: '🎬' };
 };
 
 const VideoDetailPage = () => {
   const params = useParams();
-  const categoryId = params.category;
-  const videoId = params.videoId;
-  const category = categories[categoryId];
+  const categoryId = params?.category;
+  const videoId = params?.videoId;
+  const category = resolveCategory(categoryId);
 
   const [video, setVideo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [relatedVideos, setRelatedVideos] = useState([]);
 
-  useEffect(() => {
-    fetchVideo();
-    fetchRelatedVideos();
-  }, [videoId]);
-
   const fetchVideo = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('videos')
-        .select('*')
-        .eq('id', videoId)
-        .single();
+      if (hasSupabaseConfig && videoId) {
+        const { data, error } = await supabase
+          .from('videos')
+          .select('*')
+          .eq('id', videoId)
+          .maybeSingle();
 
-      if (error) {
-        console.error('Error fetching video:', error);
-        setVideo(null);
-      } else {
-        setVideo(data);
+        if (!error && data) {
+          setVideo(data);
+          setLoading(false);
+          return;
+        }
       }
+      setVideo(null);
     } catch (err) {
-      console.error('Unexpected error:', err);
+      console.error('Unexpected error fetching video:', err);
       setVideo(null);
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchVideo();
+    fetchRelatedVideos();
+  }, [videoId]);
 
   const fetchRelatedVideos = async () => {
     try {
@@ -163,7 +193,6 @@ const VideoDetailPage = () => {
                 {/* Category Badge */}
                 {category && (
                   <div className={`inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r ${category.color} rounded-full text-white font-semibold mb-4`}>
-                    <span>{category.icon}</span>
                     <span>{category.name}</span>
                   </div>
                 )}

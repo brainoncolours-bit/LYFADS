@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from 'react';
-import { motion, useScroll, useTransform, useSpring, useInView, AnimatePresence } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -11,16 +11,10 @@ import { hasSupabaseConfig, supabase } from '@/lib/supabaseClient';
 const thum = [
   "/assets/cat/comm.mp4",
   "/assets/cat/digi.mp4",
- "/assets/cat/cover photos ad.mp4",
-
-  
+  "/assets/cat/cover photos ad.mp4",
   "/assets/cat/copo.mp4",
   "/assets/cat/aivdo.mp4",
-
-  
-
   "/assets/cat/cover photos ad.mp4"
-
 ];
 
 const CATEGORY_DISPLAY_CONFIG = [
@@ -37,146 +31,96 @@ const FALLBACK_CATEGORIES = [
 
 const isDirectVideoSource = (url = "") => /\.(mp4|webm|ogg|mov)(\?|$)/i.test(url);
 
-// --- HOOKS ---
-const useResponsiveCardDimensions = () => {
-  const [dimensions, setDimensions] = useState({ width: 520, height: 60 });
-
-  useEffect(() => {
-    const updateDimensions = () => {
-      if (window.innerWidth < 640) setDimensions({ width: 300, height: 50 });
-      else if (window.innerWidth < 1024) setDimensions({ width: 420, height: 55 });
-      else setDimensions({ width: 520, height: 60 });
-    };
-    updateDimensions();
-    window.addEventListener('resize', updateDimensions);
-    return () => window.removeEventListener('resize', updateDimensions);
-  }, []);
-
-  return dimensions;
-};
-
-// --- COMPONENTS ---
-const CategoryCard = ({ cat, index, cardWidth, cardHeight, isStatic = false, redirectUrl }) => {
-  const cardRef = useRef(null);
-  const videoRef = useRef(null);
-  const isInView = useInView(cardRef, { once: false, margin: "-10% 0px -10% 0px" });
-
+const CategoryRow = ({ cat, index }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [isMobileActive, setIsMobileActive] = useState(false);
-
-  const mediaSource = isStatic ? "/assets/cat/copo.mp4" : cat?.carousel_video_url || thum[index % thum.length];
+  const mediaSource = cat?.carousel_video_url || thum[index % thum.length];
   const isVideo = isDirectVideoSource(mediaSource);
-  const isSelected = isHovered || isMobileActive;
-
-  useEffect(() => {
-    const checkMobile = () => {
-      if (window.innerWidth < 768) setIsMobileActive(isInView);
-      else setIsMobileActive(false);
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, [isInView]);
-
-  useEffect(() => {
-    if (isVideo && videoRef.current) {
-      if (isSelected) videoRef.current.play().catch(() => {});
-      else videoRef.current.pause();
-    }
-  }, [isSelected, isVideo]);
+  
+  // Alternating layout for chessboard pattern
+  const isEven = index % 2 === 0;
 
   return (
     <motion.div
-      ref={cardRef}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: false, amount: 0.2 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
-      whileHover={{ y: -10 }}
-      className="relative group shrink-0 flex flex-col justify-end p-6 md:p-10 overflow-hidden rounded-[2rem] md:rounded-[3.5rem] border border-white/10 bg-zinc-900 transition-all duration-700 ease-out"
-      style={{ width: cardWidth, height: `${cardHeight}vh` }}
+      className="group relative w-full rounded-[32px] bg-[#f8f9fa] border border-neutral-200/80 p-5 sm:p-7 shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden"
     >
-      {/* --- BACKGROUND LAYER: ZOOM OUT EFFECT --- */}
-      <div className="absolute inset-0 z-0 overflow-hidden bg-black">
-        {isVideo ? (
-          <video
-            key={mediaSource}
-            ref={videoRef}
-            src={mediaSource}
-            muted loop playsInline preload="metadata"
-            className={`h-full w-full object-cover transition-all duration-[1200ms] ease-[cubic-bezier(0.23,1,0.32,1)] ${
-              isSelected
-                ? 'scale-57 grayscale-0 opacity-80'
-                : 'scale-125 grayscale opacity-30'
-            }`}
-          />
-        ) : (
-          <img
-            src={mediaSource}
-            alt={cat.name}
-            className={`h-full w-full object-cover transition-all duration-[1200ms] ease-[cubic-bezier(0.23,1,0.32,1)] ${
-              isSelected
-                ? 'scale-100 grayscale-0 opacity-100'
-                : 'scale-125 grayscale opacity-40'
-            }`}
-          />
-        )}
+      <div className={`grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 items-center ${isEven ? '' : 'md:grid-flow-dense'}`}>
+        
+        {/* Text Content */}
+        <div className={`space-y-4 ${isEven ? 'md:col-span-5' : 'md:col-span-5 md:col-start-8'}`}>
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] font-mono text-red-600 font-bold tracking-[0.3em] uppercase block">
+              {cat.sub || "Category"}
+            </span>
+          </div>
 
-        {/* Cinematic Gradient Overlay */}
-        <div className={`absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent transition-opacity duration-1000 ${
-          isSelected ? 'opacity-60' : 'opacity-90'
-        }`} />
-      </div>
-
-      {/* --- CONTENT LAYER --- */}
-      <div className="relative z-10 pointer-events-none">
-        <motion.div
-          animate={{ y: isSelected ? 0 : 20, opacity: isSelected ? 1 : 0.8 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-        >
-          <span className="text-[10px] md:text-xs font-mono text-red-500 mb-2 block tracking-[0.4em] uppercase font-bold">
-            {cat.sub || "Internal_Project"}
-          </span>
-          <h3 className="text-3xl md:text-5xl font-black mb-6 uppercase leading-[0.9] tracking-tighter">
+          <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-neutral-950 uppercase tracking-tight leading-none group-hover:text-red-600 transition-colors duration-300">
             {cat.name}
           </h3>
 
-          <div className={`inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-full border transition-all duration-500 ${
-            isSelected ? 'bg-white border-white text-black translate-x-2' : 'border-white/20 text-white'
-          }`}>
-            <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-            </svg>
+          <div className="pt-2">
+            <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-neutral-950 text-white font-mono text-[11px] font-bold uppercase tracking-wider group-hover:bg-red-600 transition-colors duration-300">
+              <span>View Works</span>
+              <ArrowUpRightIcon className="w-3.5 h-3.5" />
+            </div>
           </div>
-        </motion.div>
+        </div>
+
+        {/* Video / Image Screen */}
+        <div className={`relative ${isEven ? 'md:col-span-7' : 'md:col-span-7 md:col-start-1'}`}>
+          <div className="relative w-full h-[220px] sm:h-[280px] lg:h-[320px] rounded-[24px] overflow-hidden bg-neutral-950 border-4 border-white shadow-md">
+            {isVideo ? (
+              <video
+                key={mediaSource}
+                src={mediaSource}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 opacity-90 group-hover:opacity-100"
+              />
+            ) : (
+              <img
+                src={mediaSource}
+                alt={cat.name}
+                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 opacity-90 group-hover:opacity-100"
+              />
+            )}
+
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+
+            <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white z-10">
+              <span className="text-[10px] font-mono tracking-widest text-neutral-300 font-bold uppercase">
+                {cat.name}
+              </span>
+              <span className="px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-[9px] font-mono uppercase font-bold border border-white/20">
+                Reel
+              </span>
+            </div>
+          </div>
+        </div>
+
       </div>
 
-      {/* Dynamic Link: static card uses redirectUrl, others use category ID */}
-      <Link href={isStatic ? redirectUrl : `/works/${cat?.id}`} className="absolute inset-0 z-20" />
+      {/* Dynamic Link */}
+      <Link href={`/works/${cat?.id}`} className="absolute inset-0 z-20" />
 
-      {/* Interactive Progress Line */}
-      <div className={`absolute bottom-0 left-0 h-1.5 bg-red-600 transition-all duration-1000 ease-in-out ${
-        isSelected ? 'w-full' : 'w-0'
+      {/* Bottom Red Progress Accent */}
+      <div className={`absolute bottom-0 left-0 h-1.5 bg-red-600 transition-all duration-500 ease-in-out ${
+        isHovered ? 'w-full' : 'w-0'
       }`} />
     </motion.div>
   );
 };
 
-const WorksCategories = () => {
+export default function WorksCategories() {
   const [categoriesData, setCategoriesData] = useState([]);
-  const targetRef = useRef(null);
-  const { scrollYProgress } = useScroll({ target: targetRef });
-  const cardDimensions = useResponsiveCardDimensions();
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  // Horizontal scroll logic
-  const x = useTransform(scrollYProgress, [0, 1], isMobile ? ["2%", "-180%"] : ["5%", "-80%"]);
-  const physicsX = useSpring(x, { stiffness: 60, damping: 15 });
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -195,108 +139,82 @@ const WorksCategories = () => {
         return;
       }
 
-      // Fall back to local demo cards if the database is empty or unavailable.
       setCategoriesData(FALLBACK_CATEGORIES);
     };
     fetchCategories();
   }, []);
 
   const orderedCategories = [
-    // First, include categories in the defined order
     ...CATEGORY_DISPLAY_CONFIG.map((config) =>
-      categoriesData.find((cat) => cat.id === config.id)
+      categoriesData.find((cat) => String(cat.id) === String(config.id))
     ).filter(Boolean),
-    // Then, append any newly added categories that aren't in the config
     ...categoriesData.filter((cat) =>
-      !CATEGORY_DISPLAY_CONFIG.some((config) => config.id === cat.id)
+      !CATEGORY_DISPLAY_CONFIG.some((config) => String(config.id) === String(cat.id))
     ),
   ];
 
   return (
-    <div className="bg-[#050505] text-white selection:bg-red-600 selection:text-white">
+    <div className="w-full min-h-screen bg-white text-neutral-900 selection:bg-red-600 selection:text-white">
       <Navbar />
 
-      {/* Floating Background Label */}
-      <div className="fixed inset-0 z-0 pointer-events-none flex items-center justify-center">
-        <motion.h1 
-          style={{ opacity: useTransform(scrollYProgress, [0, 0.2], [0.15, 0]) }}
-          className="text-[25vw] font-black tracking-tighter text-white select-none italic"
-        >
-          WORKS
-        </motion.h1>
-      </div>
+      <main className="w-full pt-28 sm:pt-32 pb-24 px-4 sm:px-6 max-w-5xl mx-auto space-y-12">
+        
+        {/* Hero Heading */}
+        <header className="space-y-4 text-left">
+          <span className="text-xs font-mono font-bold text-red-600 uppercase tracking-widest block">
+            PORTFOLIO &amp; SHOWCASE
+          </span>
+          
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black uppercase italic tracking-tight text-neutral-950 leading-[0.95]">
+            WHERE IDEAS <br />
+            <span className="text-red-600">COME</span> SYSTEMS.
+          </h1>
 
-      <section
-        ref={targetRef}
-        className="relative h-[400vh] bg-transparent"
-        style={{ position: "relative" }}
-      >
-        <div className="sticky top-0 flex h-screen items-center overflow-hidden">
-          <motion.div style={{ x: physicsX }} className="flex gap-6 md:gap-16 px-10 md:px-20 items-center">
+          <p className="text-sm sm:text-base text-neutral-600 font-normal max-w-xl leading-relaxed pt-2">
+            Explore our curated collection of brand films, digital campaigns, commercial spots, and cinematic productions.
+          </p>
+        </header>
 
-            {/* INTRO HERO */}
-            <div className="flex flex-col justify-center min-w-[280px] md:min-w-[500px]">
-              <h2 className="text-4xl md:text-7xl font-light leading-[0.9] tracking-tighter">
-                ELEVATING <br />
-                <span className="font-black italic text-red-600">MOTION</span> <br />
-                SYSTEMS.
-              </h2>
-              <p className="mt-6 text-zinc-500 font-mono text-xs tracking-widest uppercase">Scroll to explore_</p>
-            </div>
+        {/* Chessboard Row-by-Row Layout */}
+        <section className="flex flex-col space-y-6 w-full">
+          {orderedCategories.map((cat, i) => (
+            <CategoryRow
+              key={cat.id}
+              cat={cat}
+              index={i}
+            />
+          ))}
+        </section>
 
-            {/* CATEGORY LOOP */}
-            {orderedCategories.map((cat, i) => (
-              <CategoryCard
-                key={cat.id}
-                cat={cat}
-                index={i}
-                cardWidth={cardDimensions.width}
-                cardHeight={cardDimensions.height}
-              />
-            ))}
+        {/* Bottom CTA Card */}
+        <section className="w-full bg-[#f8f9fa] rounded-[28px] p-6 sm:p-10 border border-neutral-200/80 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="space-y-1.5 text-center sm:text-left">
+            <h2 className="text-2xl sm:text-4xl font-black italic uppercase tracking-tight text-neutral-950">
+              NEXT LEVEL?
+            </h2>
+            <p className="text-sm text-neutral-600 font-normal">
+              Let&apos;s collaborate and bring your brand story to life.
+            </p>
+          </div>
 
-            {/* STATIC SPECIAL CARD */}
-            {/* <CategoryCard
-              cat={{ name: "Branding", sub: "Custom_Solution" }}
-              index={orderedCategories.length}
-              cardWidth={cardDimensions.width}
-              cardHeight={cardDimensions.height}
-              isStatic
-              redirectUrl="/your-special-page"
-            /> */}
+          <Link
+            href="/contact"
+            className="inline-flex items-center gap-3 px-7 py-3.5 rounded-full bg-neutral-950 text-white font-mono text-xs font-bold uppercase tracking-wider hover:bg-red-600 transition-all shadow-md shrink-0 hover:scale-105"
+          >
+            <span>Start A Project</span>
+            <ArrowUpRightIcon className="w-4 h-4" />
+          </Link>
+        </section>
 
-            {/* OUTRO CTA */}
-            <div className="flex flex-col justify-center min-w-[300px] md:min-w-[700px] pl-10">
-              <h2 className="text-5xl md:text-9xl font-black tracking-tighter leading-[0.8]">
-                NEXT <br />LEVEL?
-              </h2>
-              <Link href="/contact" className="group mt-10 flex items-center gap-6">
-                <span className="text-xl md:text-3xl font-light text-zinc-400 group-hover:text-white transition-colors">START A PROJECT</span>
-                <div className="w-12 h-12 md:w-20 md:h-20 border border-red-600 rounded-full flex items-center justify-center group-hover:bg-red-600 transition-all duration-500">
-                   <ArrowUpRightIcon className="w-6 h-6 md:w-10 md:h-10 text-red-600 group-hover:text-white" />
-                </div>
-              </Link>
-            </div>
+      </main>
 
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Tech Grid Overlay */}
-      <div className="fixed inset-0 pointer-events-none opacity-[0.02]">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px]" />
-      </div>
-      
       <Footer />
     </div>
   );
-};
+}
 
-// Simple Icon Component
-const ArrowUpRightIcon = ({ className }) => (
+const ArrowUpRightIcon = ({ className = "w-5 h-5" }) => (
   <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 17L17 7M17 7H7M17 7V17" />
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M7 17L17 7M17 7H7M17 7V17" />
   </svg>
 );
-
-export default WorksCategories;

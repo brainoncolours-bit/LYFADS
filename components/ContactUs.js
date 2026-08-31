@@ -1,136 +1,181 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { ArrowUpRight, Send } from "lucide-react";
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Send, ArrowUpRight } from 'lucide-react';
+import { supabase } from '@/lib/supabaseClient';
+import Swal from 'sweetalert2';
 
-export default function CleanContactTerminal() {
-  const [coords, setCoords] = useState({ x: 0, y: 0 });
+const ContactUs = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    message: '',
+  });
+  const [loading, setLoading] = useState(false);
 
-  const handleMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    setCoords({
-      x: Math.round(e.clientX - rect.left),
-      y: Math.round(e.clientY - rect.top),
-    });
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.name || !formData.email || !formData.message) {
+      Swal.fire('Incomplete Form', 'Please fill in all required fields.', 'warning');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const { error } = await supabase.from('feedback').insert([
+        {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone || '',
+          message: formData.message,
+        },
+      ]);
+
+      if (error) throw error;
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Message Sent!',
+        text: 'Our team will get back to you shortly.',
+        confirmButtonColor: '#0a0a0a',
+      });
+      setFormData({ name: '', email: '', phone: '', message: '' });
+    } catch (err) {
+      console.error('Error submitting enquiry:', err);
+      Swal.fire('Error', 'Failed to send message. Please try again.', 'error');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-[#070707] text-zinc-100 font-sans flex flex-col justify-between p-6 md:p-12 selection:bg-red-600 selection:text-white">
-      
-      {/* HEADER */}
-      <header className="w-full flex justify-between items-center border-b border-zinc-900 pb-4">
-        <h1 className="text-lg font-black italic tracking-tighter text-white">
-          LYF<span className="text-red-600">ADS</span>
-        </h1>
-        <span className="text-[10px] font-mono text-red-600 font-bold uppercase tracking-widest">
-          CONTACT
-        </span>
-      </header>
-
-      {/* MAIN CONTENT GRID */}
-      <main className="my-auto py-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch max-w-7xl mx-auto w-full">
+    <section className="relative w-full bg-[#fafafa] text-neutral-900 pt-28 sm:pt-36 pb-24 px-6 sm:px-12 lg:px-16 overflow-hidden">
+      <div className="max-w-[1440px] mx-auto">
         
-        {/* LEFT COLUMN: FORM */}
-        <div className="lg:col-span-7 flex flex-col justify-between gap-8">
-          <div>
-            <h2 className="text-4xl sm:text-6xl font-black italic tracking-tighter text-white uppercase leading-none">
-              Get In Touch
-            </h2>
-            <p className="text-xs text-zinc-500 font-mono leading-relaxed pt-2">
-              Send raw data specs or film project briefs directly to our core unit.
-            </p>
-          </div>
-
-          <form className="flex flex-col gap-6" onSubmit={(e) => e.preventDefault()}>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          
+          {/* LEFT: FORM SECTION */}
+          <div className="lg:col-span-7 flex flex-col justify-center">
+            
+            <div className="mb-10">
               
-              {/* FIELD 01 */}
-              <div className="border-b border-zinc-800 pb-2 focus-within:border-red-600 transition-colors">
-                <span className="text-[9px] font-mono text-zinc-500 block mb-1">
-                  NAME
-                </span>
-                <input
-                  type="text"
-                  placeholder="FULL NAME"
-                  className="bg-transparent text-sm font-bold uppercase tracking-wider text-white placeholder:text-zinc-700 outline-none w-full"
-                />
-              </div>
-
-              {/* FIELD 02 */}
-              <div className="border-b border-zinc-800 pb-2 focus-within:border-red-600 transition-colors">
-                <span className="text-[9px] font-mono text-zinc-500 block mb-1">
-                  EMAIL
-                </span>
-                <input
-                  type="email"
-                  placeholder="EMAIL ADDRESS"
-                  className="bg-transparent text-sm font-bold uppercase tracking-wider text-white placeholder:text-zinc-700 outline-none w-full"
-                />
-              </div>
+              <h2 className="text-4xl sm:text-6xl font-black italic tracking-tighter text-neutral-950 uppercase leading-none">
+                GET IN <span className="text-red-600">TOUCH.</span>
+              </h2>
+              <p className="text-xs sm:text-sm font-mono text-neutral-600 mt-3 max-w-lg leading-relaxed">
+                Send raw data specs or film project briefs directly to our core production unit.
+              </p>
             </div>
 
-            {/* FIELD 03 */}
-            <div className="border-b border-zinc-800 pb-2 focus-within:border-red-600 transition-colors">
-              <span className="text-[9px] font-mono text-zinc-500 block mb-1">
-                MESSAGE
-              </span>
-              <textarea
-                rows={3}
-                placeholder="DESCRIBE PROJECT OR SCOPE..."
-                className="bg-transparent text-sm font-medium uppercase tracking-wider text-white placeholder:text-zinc-700 outline-none resize-none w-full leading-relaxed"
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-[10px] font-mono uppercase tracking-widest text-neutral-500 font-bold mb-2">
+                    NAME *
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    placeholder="FULL NAME"
+                    required
+                    className="w-full bg-white border border-neutral-300 rounded-xl px-4 py-3.5 text-xs font-mono uppercase text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-950 focus:ring-1 focus:ring-neutral-950 transition-all shadow-sm"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-mono uppercase tracking-widest text-neutral-500 font-bold mb-2">
+                    EMAIL *
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="EMAIL ADDRESS"
+                    required
+                    className="w-full bg-white border border-neutral-300 rounded-xl px-4 py-3.5 text-xs font-mono uppercase text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-950 focus:ring-1 focus:ring-neutral-950 transition-all shadow-sm"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[10px] font-mono uppercase tracking-widest text-neutral-500 font-bold mb-2">
+                  PHONE NUMBER (OPTIONAL)
+                </label>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  placeholder="+91 XXXXX XXXXX"
+                  className="w-full bg-white border border-neutral-300 rounded-xl px-4 py-3.5 text-xs font-mono uppercase text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-950 focus:ring-1 focus:ring-neutral-950 transition-all shadow-sm"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[10px] font-mono uppercase tracking-widest text-neutral-500 font-bold mb-2">
+                  MESSAGE / PROJECT SCOPE *
+                </label>
+                <textarea
+                  name="message"
+                  rows={4}
+                  value={formData.message}
+                  onChange={handleChange}
+                  placeholder="DESCRIBE PROJECT OR SCOPE..."
+                  required
+                  className="w-full bg-white border border-neutral-300 rounded-xl px-4 py-3.5 text-xs font-mono uppercase text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-950 focus:ring-1 focus:ring-neutral-950 transition-all shadow-sm resize-none"
+                />
+              </div>
+
+              <div>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-10 py-4 rounded-full bg-neutral-950 text-white font-mono text-xs font-bold tracking-widest uppercase hover:bg-red-600 transition-all duration-300 shadow-md hover:shadow-xl hover:scale-105 active:scale-95 disabled:opacity-50 cursor-pointer"
+                >
+                  <span>{loading ? 'SENDING...' : 'SEND MESSAGE'}</span>
+                  <ArrowUpRight size={15} />
+                </button>
+              </div>
+            </form>
+
+          </div>
+
+          {/* RIGHT: MAP / LOCATION BOX */}
+          <div className="lg:col-span-5 flex flex-col gap-4">
+            
+            <div className="w-full aspect-[4/3] rounded-3xl overflow-hidden bg-white border border-neutral-200 shadow-xl relative">
+              <iframe
+                title="Bangalore Location Map"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d248849.88653909205!2d77.49085449767222!3d12.953959988166545!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae1670c9b44e6d%3A0xf8dfc3e8517e4fe0!2sBengaluru%2C%20Karnataka!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+                className="w-full h-full border-0"
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
               />
             </div>
 
-            {/* SUBMIT */}
-            <button
-              type="submit"
-              className="mt-2 flex items-center justify-between border border-zinc-800 text-white hover:bg-red-600 hover:border-red-600 text-xs font-black tracking-wider uppercase px-6 py-4 transition-colors duration-300 group"
-            >
-              <div className="flex items-center gap-3">
-                <Send size={13} className="group-hover:translate-x-1 transition-transform" />
-                <span>SEND MESSAGE</span>
-              </div>
-              <ArrowUpRight size={14} />
-            </button>
-          </form>
-        </div>
+            {/* Coordinates / Meta tag */}
+            <div className="flex justify-between items-center px-2 text-[10px] font-mono uppercase tracking-widest text-neutral-500">
+              <span>BENGALURU, KA • HQ</span>
+              <span>IN PRODUCTION 24/7</span>
+            </div>
 
-        {/* RIGHT COLUMN: FULL COLOR MAP */}
-        <div
-          onMouseMove={handleMouseMove}
-          className="lg:col-span-5 relative border border-zinc-900 flex flex-col justify-between min-h-[350px] lg:min-h-full"
-        >
-          {/* MAP DISPLAY */}
-          <div className="relative flex-1 w-full h-full min-h-[250px]">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d248849.90089833894!2d77.46612767685893!3d12.953945615107429!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae1670c9b44e6d%3A0xf8dfc3e8517e4fe0!2sBengaluru%2C%20Karnataka!5e0!3m2!1sen!2sin!4v1771422734732!5m2!1sen!2sin"
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen=""
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
           </div>
 
-          {/* MAP FOOTER */}
-          <div className="p-4 border-t border-zinc-900 bg-[#070707] flex justify-between items-center">
-            <span className="text-[9px] font-mono text-zinc-500 uppercase">
-              BENGALURU, KA
-            </span>
-            <span className="text-[9px] font-mono text-zinc-600 uppercase">
-              X: {coords.x} / Y: {coords.y}
-            </span>
-          </div>
         </div>
 
-      </main>
-
-      {/* FOOTER */}
-      <footer className="w-full border-t border-zinc-900 pt-4 text-[10px] font-mono text-zinc-600 uppercase">
-        <span>© LYFADS</span>
-      </footer>
-
-    </div>
+      </div>
+    </section>
   );
-}
+};
+
+export default ContactUs;

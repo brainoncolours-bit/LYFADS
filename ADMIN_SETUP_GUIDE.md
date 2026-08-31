@@ -20,10 +20,10 @@ CREATE TABLE videos (
 -- Enable Row Level Security
 ALTER TABLE videos ENABLE ROW LEVEL SECURITY;
 
--- Create policies (adjust based on your auth requirements)
-CREATE POLICY "Allow authenticated users to read videos"
+-- Create policies (Allow public to read videos so visitors can view the portfolio)
+CREATE POLICY "Allow public to read videos"
   ON videos FOR SELECT
-  TO authenticated
+  TO public
   USING (true);
 
 CREATE POLICY "Allow authenticated users to insert videos"
@@ -54,11 +54,10 @@ ADD COLUMN IF NOT EXISTS category_id INTEGER;
 ALTER TABLE video_categories
 ADD COLUMN IF NOT EXISTS carousel_video_url TEXT;
 
--- If Row Level Security is enabled on video_categories, these policies allow
--- the admin dashboard to add, edit, and delete Works carousel cards.
-CREATE POLICY "Allow authenticated users to read video categories"
+-- Allow public to read categories on /works and category pages
+CREATE POLICY "Allow public to read video categories"
   ON video_categories FOR SELECT
-  TO authenticated
+  TO public
   USING (true);
 
 CREATE POLICY "Allow authenticated users to insert video categories"

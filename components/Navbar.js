@@ -13,7 +13,7 @@ export default function MobileAppNavbar() {
     { label: "Home", path: "/#hero", icon: Home },
     { label: "About Us", path: "/about", icon: Users },
     { label: "Services", path: "/services", icon: Wrench },
-    { label: "Works", path: "/works", icon: FolderKanban },
+    { label: "Portfolio", path: "/works", icon: FolderKanban },
     { label: "Contact", path: "/contact", icon: Mail },
   ];
 

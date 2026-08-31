@@ -1,35 +1,38 @@
 "use client";
-import React, { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+
+import React from "react";
+import { ArrowUpRight, Sparkles } from "lucide-react";
+import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+
 const SERVICES = [
   {
     id: "01",
-    title: "⁠Commercial & Brand Video Production",
+    title: "Commercial & Brand Video",
     tag: "YT_MOBILE",
-    desc: "High-impact visual storytelling crafted to elevate brands. From concept to execution, we produce commercials, brand films, product videos, and high-volume digital content.",
+    desc: "High-impact visual storytelling crafted to elevate brands. From concept to execution, we produce commercials, brand films, and high-volume digital content.",
     img: "/assets/services/img1.webp",
   },
   {
     id: "02",
     title: "Corporate Video Production",
     tag: "PR_BRAND",
-    desc: "Professional films that communicate credibility and vision. We create corporate profiles, leadership interviews, culture films, and business-focused visual content.",
+    desc: "Professional films that communicate credibility and vision. We create corporate profiles, leadership interviews, culture films, and business content.",
     img: "/assets/services/img4.webp",
   },
   {
     id: "03",
     title: "Event Coverage",
     tag: "DEST_FILM",
-    desc: "Cinematic multi-camera coverage that captures every key moment. From product launches to corporate events, we deliver impactful highlight and platform-ready edits.",
+    desc: "Cinematic multi-camera coverage that captures every key moment. From product launches to corporate events, we deliver impactful platform edits.",
     img: "/assets/services/img5.webp",
   },
   {
     id: "04",
-    title: "3D Modeling and AI Video Production",
+    title: "3D Modeling & AI Production",
     tag: "EDITORIAL",
-    desc: "Photoreal 3D product visualization Next-generation Al-powered visuals and enhanced video creation. From Al-generated scenes to advanced visual enhancements, we help brands produce futuristic, high-impact content.",
+    desc: "Photoreal 3D visualization and next-generation AI-powered visuals. We produce futuristic, high-impact content.",
     img: "/assets/services/3dModeling.jpeg",
   },
   {
@@ -38,101 +41,93 @@ const SERVICES = [
     tag: "3D_TECH",
     desc: "Precision editing, color grading, motion graphics, and finishing that transform raw footage into powerful final visuals.",
     img: "/assets/services/img2.webp",
-  }
+  },
 ];
 
-
-const SprocketStrip = () => (
-  <div className="flex justify-between px-2 py-4">
-    {[...Array(10)].map((_, i) => (
-      <div key={i} className="w-4 h-6 bg-[#111] rounded-sm border border-white/5 shadow-inner" />
-    ))}
-  </div>
-);
-
-export default function FilmStripServices() {
-  const scrollRef = useRef(null);
-  const { scrollYProgress } = useScroll({ target: scrollRef });
-
-  // Increased range from -85% to -92% to accommodate the full list
-  const xTranslate = useTransform(scrollYProgress, [0, 1], ["0%", "-92%"]);
-
+export default function ServicesPage() {
   return (
-    <div className="bg-[#050505] text-white selection:bg-red-600">
+    <div className="bg-[#fafafa] text-neutral-900 font-sans min-h-screen selection:bg-red-600 selection:text-white">
       <Navbar />
 
-      {/* FIXED BACKGROUND ELEMENTS */}
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-0 w-full h-[1px] bg-red-600/20 z-0" />
-        <div className="absolute top-[15%] left-10 font-mono text-[10px] text-red-600/40 rotate-90 origin-left tracking-[1em]">
-          KODAK_5219_7219_NEG_PROCESS
-        </div>
-      </div>
+      {/* HEADER SECTION */}
+      <section className="pt-36 pb-16 px-6 sm:px-12 lg:px-16 max-w-[1440px] mx-auto text-center">
+        <div>
+         
 
-      {/* HERO SECTION */}
-      <section className="h-[60vh] flex flex-col justify-end px-8 md:px-20 pb-20">
-        <motion.p 
-          initial={{ opacity: 0 }} 
-          animate={{ opacity: 1 }} 
-          className="text-red-600 font-mono text-sm tracking-[0.5em] mb-4"
-        >
-          // MASTER_COLLECTION_2026
-        </motion.p>
-        <h1 className="text-6xl md:text-9xl font-black tracking-tighter uppercase leading-[0.8]">
-          THE <span className="text-stone-800">FILM</span> <br />STRIP.
-        </h1>
+          <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black italic tracking-tighter text-neutral-950 uppercase leading-none">
+            OUR <span className="text-red-600">CAPABILITIES.</span>
+          </h1>
+
+          <p className="text-base sm:text-xl text-neutral-600 font-normal mt-5 max-w-3xl mx-auto leading-relaxed">
+            Cinematic production, visual post-production, and innovative digital solutions from websites to applications—crafted for visionary brands.
+
+          </p>
+        </div>
       </section>
 
-      {/* HORIZONTAL SCROLL AREA */}
-      <section ref={scrollRef} className="relative h-[800vh]">
-        <div className="sticky top-0 h-screen flex items-center overflow-hidden">
-          <motion.div style={{ x: xTranslate }} className="flex gap-12 px-20">
-            {SERVICES.map((s, idx) => (
-              <div key={s.id} className="relative flex-shrink-0">
-                {/* FILM CELL CONTAINER */}
-                <div className="w-[85vw] md:w-[600px] bg-[#0a0a0a] border-x border-white/10 flex flex-col group">
-                  <SprocketStrip />
+      {/* STATIC CONTAINERS WITH SMOOTH HOVER EFFECTS */}
+      <section className="pb-32 px-4 sm:px-8 lg:px-12 max-w-[1440px] mx-auto space-y-12">
+        {SERVICES.map((item, idx) => {
+          const isEven = idx % 2 === 1;
+
+          return (
+            <div
+              key={item.id}
+              className="bg-white border border-neutral-200/90 rounded-[36px] p-6 sm:p-10 lg:p-12 shadow-sm hover:shadow-2xl transition-all duration-500 group w-full"
+            >
+              <div
+                className={`grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center ${
+                  isEven ? "lg:grid-flow-dense" : ""
+                }`}
+              >
+                {/* Visual Image Container */}
+                <div
+                  className={`lg:col-span-7 relative h-[320px] sm:h-[440px] lg:h-[500px] rounded-3xl overflow-hidden bg-neutral-950 shadow-md ${
+                    isEven ? "lg:col-start-6" : ""
+                  }`}
+                >
+                  <img
+                    src={item.img}
+                    alt={item.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
                   
-                  <div className="relative aspect-[16/9] overflow-hidden mx-4 bg-black">
-                    <img 
-                      src={s.img} 
-                      alt={s.title}
-                      className="w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-110" 
-                    />
-                    <div className="absolute inset-0 bg-red-900/10 group-hover:bg-transparent transition-colors" />
-                    <div className="absolute top-4 right-4 text-[10px] font-mono text-white/50">
-                      FRAME_{idx * 24}
-                    </div>
-                  </div>
+                
+                </div>
 
-                  <SprocketStrip />
-
-                  {/* CELL DESCRIPTION */}
-                  <div className="p-8 space-y-4">
-                    <div className="flex justify-between items-baseline">
-                      <h3 className="text-4xl font-black uppercase italic tracking-tighter group-hover:text-red-600 transition-colors">
-                        {s.title}
-                      </h3>
-                      <span className="font-mono text-xs text-stone-500">[{s.tag}]</span>
-                    </div>
-                    <p className="text-stone-400 font-light text-sm max-w-sm">
-                      {s.desc}
+                {/* Details / Text Container */}
+                <div
+                  className={`lg:col-span-5 flex flex-col justify-between space-y-8 ${
+                    isEven ? "lg:col-start-1" : ""
+                  }`}
+                >
+                  <div className="space-y-4">
+                    
+                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black uppercase italic tracking-tight text-neutral-950 group-hover:text-red-600 transition-colors leading-[1.1]">
+                      {item.title}
+                    </h2>
+                    <p className="text-base sm:text-lg text-neutral-600 font-normal leading-relaxed">
+                      {item.desc}
                     </p>
                   </div>
-                </div>
 
-                {/* BACKGROUND CELL NUMBER */}
-                <div className="absolute -bottom-10 left-0 font-mono text-8xl text-white/5 select-none font-bold">
-                  {s.id}
+                  <div className="pt-6 border-t border-neutral-100 flex items-center justify-between">
+                    <Link
+                      href="/contact"
+                      className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-neutral-950 text-white text-xs font-mono font-bold uppercase tracking-wider hover:bg-red-600 transition-all duration-300 shadow-md hover:shadow-xl hover:scale-105"
+                    >
+                      <span>Request Brief</span>
+                      <ArrowUpRight size={16} />
+                    </Link>
+
+                  
+                  </div>
                 </div>
               </div>
-            ))}
-          </motion.div>
-        </div>
+            </div>
+          );
+        })}
       </section>
-
-      {/* FOOTER CALL TO ACTION */}
-    
 
       <Footer />
     </div>
