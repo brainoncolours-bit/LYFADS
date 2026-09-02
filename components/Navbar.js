@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Home, Users, Wrench, FolderKanban, Mail } from "lucide-react";
+import { Home, Users, Wrench, FolderKanban, Gift, Mail } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
@@ -13,6 +13,7 @@ export default function MobileAppNavbar() {
     { label: "Home", path: "/#hero", icon: Home },
     { label: "About Us", path: "/about", icon: Users },
     { label: "Services", path: "/services", icon: Wrench },
+    // { label: "Get Yours", path: "/getyours", icon: Gift },
     { label: "Portfolio", path: "/works", icon: FolderKanban },
     { label: "Contact", path: "/contact", icon: Mail },
   ];
