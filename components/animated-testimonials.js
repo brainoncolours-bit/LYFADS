@@ -42,18 +42,18 @@
 //         .select("*")
 //         .order("created_at", { ascending: false });
 
-      if (error) {
-        // toast.error("Please refresh");
-      } else {
-        let filterData=data.filter(item=>item.featured)
-        setItems(filterData || []);
-      }
-    } catch (error) {
-      toast.error("An error occurred while fetching cars collection.");
-    } finally {
-      setLoading(false);
-    }
-  };
+//       if (error) {
+//         // toast.error("Please refresh");
+//       } else {
+//         let filterData=data.filter(item=>item.featured)
+//         setItems(filterData || []);
+//       }
+//     } catch (error) {
+//       toast.error("An error occurred while fetching cars collection.");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
 
 //   const handleNext = () => {
 //     setActive((prev) => (prev + 1) % items.length);

@@ -9,6 +9,55 @@ const items = [
   { name: "Branding", desc: "Identity Design", color: "#70FF00" }
 ];
 
+const CollabItem = ({ item, i, smoothProgress }) => {
+  const start = i * 0.2;
+  const end = start + 0.3;
+
+  const opacity = useTransform(smoothProgress, [start, start + 0.1, end - 0.1, end], [0, 1, 1, 0]);
+  const scale = useTransform(smoothProgress, [start, end], [0.8, 1.5]);
+  const xOffset = useTransform(smoothProgress, [start, end], [i % 2 === 0 ? -100 : 100, 0]);
+  const rotation = useTransform(smoothProgress, [start, end], [i % 2 === 0 ? -15 : 15, 0]);
+
+  return (
+    <motion.div
+      style={{
+        position: "absolute",
+        opacity,
+        scale,
+        x: xOffset,
+        rotateY: rotation,
+        transformStyle: "preserve-3d",
+        textAlign: "center"
+      }}
+    >
+      <div style={{ fontSize: "12px", letterSpacing: "8px", color: item.color, marginBottom: "20px", fontWeight: "300" }}>
+        {item.desc}
+      </div>
+
+      <h2 style={{ 
+        fontSize: "clamp(5rem, 15vw, 12rem)", 
+        fontWeight: 900, 
+        margin: 0, 
+        lineHeight: 0.8,
+        textTransform: "uppercase",
+        WebkitTextStroke: i % 2 === 0 ? "none" : "1px white",
+        color: i % 2 === 0 ? "white" : "transparent"
+      }}>
+        {item.name}
+      </h2>
+
+      <motion.div 
+        style={{ 
+          height: "150px", 
+          width: "1px", 
+          background: `linear-gradient(to bottom, ${item.color}, transparent)`, 
+          margin: "20px auto" 
+        }} 
+      />
+    </motion.div>
+  );
+};
+
 export default function LyfAdsNexusRibbon() {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -53,59 +102,9 @@ export default function LyfAdsNexusRibbon() {
 
         {/* The Moving Ribbon of Content */}
         <motion.div style={{ transformStyle: "preserve-3d", z: tunnelZ, width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
-          {items.map((item, i) => {
-            // Each item appears at a different scroll point
-            const start = i * 0.2;
-            const end = start + 0.3;
-            
-            const opacity = useTransform(smoothProgress, [start, start + 0.1, end - 0.1, end], [0, 1, 1, 0]);
-            const scale = useTransform(smoothProgress, [start, end], [0.8, 1.5]);
-            const xOffset = useTransform(smoothProgress, [start, end], [i % 2 === 0 ? -100 : 100, 0]);
-            const rotation = useTransform(smoothProgress, [start, end], [i % 2 === 0 ? -15 : 15, 0]);
-
-            return (
-              <motion.div
-                key={i}
-                style={{
-                  position: "absolute",
-                  opacity,
-                  scale,
-                  x: xOffset,
-                  rotateY: rotation,
-                  transformStyle: "preserve-3d",
-                  textAlign: "center"
-                }}
-              >
-                {/* Floating Label */}
-                <div style={{ fontSize: "12px", letterSpacing: "8px", color: item.color, marginBottom: "20px", fontWeight: "300" }}>
-                   {item.desc}
-                </div>
-                
-                {/* Massive Kinetic Text */}
-                <h2 style={{ 
-                  fontSize: "clamp(5rem, 15vw, 12rem)", 
-                  fontWeight: 900, 
-                  margin: 0, 
-                  lineHeight: 0.8,
-                  textTransform: "uppercase",
-                  WebkitTextStroke: i % 2 === 0 ? "none" : "1px white",
-                  color: i % 2 === 0 ? "white" : "transparent"
-                }}>
-                  {item.name}
-                </h2>
-
-                {/* Vertical Line Deco */}
-                <motion.div 
-                   style={{ 
-                     height: "150px", 
-                     width: "1px", 
-                     background: `linear-gradient(to bottom, ${item.color}, transparent)`, 
-                     margin: "20px auto" 
-                   }} 
-                />
-              </motion.div>
-            );
-          })}
+          {items.map((item, i) => (
+            <CollabItem key={i} item={item} i={i} smoothProgress={smoothProgress} />
+          ))}
         </motion.div>
 
         {/* Static Center Piece: The "Eye" */}

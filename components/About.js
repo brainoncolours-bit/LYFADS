@@ -81,6 +81,8 @@ export default function About() {
               <p className="text-neutral-400">
                 We don&apos;t just create content—we craft experiences that resonate, inspire, and drive results.
               </p>
+             
+              
             </div>
           </div>
         </section>
@@ -142,6 +144,7 @@ export default function About() {
             <span>Start A Project</span>
             <ArrowUpRight size={14} />
           </Link>
+         
         </section>
 
       </main>
